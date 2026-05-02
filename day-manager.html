@@ -1,0 +1,1166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Day Manager — Wingmic + Company Merge</title>
+  <style>
+    :root {
+      --bg: #070b17;
+      --bg-2: #10182f;
+      --panel: rgba(255, 255, 255, 0.08);
+      --panel-strong: rgba(255, 255, 255, 0.12);
+      --text: #ebf1ff;
+      --muted: #a8b3cf;
+      --good: #32d6a0;
+      --warn: #ffd166;
+      --focus: #7aa2ff;
+      --danger: #ff6b81;
+      --ring: rgba(122, 162, 255, 0.35);
+      --shadow: 0 12px 34px rgba(0, 0, 0, 0.32);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 80% -10%, #1a2f63 0%, transparent 58%),
+        radial-gradient(900px 500px at -10% 0%, #1a4c56 0%, transparent 52%),
+        linear-gradient(165deg, var(--bg), var(--bg-2));
+    }
+
+    .wrap {
+      width: min(1100px, 95vw);
+      margin: 24px auto 40px;
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero {
+      grid-column: 1 / -1;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(1.2rem, 2vw, 1.7rem);
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .clock {
+      text-align: right;
+    }
+
+    .clock-time {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.4px;
+    }
+
+    .clock-date {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 0.9rem;
+    }
+
+    .current {
+      grid-column: span 7;
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: var(--text);
+      font-size: 0.82rem;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .pill.good {
+      border-color: rgba(50, 214, 160, 0.45);
+      color: #b9ffe5;
+      background: rgba(50, 214, 160, 0.16);
+    }
+
+    .pill.warn {
+      border-color: rgba(255, 209, 102, 0.5);
+      color: #fff3c7;
+      background: rgba(255, 209, 102, 0.15);
+    }
+
+    .now-title {
+      font-size: clamp(1.1rem, 2.1vw, 1.45rem);
+      font-weight: 680;
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    .now-note {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.94rem;
+    }
+
+    .timer-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: end;
+    }
+
+    .timer {
+      font-size: clamp(1.45rem, 3vw, 2.45rem);
+      font-variant-numeric: tabular-nums;
+      font-weight: 780;
+      letter-spacing: 0.6px;
+      margin: 0;
+    }
+
+    .progress-wrap {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.13);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .progress {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #5f9bff, #61e0b3);
+      transition: width 300ms ease;
+    }
+
+    .controls {
+      grid-column: span 5;
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .controls h3, .timeline h3 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.2px;
+    }
+    .controls h4 {
+      margin: 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.2px;
+      color: #d7e5ff;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    select, input[type="date"], input[type="text"], input[type="password"] {
+      width: 100%;
+      color: var(--text);
+      background: rgba(10, 14, 30, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 9px 10px;
+      font-size: 0.92rem;
+      outline: none;
+      box-shadow: 0 0 0 0 transparent;
+      transition: box-shadow 150ms ease, border-color 150ms ease;
+    }
+
+    select:focus, input[type="date"]:focus, input[type="text"]:focus, input[type="password"]:focus {
+      border-color: var(--focus);
+      box-shadow: 0 0 0 3px var(--ring);
+    }
+
+    .btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-weight: 560;
+      cursor: pointer;
+      transition: transform 120ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.36);
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, #2b66ff, #39a9d8);
+      border-color: rgba(122, 162, 255, 0.55);
+    }
+
+    button.good {
+      background: linear-gradient(135deg, #0ea172, #2cb58b);
+      border-color: rgba(66, 237, 178, 0.5);
+    }
+
+    .hint {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.87rem;
+      line-height: 1.4;
+    }
+
+    .timeline {
+      grid-column: 1 / -1;
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .items {
+      display: grid;
+      gap: 8px;
+      max-height: 430px;
+      overflow: auto;
+      padding-right: 3px;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 105px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .item.current {
+      border-color: rgba(97, 224, 179, 0.54);
+      background: rgba(97, 224, 179, 0.13);
+      box-shadow: inset 0 0 0 1px rgba(97, 224, 179, 0.2);
+    }
+    .item.missed {
+      border-color: rgba(255, 107, 129, 0.5);
+      background: rgba(255, 107, 129, 0.12);
+    }
+
+    .item.done {
+      opacity: 0.6;
+    }
+
+    .item-time {
+      font-size: 0.86rem;
+      color: #d6e1ff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .item-title {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+
+    .item-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .check {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: transparent;
+      display: grid;
+      place-items: center;
+      font-size: 0.9rem;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .check.done {
+      background: rgba(50, 214, 160, 0.22);
+      border-color: rgba(50, 214, 160, 0.52);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      width: min(360px, 90vw);
+      border-radius: 13px;
+      padding: 12px 14px;
+      background: rgba(8, 14, 31, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #f3f7ff;
+      box-shadow: var(--shadow);
+      transform: translateY(24px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 210ms ease, opacity 210ms ease;
+      z-index: 100;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .grid-note {
+      display: grid;
+      gap: 8px;
+    }
+
+    .github-panel {
+      margin-top: 2px;
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(5, 12, 28, 0.34);
+    }
+
+    .metric-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .small-mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.8rem;
+      color: #c7d7ff;
+    }
+
+    @media (max-width: 930px) {
+      .current, .controls {
+        grid-column: 1 / -1;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .clock {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card hero">
+      <div>
+        <h1 class="title">Tomorrow OS — Wingmic + Company Merge</h1>
+        <p class="subtitle">Live block tracker with prayer anchors, desk/away context, and automatic block-end reminders.</p>
+      </div>
+      <div class="clock">
+        <div class="clock-time" id="liveClock">--:--:--</div>
+        <div class="clock-date" id="liveDate">Loading date…</div>
+      </div>
+    </section>
+
+    <section class="card current">
+      <div class="status-row">
+        <span class="pill good" id="statusPill">● Active block</span>
+        <span class="pill" id="locationPill">Location: —</span>
+        <span class="pill" id="priorityPill">Priority: —</span>
+      </div>
+      <h2 class="now-title" id="currentTitle">Waiting for schedule…</h2>
+      <p class="now-note" id="currentNote">Your next action and recovery guidance will appear here.</p>
+      <div class="timer-row">
+        <p class="timer" id="countdown">--:--:--</p>
+        <span class="pill warn" id="nextBlockHint">Next: —</span>
+      </div>
+      <div class="progress-wrap" aria-label="Overall completion progress">
+        <div class="progress" id="overallProgress"></div>
+      </div>
+      <p class="hint" id="progressLabel">Progress: 0%</p>
+    </section>
+
+    <section class="card controls">
+      <h3>Controls</h3>
+      <div class="field-row">
+        <div>
+          <label for="planDate">Plan date</label>
+          <input id="planDate" type="date" />
+        </div>
+        <div>
+          <label for="mood">Mood/Energy</label>
+          <select id="mood">
+            <option value="low">Low (minimum viable wins)</option>
+            <option value="medium" selected>Medium (steady focus)</option>
+            <option value="high">High (deep sprint)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div>
+          <label for="modeFilter">View</label>
+          <select id="modeFilter">
+            <option value="all" selected>All blocks</option>
+            <option value="desk">Desk only</option>
+            <option value="away">Away from desk only</option>
+            <option value="prayer">Prayer only</option>
+          </select>
+        </div>
+        <div>
+          <label for="flexMode">Flex mode</label>
+          <select id="flexMode">
+            <option value="off" selected>Off (strict schedule)</option>
+            <option value="soft">Soft (suggest shortcuts)</option>
+          </select>
+        </div>
+      </div>
+      <div class="btns">
+        <button class="primary" id="notifyBtn">Enable notifications</button>
+        <button class="good" id="markCurrentDoneBtn">Mark current block done</button>
+        <button id="tomorrowBtn">Jump to tomorrow</button>
+        <button id="resetBtn">Reset checkmarks</button>
+      </div>
+      <div class="grid-note">
+        <p class="hint" id="focusHint">Focus hint: enable notifications, then stay in the current block until timer ends.</p>
+        <p class="hint" id="streakHint">Completion streak: 0 blocks done.</p>
+      </div>
+      <section class="github-panel">
+        <h4>GitHub integration</h4>
+        <div class="field-row">
+          <div>
+            <label for="githubRepo">Repository (owner/repo)</label>
+            <input id="githubRepo" type="text" placeholder="owner/repo" autocomplete="off" />
+          </div>
+          <div>
+            <label for="githubBranch">Branch</label>
+            <input id="githubBranch" type="text" placeholder="staging" autocomplete="off" />
+          </div>
+        </div>
+        <div>
+          <label for="githubToken">GitHub token (classic/fine-grained, repo read scope)</label>
+          <input id="githubToken" type="password" placeholder="ghp_..." autocomplete="off" />
+        </div>
+        <div class="btns">
+          <button id="githubConnectBtn">Connect + sync</button>
+          <button id="githubSyncBtn">Sync now</button>
+          <button id="githubDisconnectBtn">Disconnect</button>
+        </div>
+        <p class="hint" id="githubStatus">GitHub: not connected.</p>
+        <div class="metric-row" id="githubMetrics"></div>
+        <p class="hint small-mono" id="githubLastCommit">Last commit: —</p>
+      </section>
+    </section>
+
+    <section class="card timeline">
+      <h3>Daily timeline</h3>
+      <div class="legend">
+        <span class="pill">✅ done</span>
+        <span class="pill good">🟢 current</span>
+        <span class="pill">🔴 missed</span>
+        <span class="pill">⚪ upcoming</span>
+      </div>
+      <div class="items" id="timelineItems"></div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const BLOCKS = [
+      { id: "wake", start: "04:30", end: "04:35", title: "Wake, wudu, and stand up immediately", note: "No snooze. Drink water and move within 60 seconds.", location: "away", priority: "must", type: "routine" },
+      { id: "fajr", start: "04:35", end: "04:50", title: "Fajr salah", note: "Anchor your day spiritually before work starts.", location: "away", priority: "must", type: "prayer" },
+      { id: "quran", start: "04:50", end: "05:20", title: "Quran recitation (30 min)", note: "Keep it calm and consistent. Track completion only.", location: "away", priority: "must", type: "spiritual" },
+      { id: "small-win", start: "05:20", end: "05:40", title: "Small early win (prefer U-Haul booking)", note: "Goal: one finished task to build momentum.", location: "desk", priority: "must", type: "execution" },
+      { id: "family-breakfast", start: "05:40", end: "06:10", title: "Family touchpoint + breakfast prep", note: "Reduce pressure early so later focus is cleaner.", location: "away", priority: "must", type: "personal" },
+      { id: "wing-idea", start: "06:10", end: "07:10", title: "Wingmic: gather cloud notes + planning chat", note: "Distill scope into one sharp concept.", location: "desk", priority: "must", type: "product" },
+      { id: "wing-landing", start: "07:10", end: "08:40", title: "Wingmic: combine design + start repo + landing v0", note: "Ship visible progress. Avoid over-engineering.", location: "desk", priority: "must", type: "build" },
+      { id: "social-post", start: "08:40", end: "09:00", title: "Build-in-public update (first social post)", note: "Publish even if short: announce what is live and next.", location: "desk", priority: "must", type: "visibility" },
+      { id: "move-1", start: "09:00", end: "13:00", title: "Move logistics block (U-Haul, roommates, mattress, transfer)", note: "Primary away-from-desk block. Keep calls tight and actionable.", location: "away", priority: "must", type: "logistics" },
+      { id: "dhuhr", start: "13:00", end: "13:20", title: "Dhuhr / Zohar salah", note: "Reset and avoid rushing into desk work without pause.", location: "away", priority: "must", type: "prayer" },
+      { id: "move-2", start: "13:20", end: "14:00", title: "Settle at new location + quick recovery", note: "Food/water/reset before cognitive tasks.", location: "away", priority: "must", type: "recovery" },
+      { id: "admin", start: "14:00", end: "14:45", title: "Admin sprint: GOAL leave + LinkedIn project update", note: "Finish both completely in one sitting.", location: "desk", priority: "should", type: "admin" },
+      { id: "merge-1", start: "14:45", end: "16:45", title: "Company merge sprint 1", note: "Audit branch diffs, set merge order, start conflict resolution.", location: "desk", priority: "must", type: "company" },
+      { id: "asar", start: "17:00", end: "17:20", title: "Asar salah", note: "Step away and reset attention.", location: "away", priority: "must", type: "prayer" },
+      { id: "merge-2", start: "17:20", end: "19:50", title: "Company merge sprint 2", note: "Continue staged merges + review notes + test high-risk paths.", location: "desk", priority: "must", type: "company" },
+      { id: "maghrib", start: "20:00", end: "20:20", title: "Maghrib salah", note: "Use as a natural checkpoint before evening block.", location: "away", priority: "must", type: "prayer" },
+      { id: "thesis-lab", start: "20:20", end: "21:15", title: "New worktree: thesis.dev UI/chat experiments (time-boxed)", note: "Experimental only. Stop on time.", location: "desk", priority: "stretch", type: "r&d" },
+      { id: "isha", start: "21:30", end: "21:50", title: "Isha salah", note: "Close major loops mentally.", location: "away", priority: "must", type: "prayer" },
+      { id: "shutdown", start: "21:50", end: "22:10", title: "Shutdown review + tomorrow prep", note: "Log what shipped, blockers, and first task for next day.", location: "desk", priority: "must", type: "review" }
+    ];
+
+    const GITHUB_SETTINGS_KEY = "day-manager-github-settings-v1";
+    const GITHUB_SYNC_INTERVAL_MS = 5 * 60 * 1000;
+
+    const planDateInput = document.getElementById("planDate");
+    const moodInput = document.getElementById("mood");
+    const modeFilterInput = document.getElementById("modeFilter");
+    const flexModeInput = document.getElementById("flexMode");
+    const liveClock = document.getElementById("liveClock");
+    const liveDate = document.getElementById("liveDate");
+    const currentTitle = document.getElementById("currentTitle");
+    const currentNote = document.getElementById("currentNote");
+    const countdown = document.getElementById("countdown");
+    const statusPill = document.getElementById("statusPill");
+    const locationPill = document.getElementById("locationPill");
+    const priorityPill = document.getElementById("priorityPill");
+    const nextBlockHint = document.getElementById("nextBlockHint");
+    const overallProgress = document.getElementById("overallProgress");
+    const progressLabel = document.getElementById("progressLabel");
+    const timelineItems = document.getElementById("timelineItems");
+    const notifyBtn = document.getElementById("notifyBtn");
+    const markCurrentDoneBtn = document.getElementById("markCurrentDoneBtn");
+    const tomorrowBtn = document.getElementById("tomorrowBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const focusHint = document.getElementById("focusHint");
+    const streakHint = document.getElementById("streakHint");
+    const toast = document.getElementById("toast");
+
+    const githubRepoInput = document.getElementById("githubRepo");
+    const githubBranchInput = document.getElementById("githubBranch");
+    const githubTokenInput = document.getElementById("githubToken");
+    const githubConnectBtn = document.getElementById("githubConnectBtn");
+    const githubSyncBtn = document.getElementById("githubSyncBtn");
+    const githubDisconnectBtn = document.getElementById("githubDisconnectBtn");
+    const githubStatus = document.getElementById("githubStatus");
+    const githubMetrics = document.getElementById("githubMetrics");
+    const githubLastCommit = document.getElementById("githubLastCommit");
+
+    let lastActiveId = null;
+    let completed = new Set();
+    let toastTimer = null;
+    let githubSyncTimer = null;
+
+    const githubState = {
+      connected: false,
+      syncInFlight: false,
+      repo: "",
+      branch: "staging",
+      commitsToday: 0,
+      prsUpdatedToday: 0,
+      prsMergedToday: 0,
+      openPrs: 0,
+      lastSync: null,
+      rateRemaining: null,
+      lastCommitMessage: "",
+      error: null
+    };
+
+    const formatTime = (d) =>
+      d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+
+    const formatDay = (d) =>
+      d.toLocaleDateString([], { weekday: "long", month: "short", day: "numeric", year: "numeric" });
+
+    const formatShortDateTime = (d) =>
+      d.toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+
+    const timeToDate = (day, hhmm) => {
+      const [h, m] = hhmm.split(":").map(Number);
+      const dt = new Date(day);
+      dt.setHours(h, m, 0, 0);
+      return dt;
+    };
+
+    const blockInstances = () => {
+      const day = selectedPlanDate();
+      return BLOCKS.map((b) => ({
+        ...b,
+        startAt: timeToDate(day, b.start),
+        endAt: timeToDate(day, b.end)
+      }));
+    };
+
+    function storageKey() {
+      return `day-manager-completed-${planDateInput.value}`;
+    }
+
+    function loadCompleted() {
+      const raw = localStorage.getItem(storageKey());
+      completed = new Set(raw ? JSON.parse(raw) : []);
+    }
+
+    function saveCompleted() {
+      localStorage.setItem(storageKey(), JSON.stringify(Array.from(completed)));
+    }
+
+    function selectedPlanDate() {
+      const [year, month, day] = (planDateInput.value || "").split("-").map(Number);
+      if (!year || !month || !day) {
+        const now = new Date();
+        return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      }
+      return new Date(year, month - 1, day);
+    }
+
+    function setDefaultDate() {
+      const now = new Date();
+      const d = new Date(now);
+      if (now.getHours() >= 18) d.setDate(d.getDate() + 1);
+      planDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    }
+
+    function jumpTomorrow() {
+      const d = selectedPlanDate();
+      d.setDate(d.getDate() + 1);
+      planDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      onPlanDateChanged();
+    }
+
+    function parseRepo(raw) {
+      const cleaned = raw
+        .trim()
+        .replace(/^https?:\/\/github\.com\//i, "")
+        .replace(/\.git$/i, "")
+        .replace(/^\/+|\/+$/g, "");
+      const parts = cleaned.split("/").filter(Boolean);
+      if (parts.length !== 2) return null;
+      return { owner: parts[0], name: parts[1], repo: `${parts[0]}/${parts[1]}` };
+    }
+
+    function saveGitHubSettings() {
+      const payload = {
+        repo: githubRepoInput.value.trim(),
+        branch: (githubBranchInput.value.trim() || "staging")
+      };
+      localStorage.setItem(GITHUB_SETTINGS_KEY, JSON.stringify(payload));
+    }
+
+    function loadGitHubSettings() {
+      const raw = localStorage.getItem(GITHUB_SETTINGS_KEY);
+      if (!raw) {
+        githubBranchInput.value = "staging";
+        return;
+      }
+      try {
+        const parsed = JSON.parse(raw);
+        githubRepoInput.value = parsed.repo || "";
+        githubBranchInput.value = parsed.branch || "staging";
+      } catch {
+        githubBranchInput.value = "staging";
+      }
+    }
+
+    function dayBounds(day) {
+      const start = new Date(day);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(day);
+      end.setHours(23, 59, 59, 999);
+      return { start, end, startIso: start.toISOString(), endIso: end.toISOString() };
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 3400);
+    }
+
+    async function requestNotifications() {
+      if (!("Notification" in window)) {
+        showToast("Browser notifications are not supported here.");
+        return;
+      }
+      if (Notification.permission === "granted") {
+        showToast("Notifications already enabled.");
+        return;
+      }
+      const result = await Notification.requestPermission();
+      showToast(result === "granted" ? "Notifications enabled." : "Notification permission denied.");
+    }
+
+    function ping(title, body) {
+      showToast(`${title} — ${body}`);
+      playTone();
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification(title, { body });
+      }
+    }
+
+    function playTone() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = 880;
+        gain.gain.value = 0.01;
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+        osc.stop(ctx.currentTime + 0.2);
+      } catch {
+        // Audio may be blocked until user interacts.
+      }
+    }
+
+    async function githubFetchJson(url, token) {
+      const headers = {
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      };
+      if (token) headers.Authorization = `Bearer ${token}`;
+
+      const response = await fetch(url, { headers });
+      const rateRemaining = response.headers.get("x-ratelimit-remaining");
+      if (!response.ok) {
+        let detail = "";
+        try {
+          const err = await response.json();
+          if (err?.message) detail = `: ${err.message}`;
+        } catch {
+          // No structured error body.
+        }
+        throw new Error(`GitHub API ${response.status}${detail}`);
+      }
+      return { data: await response.json(), rateRemaining };
+    }
+
+    async function syncGitHub({ silent = false } = {}) {
+      if (githubState.syncInFlight) return;
+
+      const parsedRepo = parseRepo(githubRepoInput.value);
+      if (!parsedRepo) {
+        githubState.connected = false;
+        githubState.error = "Enter repository as owner/repo.";
+        renderGitHubPanel();
+        if (!silent) showToast("Use GitHub repository format: owner/repo");
+        return;
+      }
+
+      const branch = githubBranchInput.value.trim() || "staging";
+      const token = githubTokenInput.value.trim();
+      const { start, end, startIso, endIso } = dayBounds(selectedPlanDate());
+
+      githubState.syncInFlight = true;
+      githubState.error = null;
+      githubState.repo = parsedRepo.repo;
+      githubState.branch = branch;
+      renderGitHubPanel();
+      saveGitHubSettings();
+
+      const base = `https://api.github.com/repos/${parsedRepo.owner}/${parsedRepo.name}`;
+      const commitsUrl = new URL(`${base}/commits`);
+      commitsUrl.searchParams.set("sha", branch);
+      commitsUrl.searchParams.set("since", startIso);
+      commitsUrl.searchParams.set("until", endIso);
+      commitsUrl.searchParams.set("per_page", "100");
+
+      const pullsAllUrl = new URL(`${base}/pulls`);
+      pullsAllUrl.searchParams.set("state", "all");
+      pullsAllUrl.searchParams.set("sort", "updated");
+      pullsAllUrl.searchParams.set("direction", "desc");
+      pullsAllUrl.searchParams.set("per_page", "100");
+
+      const pullsOpenUrl = new URL(`${base}/pulls`);
+      pullsOpenUrl.searchParams.set("state", "open");
+      pullsOpenUrl.searchParams.set("per_page", "100");
+      pullsOpenUrl.searchParams.set("head", `${parsedRepo.owner}:${branch}`);
+
+      try {
+        const [commitRes, pullsAllRes, pullsOpenRes] = await Promise.all([
+          githubFetchJson(commitsUrl.toString(), token),
+          githubFetchJson(pullsAllUrl.toString(), token),
+          githubFetchJson(pullsOpenUrl.toString(), token)
+        ]);
+
+        const commits = Array.isArray(commitRes.data) ? commitRes.data : [];
+        const pulls = Array.isArray(pullsAllRes.data) ? pullsAllRes.data : [];
+        const openPulls = Array.isArray(pullsOpenRes.data) ? pullsOpenRes.data : [];
+
+        const prsUpdatedToday = pulls.filter((pr) => {
+          const updated = new Date(pr.updated_at);
+          return updated >= start && updated <= end;
+        }).length;
+
+        const prsMergedToday = pulls.filter((pr) => {
+          if (!pr.merged_at) return false;
+          const merged = new Date(pr.merged_at);
+          return merged >= start && merged <= end;
+        }).length;
+
+        githubState.connected = true;
+        githubState.commitsToday = commits.length;
+        githubState.prsUpdatedToday = prsUpdatedToday;
+        githubState.prsMergedToday = prsMergedToday;
+        githubState.openPrs = openPulls.length;
+        githubState.lastSync = new Date();
+        githubState.rateRemaining =
+          commitRes.rateRemaining || pullsAllRes.rateRemaining || pullsOpenRes.rateRemaining || null;
+        githubState.lastCommitMessage = commits[0]?.commit?.message?.split("\n")[0] || "";
+        githubState.error = null;
+
+        if (!silent) {
+          showToast(`GitHub synced: ${githubState.commitsToday} commits, ${githubState.prsUpdatedToday} PR updates`);
+        }
+      } catch (error) {
+        githubState.connected = false;
+        githubState.error = error.message || "Unknown GitHub sync error.";
+        if (!silent) showToast(`GitHub sync failed: ${githubState.error}`);
+      } finally {
+        githubState.syncInFlight = false;
+        render();
+      }
+    }
+
+    function disconnectGitHub() {
+      githubState.connected = false;
+      githubState.syncInFlight = false;
+      githubState.commitsToday = 0;
+      githubState.prsUpdatedToday = 0;
+      githubState.prsMergedToday = 0;
+      githubState.openPrs = 0;
+      githubState.lastSync = null;
+      githubState.rateRemaining = null;
+      githubState.lastCommitMessage = "";
+      githubState.error = null;
+      githubTokenInput.value = "";
+      renderGitHubPanel();
+      showToast("GitHub disconnected.");
+    }
+
+    function renderGitHubMetrics(metrics) {
+      githubMetrics.innerHTML = "";
+      for (const [label, value] of metrics) {
+        const pill = document.createElement("span");
+        pill.className = "pill";
+        pill.textContent = `${label}: ${value}`;
+        githubMetrics.appendChild(pill);
+      }
+    }
+
+    function renderGitHubPanel() {
+      if (githubState.syncInFlight) {
+        githubStatus.textContent = "GitHub: syncing…";
+      } else if (githubState.connected) {
+        githubStatus.textContent = `GitHub: connected to ${githubState.repo}@${githubState.branch} · last sync ${formatShortDateTime(githubState.lastSync)}`;
+      } else if (githubState.error) {
+        githubStatus.textContent = `GitHub: ${githubState.error}`;
+      } else if (githubRepoInput.value.trim()) {
+        githubStatus.textContent = "GitHub: ready to connect.";
+      } else {
+        githubStatus.textContent = "GitHub: not connected.";
+      }
+
+      const metrics = [
+        ["Commits", githubState.commitsToday],
+        ["PR updates", githubState.prsUpdatedToday],
+        ["Merged", githubState.prsMergedToday],
+        ["Open", githubState.openPrs]
+      ];
+      if (githubState.rateRemaining !== null) metrics.push(["Rate left", githubState.rateRemaining]);
+      renderGitHubMetrics(metrics);
+
+      githubLastCommit.textContent = githubState.lastCommitMessage
+        ? `Last commit: ${githubState.lastCommitMessage}`
+        : "Last commit: —";
+    }
+
+    function startGitHubAutoSync() {
+      clearInterval(githubSyncTimer);
+      githubSyncTimer = setInterval(() => {
+        if (githubState.connected) syncGitHub({ silent: true });
+      }, GITHUB_SYNC_INTERVAL_MS);
+    }
+
+    function getActiveBlock(now, blocks) {
+      return blocks.find((b) => now >= b.startAt && now < b.endAt) || null;
+    }
+
+    function getNextBlock(now, blocks) {
+      return blocks.find((b) => now < b.startAt) || null;
+    }
+
+    function durationLabel(ms) {
+      if (ms < 0) ms = 0;
+      const total = Math.floor(ms / 1000);
+      const h = Math.floor(total / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = total % 60;
+      return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    function filteredBlocks(blocks) {
+      const mode = modeFilterInput.value;
+      if (mode === "all") return blocks;
+      if (mode === "prayer") return blocks.filter((b) => b.type === "prayer");
+      return blocks.filter((b) => b.location === mode);
+    }
+
+    function moodAdvice(block) {
+      if (!block) return "Rest now. Start next block as soon as it opens.";
+      const mood = moodInput.value;
+      const flex = flexModeInput.value;
+      if (mood === "low") {
+        return `Low-energy mode: do the minimum viable win for "${block.title}" in 10 focused minutes, then continue.`;
+      }
+      if (mood === "high") {
+        return `High-energy mode: push one concrete deliverable for "${block.title}" before this timer ends.`;
+      }
+      let msg = "Steady mode: work this block uninterrupted and close one clear milestone.";
+      if (flex === "soft" && block.priority !== "must") {
+        msg += " Soft-flex is active: if behind schedule, this block can be shortened to protect must tasks.";
+      }
+      return msg;
+    }
+
+    function completionStats(blocks) {
+      const total = blocks.length;
+      const done = blocks.filter((b) => completed.has(b.id)).length;
+      const mustTotal = blocks.filter((b) => b.priority === "must").length;
+      const mustDone = blocks.filter((b) => b.priority === "must" && completed.has(b.id)).length;
+      return { total, done, mustTotal, mustDone };
+    }
+
+    function streak(blocks) {
+      let count = 0;
+      for (const b of blocks) {
+        if (completed.has(b.id)) count += 1;
+        else break;
+      }
+      return count;
+    }
+
+    function toggleDone(id) {
+      if (completed.has(id)) completed.delete(id);
+      else completed.add(id);
+      saveCompleted();
+      render();
+    }
+
+    function markCurrentDone() {
+      const now = new Date();
+      const blocks = blockInstances();
+      const active = getActiveBlock(now, blocks);
+      if (!active) {
+        showToast("No active block right now.");
+        return;
+      }
+      completed.add(active.id);
+      saveCompleted();
+      showToast(`Marked done: ${active.title}`);
+      render();
+    }
+
+    function resetDone() {
+      completed.clear();
+      saveCompleted();
+      render();
+      showToast("Checkmarks reset for selected date.");
+    }
+
+    function blockState(block, now, active) {
+      if (completed.has(block.id)) return "done";
+      if (active && active.id === block.id) return "current";
+      if (now >= block.endAt) return "missed";
+      return "upcoming";
+    }
+
+    function scheduleElapsedPct(now, blocks) {
+      const start = blocks[0].startAt;
+      const end = blocks[blocks.length - 1].endAt;
+      if (now <= start) return 0;
+      if (now >= end) return 100;
+      return Math.round(((now - start) / (end - start)) * 100);
+    }
+
+    function githubDeliveryPct() {
+      if (!githubState.connected) return 0;
+      const commitScore = Math.min(55, githubState.commitsToday * 12);
+      const prUpdateScore = Math.min(25, githubState.prsUpdatedToday * 10);
+      const mergeScore = Math.min(20, githubState.prsMergedToday * 20);
+      return Math.min(100, commitScore + prUpdateScore + mergeScore);
+    }
+
+    function renderTimeline(now, blocks, active) {
+      const shown = filteredBlocks(blocks);
+      timelineItems.innerHTML = "";
+      for (const block of shown) {
+        const item = document.createElement("article");
+        const state = blockState(block, now, active);
+        item.className = `item ${state}`;
+        item.innerHTML = `
+          <div class="item-time">${block.start}–${block.end}</div>
+          <div>
+            <p class="item-title">${block.title}</p>
+            <div class="item-meta">${block.location.toUpperCase()} · ${block.priority.toUpperCase()} · ${block.type} · ${state.toUpperCase()}</div>
+          </div>
+        `;
+        const check = document.createElement("button");
+        check.className = "check" + (state === "done" ? " done" : "");
+        check.title = state === "done" ? "Mark as not done" : "Mark as done";
+        check.setAttribute("aria-label", check.title);
+        check.textContent = state === "done" ? "✓" : "";
+        check.addEventListener("click", () => toggleDone(block.id));
+        item.appendChild(check);
+        timelineItems.appendChild(item);
+      }
+    }
+
+    function render() {
+      const now = new Date();
+      liveClock.textContent = formatTime(now);
+      liveDate.textContent = formatDay(now);
+
+      const blocks = blockInstances();
+      const active = getActiveBlock(now, blocks);
+      const next = getNextBlock(now, blocks);
+      const stats = completionStats(blocks);
+
+      if (active) {
+        currentTitle.textContent = active.title;
+        currentNote.textContent = `${active.note} ${moodAdvice(active)}`;
+        countdown.textContent = durationLabel(active.endAt - now);
+        locationPill.textContent = `Location: ${active.location}`;
+        priorityPill.textContent = `Priority: ${active.priority}`;
+        statusPill.textContent = "● Active block";
+        nextBlockHint.textContent = next ? `Next: ${next.title} (${next.start})` : "Next: End-of-day wrap";
+      } else {
+        const beforeFirst = now < blocks[0].startAt;
+        if (beforeFirst) {
+          currentTitle.textContent = "Pre-start window";
+          currentNote.textContent = "Use this as prep: hydration, intention, and open this page before 04:30.";
+          countdown.textContent = durationLabel(blocks[0].startAt - now);
+          statusPill.textContent = "● Countdown to first block";
+          locationPill.textContent = "Location: prep";
+          priorityPill.textContent = "Priority: must";
+          nextBlockHint.textContent = `Next: ${blocks[0].title} (${blocks[0].start})`;
+        } else {
+          currentTitle.textContent = "Planned day complete";
+          currentNote.textContent = "Close with gratitude, capture lessons, and protect sleep.";
+          countdown.textContent = "00:00:00";
+          statusPill.textContent = "● Day closed";
+          locationPill.textContent = "Location: done";
+          priorityPill.textContent = "Priority: recovery";
+          nextBlockHint.textContent = "Next: Tomorrow planning";
+        }
+      }
+
+      const donePct = stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
+      const mustPct = stats.mustTotal ? Math.round((stats.mustDone / stats.mustTotal) * 100) : 0;
+      const elapsedPct = scheduleElapsedPct(now, blocks);
+      const githubPct = githubDeliveryPct();
+      const autoPct = githubState.connected
+        ? Math.round(elapsedPct * 0.35 + donePct * 0.40 + githubPct * 0.25)
+        : Math.round(elapsedPct * 0.55 + donePct * 0.45);
+
+      overallProgress.style.width = `${autoPct}%`;
+      progressLabel.textContent = githubState.connected
+        ? `Auto progress ${autoPct}% · time ${elapsedPct}% · confirmed ${donePct}% · GitHub ${githubPct}% · must ${mustPct}%`
+        : `Auto progress ${autoPct}% · time ${elapsedPct}% · confirmed ${donePct}% · must ${mustPct}%`;
+      streakHint.textContent = `Completion streak: ${streak(blocks)} blocks done in sequence.`;
+
+      const behind = blocks.filter((b) => now > b.endAt && !completed.has(b.id) && b.priority === "must").length;
+      if (behind > 0 && flexModeInput.value === "soft") {
+        focusHint.textContent = `Catch-up hint: ${behind} must block(s) missed. Protect prayers + company merge + Wingmic landing page first.`;
+      } else {
+        focusHint.textContent = "Focus hint: enable notifications, then stay in the current block until timer ends.";
+      }
+
+      renderTimeline(now, blocks, active);
+      renderGitHubPanel();
+
+      if (lastActiveId !== null && active && active.id !== lastActiveId) {
+        const previous = blocks.find((b) => b.id === lastActiveId);
+        if (previous) ping("Block ended", `${previous.title}. Start: ${active.title}`);
+      } else if (lastActiveId !== null && !active) {
+        const previous = blocks.find((b) => b.id === lastActiveId);
+        if (previous) ping("Block ended", `${previous.title}.`);
+      }
+      lastActiveId = active ? active.id : null;
+    }
+
+    function onPlanDateChanged() {
+      loadCompleted();
+      lastActiveId = null;
+      if (githubState.connected) syncGitHub({ silent: true });
+      render();
+    }
+
+    notifyBtn.addEventListener("click", requestNotifications);
+    markCurrentDoneBtn.addEventListener("click", markCurrentDone);
+    tomorrowBtn.addEventListener("click", jumpTomorrow);
+    resetBtn.addEventListener("click", resetDone);
+    planDateInput.addEventListener("change", onPlanDateChanged);
+    moodInput.addEventListener("change", render);
+    modeFilterInput.addEventListener("change", render);
+    flexModeInput.addEventListener("change", render);
+
+    githubConnectBtn.addEventListener("click", () => syncGitHub({ silent: false }));
+    githubSyncBtn.addEventListener("click", () => syncGitHub({ silent: false }));
+    githubDisconnectBtn.addEventListener("click", disconnectGitHub);
+    githubRepoInput.addEventListener("change", saveGitHubSettings);
+    githubBranchInput.addEventListener("change", saveGitHubSettings);
+
+    setDefaultDate();
+    loadGitHubSettings();
+    onPlanDateChanged();
+    startGitHubAutoSync();
+    setInterval(render, 1000);
+  </script>
+</body>
+</html>
