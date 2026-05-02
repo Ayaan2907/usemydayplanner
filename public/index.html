@@ -452,6 +452,31 @@
       background: rgba(255,107,129,0.08);
     }
 
+    .tl-item.prayer {
+      border-left: 3px solid var(--good);
+      background: rgba(50,214,160,0.06);
+    }
+
+    .tl-item.prayer .tl-title::before {
+      content: "\u262A ";
+      opacity: 0.7;
+    }
+
+    .tl-item.prayer.current {
+      border-color: rgba(97,224,179,0.54);
+      border-left: 3px solid var(--good);
+      background: rgba(97,224,179,0.14);
+    }
+
+    .anchor-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--good);
+      opacity: 0.8;
+    }
+
     .tl-time {
       font-size: 0.8rem;
       font-family: var(--font-mono);
@@ -689,6 +714,29 @@
   <div class="toast" id="toast"></div>
 
   <script>
+    // === DEFAULT SCHEDULE (seeded from day-manager.html) ===
+    const DEFAULT_BLOCKS = [
+      { id: "wake", start: "04:30", end: "04:35", title: "Wake, wudu, and stand up immediately", note: "No snooze. Drink water and move within 60 seconds.", location: "away", priority: "must", type: "routine" },
+      { id: "fajr", start: "04:35", end: "04:50", title: "Fajr salah", note: "Anchor your day spiritually before work starts.", location: "away", priority: "must", type: "prayer" },
+      { id: "quran", start: "04:50", end: "05:20", title: "Quran recitation (30 min)", note: "Keep it calm and consistent. Track completion only.", location: "away", priority: "must", type: "spiritual" },
+      { id: "small-win", start: "05:20", end: "05:40", title: "Small early win (prefer U-Haul booking)", note: "Goal: one finished task to build momentum.", location: "desk", priority: "must", type: "execution" },
+      { id: "family-breakfast", start: "05:40", end: "06:10", title: "Family touchpoint + breakfast prep", note: "Reduce pressure early so later focus is cleaner.", location: "away", priority: "must", type: "personal" },
+      { id: "wing-idea", start: "06:10", end: "07:10", title: "Wingmic: gather cloud notes + planning chat", note: "Distill scope into one sharp concept.", location: "desk", priority: "must", type: "product" },
+      { id: "wing-landing", start: "07:10", end: "08:40", title: "Wingmic: combine design + start repo + landing v0", note: "Ship visible progress. Avoid over-engineering.", location: "desk", priority: "must", type: "build" },
+      { id: "social-post", start: "08:40", end: "09:00", title: "Build-in-public update (first social post)", note: "Publish even if short: announce what is live and next.", location: "desk", priority: "must", type: "visibility" },
+      { id: "move-1", start: "09:00", end: "13:00", title: "Move logistics block (U-Haul, roommates, mattress, transfer)", note: "Primary away-from-desk block. Keep calls tight and actionable.", location: "away", priority: "must", type: "logistics" },
+      { id: "dhuhr", start: "13:00", end: "13:20", title: "Dhuhr / Zohar salah", note: "Reset and avoid rushing into desk work without pause.", location: "away", priority: "must", type: "prayer" },
+      { id: "move-2", start: "13:20", end: "14:00", title: "Settle at new location + quick recovery", note: "Food/water/reset before cognitive tasks.", location: "away", priority: "must", type: "recovery" },
+      { id: "admin", start: "14:00", end: "14:45", title: "Admin sprint: GOAL leave + LinkedIn project update", note: "Finish both completely in one sitting.", location: "desk", priority: "should", type: "admin" },
+      { id: "merge-1", start: "14:45", end: "16:45", title: "Company merge sprint 1", note: "Audit branch diffs, set merge order, start conflict resolution.", location: "desk", priority: "must", type: "company" },
+      { id: "asar", start: "17:00", end: "17:20", title: "Asar salah", note: "Step away and reset attention.", location: "away", priority: "must", type: "prayer" },
+      { id: "merge-2", start: "17:20", end: "19:50", title: "Company merge sprint 2", note: "Continue staged merges + review notes + test high-risk paths.", location: "desk", priority: "must", type: "company" },
+      { id: "maghrib", start: "20:00", end: "20:20", title: "Maghrib salah", note: "Use as a natural checkpoint before evening block.", location: "away", priority: "must", type: "prayer" },
+      { id: "thesis-lab", start: "20:20", end: "21:15", title: "New worktree: thesis.dev UI/chat experiments (time-boxed)", note: "Experimental only. Stop on time.", location: "desk", priority: "stretch", type: "r&d" },
+      { id: "isha", start: "21:30", end: "21:50", title: "Isha salah", note: "Close major loops mentally.", location: "away", priority: "must", type: "prayer" },
+      { id: "shutdown", start: "21:50", end: "22:10", title: "Shutdown review + tomorrow prep", note: "Log what shipped, blockers, and first task for next day.", location: "desk", priority: "must", type: "review" }
+    ];
+
     // === STATE ===
     let blocks = [];
     let completed = new Set();
@@ -780,7 +828,15 @@
 
     function loadBlocks() {
       const raw = localStorage.getItem(`day-planner-blocks-${selectedDate}`);
-      blocks = raw ? JSON.parse(raw) : [];
+      if (raw) {
+        blocks = JSON.parse(raw);
+      } else if (selectedDate === todayStr()) {
+        // Seed today with default schedule
+        blocks = JSON.parse(JSON.stringify(DEFAULT_BLOCKS));
+        saveBlocks();
+      } else {
+        blocks = [];
+      }
     }
 
     function saveBlocks() {
@@ -946,10 +1002,11 @@
         else if (isCurrent) stateClass = "current";
         else if (isMissed) stateClass = "missed";
 
+        const isPrayer = b.type === "prayer";
         const item = document.createElement("div");
-        item.className = `tl-item ${stateClass}`;
+        item.className = `tl-item ${stateClass} ${isPrayer ? "prayer" : ""}`;
         item.innerHTML = `
-          <div class="tl-time">${b.start} - ${b.end}</div>
+          <div class="tl-time">${b.start} - ${b.end}${isPrayer ? '<div class="anchor-label">anchor</div>' : ""}</div>
           <div>
             <div class="tl-title">${escapeHtml(b.title)}</div>
             <div class="tl-note">${escapeHtml(b.note || "")}</div>
