@@ -249,50 +249,144 @@
       gap: 14px;
     }
 
-    /* --- Life Progress Bars --- */
-    .life-bars {
+    /* --- Day Header --- */
+    .day-header {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
+      align-items: center;
+      gap: 12px;
+      justify-content: space-between;
     }
 
-    .life-bar {
+    .day-title-wrap { flex: 1; }
+
+    .day-title-input {
+      width: 100%;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 4px 0;
+      outline: none;
+      transition: border-color var(--ease-fast);
+    }
+
+    .day-title-input:hover { border-bottom-color: rgba(255,255,255,0.15); }
+    .day-title-input:focus { border-bottom-color: var(--focus); }
+    .day-title-input::placeholder { color: rgba(168,179,207,0.4); }
+
+    .day-note-input {
+      width: 100%;
+      font-size: 0.85rem;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid transparent;
+      padding: 3px 0;
+      outline: none;
+      margin-top: 4px;
+      transition: border-color var(--ease-fast);
+    }
+
+    .day-note-input:hover { border-bottom-color: rgba(255,255,255,0.1); }
+    .day-note-input:focus { border-bottom-color: var(--focus); color: var(--text); }
+    .day-note-input::placeholder { color: rgba(168,179,207,0.3); }
+
+    /* --- Life Progress Bars (widget cards) --- */
+    .life-cards {
       display: grid;
-      grid-template-columns: 60px 1fr auto;
-      align-items: center;
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
 
-    .life-bar-label {
-      font-size: 0.78rem;
-      color: var(--muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .life-bar-track {
-      height: 8px;
-      border-radius: var(--radius-pill);
-      background: rgba(255,255,255,0.1);
+    .life-card {
+      padding: 14px;
+      cursor: default;
+      position: relative;
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform var(--ease-fast), box-shadow var(--ease-fast);
     }
 
-    .life-bar-fill {
+    .life-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+
+    .life-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .life-card-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+    }
+
+    .life-card-pct {
+      font-size: 1.6rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      background: linear-gradient(135deg, #5f9bff, #61e0b3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .life-card-track {
+      height: 6px;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .life-card-fill {
       height: 100%;
       border-radius: var(--radius-pill);
       background: linear-gradient(90deg, #5f9bff, #61e0b3);
       transition: width var(--ease-slow);
     }
 
-    .life-bar-value {
-      font-size: 0.75rem;
+    .life-card-detail {
+      font-size: 0.73rem;
       font-family: var(--font-mono);
       color: var(--muted);
-      min-width: 110px;
-      text-align: right;
+      line-height: 1.5;
     }
+
+    .life-card-detail span {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Hover expand */
+    .life-card .life-card-extra {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--ease-slow);
+    }
+
+    .life-card:hover .life-card-extra {
+      max-height: 80px;
+    }
+
+    .life-card-extra-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--muted);
+      padding-top: 6px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin-top: 6px;
+    }
+
+    .life-card-extra-row span { color: var(--text); font-weight: 600; }
 
     /* --- Card --- */
     .card {
@@ -312,16 +406,164 @@
       margin-bottom: 10px;
     }
 
-    /* --- Current Block --- */
-    .current-block { display: grid; gap: 10px; }
-    .current-block .block-title { font-size: 1.2rem; font-weight: 700; }
-    .current-block .block-note { color: var(--muted); font-size: 0.88rem; line-height: 1.4; }
+    /* --- Hero Block (NOW + NEXT) --- */
+    .hero-blocks {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 10px;
+    }
 
-    .current-block .timer {
-      font-size: 1.8rem;
-      font-weight: 780;
+    .now-card {
+      border-color: rgba(97,224,179,0.35);
+      background: linear-gradient(135deg, rgba(97,224,179,0.08), rgba(50,214,160,0.04));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .now-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--good), #5f9bff);
+      border-radius: 4px 0 0 4px;
+    }
+
+    .now-card .card-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--good);
+      margin-bottom: 6px;
+    }
+
+    .now-card .block-title {
+      font-size: 1.25rem;
+      font-weight: 750;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .now-card .block-note { color: var(--muted); font-size: 0.82rem; line-height: 1.4; }
+
+    .now-card .timer {
+      font-size: 2.2rem;
+      font-weight: 800;
       font-variant-numeric: tabular-nums;
       letter-spacing: 0.5px;
+      margin-top: 6px;
+      background: linear-gradient(135deg, var(--text), var(--good));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .next-card {
+      border-color: rgba(122,162,255,0.25);
+      background: linear-gradient(135deg, rgba(122,162,255,0.06), rgba(57,169,216,0.03));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .next-card .card-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--focus);
+      margin-bottom: 6px;
+    }
+
+    .next-card .block-title {
+      font-size: 1rem;
+      font-weight: 650;
+      line-height: 1.3;
+      margin-bottom: 2px;
+    }
+
+    .next-card .block-time {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .next-card .next-timer {
+      font-size: 1.3rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--focus);
+    }
+
+    /* --- Focus Hours Widget --- */
+    .focus-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .focus-number {
+      font-size: 2.4rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      background: linear-gradient(135deg, #ffd166, #ff9a56);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .focus-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .focus-meta span { color: var(--text); font-weight: 600; }
+
+    /* --- Type Breakdown Chart --- */
+    .type-chart {
+      display: flex;
+      gap: 2px;
+      height: 28px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .type-bar {
+      transition: flex var(--ease-slow);
+      position: relative;
+      min-width: 4px;
+      cursor: default;
+    }
+
+    .type-bar:hover { opacity: 0.85; filter: brightness(1.2); }
+
+    .type-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .type-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    .type-legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
     }
 
     .pills { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -635,52 +877,93 @@
 
     <!-- Schedule Panel -->
     <main class="schedule" id="schedulePanel">
-      <!-- Life Progress Bars -->
-      <div class="life-bars">
-        <div class="life-bar">
-          <span class="life-bar-label">Day</span>
-          <div class="life-bar-track"><div class="life-bar-fill" id="dayBar"></div></div>
-          <span class="life-bar-value" id="dayBarLabel">--</span>
+      <!-- Day Header: title + note + controls -->
+      <div class="day-header">
+        <div class="day-title-wrap">
+          <input class="day-title-input" id="dayTitleInput" type="text" placeholder="Name this day..." />
+          <input class="day-note-input" id="dayNoteInput" type="text" placeholder="What's the mission today?" />
         </div>
-        <div class="life-bar">
-          <span class="life-bar-label">Week</span>
-          <div class="life-bar-track"><div class="life-bar-fill" id="weekBar"></div></div>
-          <span class="life-bar-value" id="weekBarLabel">--</span>
-        </div>
-        <div class="life-bar">
-          <span class="life-bar-label">Year</span>
-          <div class="life-bar-track"><div class="life-bar-fill" id="yearBar"></div></div>
-          <span class="life-bar-value" id="yearBarLabel">--</span>
+        <div class="controls-bar">
+          <div class="date-nav">
+            <button id="prevDay">&#8592;</button>
+            <span id="dateDisplay">--</span>
+            <button id="nextDay">&#8594;</button>
+          </div>
+          <button class="btn btn-good" id="saveBtn">Save</button>
+          <button class="btn" id="notifyBtn">Notifications</button>
         </div>
       </div>
 
-      <!-- Current Block -->
-      <div class="card current-block" id="currentBlockCard" style="display:none;">
-        <h3>Now</h3>
-        <div class="pills" id="currentPills"></div>
-        <div class="block-title" id="currentTitle"></div>
-        <div class="block-note" id="currentNote"></div>
-        <div class="timer" id="currentTimer">--:--:--</div>
-        <div class="progress-track"><div class="progress-fill" id="currentProgress"></div></div>
+      <!-- Hero: NOW + NEXT -->
+      <div class="hero-blocks" id="heroBlocks">
+        <div class="card now-card" id="nowCard" style="display:none;">
+          <div class="card-badge">Now</div>
+          <div class="pills" id="currentPills"></div>
+          <div class="block-title" id="currentTitle"></div>
+          <div class="block-note" id="currentNote"></div>
+          <div class="timer" id="currentTimer">--:--:--</div>
+          <div class="progress-track"><div class="progress-fill" id="currentProgress"></div></div>
+        </div>
+        <div class="card next-card" id="nextCard" style="display:none;">
+          <div class="card-badge">Up Next</div>
+          <div class="block-title" id="nextTitle"></div>
+          <div class="block-time" id="nextTime"></div>
+          <div class="next-timer" id="nextTimer">--:--</div>
+          <div class="pills" id="nextPills" style="margin-top:6px;"></div>
+        </div>
       </div>
 
-      <!-- Dashboard Row -->
+      <!-- Life Progress Cards -->
+      <div class="life-cards">
+        <div class="card life-card" id="dayCard">
+          <div class="life-card-header">
+            <span class="life-card-label">Day</span>
+            <span class="life-card-pct" id="dayPct">--</span>
+          </div>
+          <div class="life-card-track"><div class="life-card-fill" id="dayBar"></div></div>
+          <div class="life-card-detail" id="dayDetail">--</div>
+          <div class="life-card-extra" id="dayExtra"></div>
+        </div>
+        <div class="card life-card" id="weekCard">
+          <div class="life-card-header">
+            <span class="life-card-label">Week</span>
+            <span class="life-card-pct" id="weekPct">--</span>
+          </div>
+          <div class="life-card-track"><div class="life-card-fill" id="weekBar"></div></div>
+          <div class="life-card-detail" id="weekDetail">--</div>
+          <div class="life-card-extra" id="weekExtra"></div>
+        </div>
+        <div class="card life-card" id="yearCard">
+          <div class="life-card-header">
+            <span class="life-card-label">Year</span>
+            <span class="life-card-pct" id="yearPct">--</span>
+          </div>
+          <div class="life-card-track"><div class="life-card-fill" id="yearBar"></div></div>
+          <div class="life-card-detail" id="yearDetail">--</div>
+          <div class="life-card-extra" id="yearExtra"></div>
+        </div>
+      </div>
+
+      <!-- Dashboard Row: Focus Hours + Progress Ring + Week Dots + Type Chart -->
       <div class="dash-row">
-        <div class="card dash-card">
-          <h3>Summary</h3>
-          <div class="dash-value" id="summaryValue">--</div>
-          <div class="dash-label" id="summaryLabel">blocks</div>
+        <div class="card dash-card focus-card">
+          <div class="focus-number" id="focusHours">--</div>
+          <div>
+            <h3 style="margin-bottom:4px;">Focus</h3>
+            <div class="focus-meta" id="focusMeta">--</div>
+          </div>
         </div>
         <div class="card dash-card">
-          <h3>Progress</h3>
+          <h3>Done</h3>
           <div class="ring-wrap">
             <svg class="ring-svg" viewBox="0 0 80 80">
               <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5f9bff"/><stop offset="100%" stop-color="#61e0b3"/></linearGradient></defs>
               <circle class="ring-bg" cx="40" cy="40" r="34"/>
               <circle class="ring-fill" id="ringFill" cx="40" cy="40" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
+              <text class="ring-text" x="40" y="44" text-anchor="middle" transform="rotate(90 40 40)" id="ringText">0%</text>
             </svg>
           </div>
-          <div class="dash-label" id="progressLabel">0%</div>
+          <div class="dash-label" id="progressLabel">0 / 0</div>
         </div>
         <div class="card dash-card">
           <h3>Week</h3>
@@ -689,15 +972,11 @@
         </div>
       </div>
 
-      <!-- Controls -->
-      <div class="controls-bar">
-        <div class="date-nav">
-          <button id="prevDay">&#8592;</button>
-          <span id="dateDisplay">--</span>
-          <button id="nextDay">&#8594;</button>
-        </div>
-        <button class="btn btn-good" id="saveBtn">Save</button>
-        <button class="btn" id="notifyBtn">Notifications</button>
+      <!-- Type Breakdown -->
+      <div class="card" id="typeChartCard">
+        <h3>Block types</h3>
+        <div class="type-chart" id="typeChart"></div>
+        <div class="type-legend" id="typeLegend"></div>
       </div>
 
       <!-- Timeline -->
@@ -750,22 +1029,23 @@
     const $ = (id) => document.getElementById(id);
     const liveClock = $("liveClock");
     const dayBar = $("dayBar");
-    const dayBarLabel = $("dayBarLabel");
     const weekBar = $("weekBar");
-    const weekBarLabel = $("weekBarLabel");
     const yearBar = $("yearBar");
-    const yearBarLabel = $("yearBarLabel");
     const dateDisplay = $("dateDisplay");
-    const currentBlockCard = $("currentBlockCard");
+    const nowCard = $("nowCard");
+    const nextCard = $("nextCard");
     const currentTitle = $("currentTitle");
     const currentNote = $("currentNote");
     const currentTimer = $("currentTimer");
     const currentProgress = $("currentProgress");
     const currentPills = $("currentPills");
-    const summaryValue = $("summaryValue");
-    const summaryLabel = $("summaryLabel");
+    const nextTitle = $("nextTitle");
+    const nextTime = $("nextTime");
+    const nextTimer = $("nextTimer");
+    const nextPills = $("nextPills");
     const progressLabel = $("progressLabel");
     const ringFill = $("ringFill");
+    const ringText = $("ringText");
     const weekDots = $("weekDots");
     const weekLabel = $("weekLabel");
     const timeline = $("timeline");
@@ -775,6 +1055,8 @@
     const chatInput = $("chatInput");
     const cityInput = $("cityInput");
     const countryInput = $("countryInput");
+    const dayTitleInput = $("dayTitleInput");
+    const dayNoteInput = $("dayNoteInput");
 
     // === UTILITIES ===
     function todayStr() {
@@ -858,10 +1140,34 @@
       selectedDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
       loadBlocks();
       loadCompleted();
+      loadDayMeta();
       render();
     }
 
-    // === LIFE PROGRESS BARS ===
+    // === DAY TITLE + NOTE ===
+    function loadDayMeta() {
+      const raw = localStorage.getItem(`day-planner-meta-${selectedDate}`);
+      if (raw) {
+        const meta = JSON.parse(raw);
+        dayTitleInput.value = meta.title || "";
+        dayNoteInput.value = meta.note || "";
+      } else {
+        dayTitleInput.value = "";
+        dayNoteInput.value = "";
+      }
+    }
+
+    function saveDayMeta() {
+      localStorage.setItem(`day-planner-meta-${selectedDate}`, JSON.stringify({
+        title: dayTitleInput.value,
+        note: dayNoteInput.value,
+      }));
+    }
+
+    dayTitleInput.addEventListener("input", saveDayMeta);
+    dayNoteInput.addEventListener("input", saveDayMeta);
+
+    // === LIFE PROGRESS CARDS ===
     function updateLifeBars() {
       const now = new Date();
 
@@ -874,20 +1180,39 @@
         dayStart = timeToDate(todayStr(), "06:00");
         dayEnd = timeToDate(todayStr(), "23:00");
       }
-      const dayPct = Math.max(0, Math.min(100, ((now - dayStart) / (dayEnd - dayStart)) * 100));
+      const dayPctRaw = ((now - dayStart) / (dayEnd - dayStart)) * 100;
+      const dayPct = Math.max(0, Math.min(100, dayPctRaw));
       const dayLeft = Math.max(0, dayEnd - now);
       const dayLeftH = Math.floor(dayLeft / 3600000);
       const dayLeftM = Math.floor((dayLeft % 3600000) / 60000);
       dayBar.style.width = `${dayPct}%`;
-      dayBarLabel.textContent = `${Math.round(dayPct)}% \u00b7 ${dayLeftH}h ${dayLeftM}m left`;
+      $("dayPct").textContent = `${Math.round(dayPct)}%`;
+      $("dayDetail").innerHTML = `<span>${dayLeftH}h ${dayLeftM}m</span> remaining`;
+
+      // Day extra: blocks done / total
+      const doneToday = blocks.filter(b => completed.has(b.id)).length;
+      $("dayExtra").innerHTML = `<div class="life-card-extra-row">
+        <span>Blocks done</span><span>${doneToday}/${blocks.length}</span>
+      </div><div class="life-card-extra-row">
+        <span>Schedule</span><span>${blocks.length > 0 ? blocks[0].start + " - " + blocks[blocks.length-1].end : "--"}</span>
+      </div>`;
 
       // Week: Mon=0
       const dow = (now.getDay() + 6) % 7;
       const dayFraction = (now.getHours() * 60 + now.getMinutes()) / 1440;
-      const weekPct = ((dow + dayFraction) / 7) * 100;
-      const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+      const weekPctRaw = ((dow + dayFraction) / 7) * 100;
+      const weekPct = Math.max(0, Math.min(100, weekPctRaw));
+      const daysNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
       weekBar.style.width = `${weekPct}%`;
-      weekBarLabel.textContent = `${days[dow]} \u00b7 ${(dow + dayFraction).toFixed(1)}/7`;
+      $("weekPct").textContent = `${Math.round(weekPct)}%`;
+      $("weekDetail").innerHTML = `<span>${daysNames[dow]}</span> \u00b7 Day ${dow + 1} of 7`;
+
+      const daysLeft = 7 - dow - dayFraction;
+      $("weekExtra").innerHTML = `<div class="life-card-extra-row">
+        <span>Days left</span><span>${daysLeft.toFixed(1)}</span>
+      </div><div class="life-card-extra-row">
+        <span>Weekend</span><span>${dow >= 5 ? "Now" : `in ${5 - dow} days`}</span>
+      </div>`;
 
       // Year
       const startOfYear = new Date(now.getFullYear(), 0, 1);
@@ -896,7 +1221,16 @@
       const totalDays = isLeap ? 366 : 365;
       const yearPct = (dayOfYear / totalDays) * 100;
       yearBar.style.width = `${yearPct}%`;
-      yearBarLabel.textContent = `${Math.round(yearPct)}% \u00b7 Day ${dayOfYear}/${totalDays}`;
+      $("yearPct").textContent = `${Math.round(yearPct)}%`;
+      $("yearDetail").innerHTML = `Day <span>${dayOfYear}</span> of ${totalDays}`;
+
+      const monthName = now.toLocaleString("default", { month: "long" });
+      const weeksLeft = Math.round((totalDays - dayOfYear) / 7);
+      $("yearExtra").innerHTML = `<div class="life-card-extra-row">
+        <span>Month</span><span>${monthName}</span>
+      </div><div class="life-card-extra-row">
+        <span>Weeks left</span><span>${weeksLeft}</span>
+      </div>`;
     }
 
     // === CLOCK ===
@@ -904,10 +1238,11 @@
       liveClock.textContent = formatTime(new Date());
     }
 
-    // === RENDER FUNCTIONS ===
-    function renderCurrentBlock() {
+    // === RENDER: HERO (NOW + NEXT) ===
+    function renderHeroBlocks() {
       if (blocks.length === 0) {
-        currentBlockCard.style.display = "none";
+        nowCard.style.display = "none";
+        nextCard.style.display = "none";
         return;
       }
 
@@ -917,64 +1252,151 @@
         const e = timeToDate(selectedDate, b.end);
         return now >= s && now < e;
       });
-
-      if (!active) {
-        currentBlockCard.style.display = "none";
-        return;
-      }
-
-      currentBlockCard.style.display = "";
-      currentTitle.textContent = active.title;
-      currentNote.textContent = active.note || "";
-
-      const s = timeToDate(selectedDate, active.start);
-      const e = timeToDate(selectedDate, active.end);
-      currentTimer.textContent = durationLabel(e - now);
-
-      const pct = Math.min(100, ((now - s) / (e - s)) * 100);
-      currentProgress.style.width = `${pct}%`;
-
-      currentPills.innerHTML = "";
-      const pills = [
-        { text: active.location, cls: "" },
-        { text: active.priority, cls: active.priority === "must" ? "pill-warn" : "" },
-        { text: active.type, cls: active.type === "prayer" ? "pill-good" : "" },
-      ];
-      pills.forEach(p => {
-        const span = document.createElement("span");
-        span.className = `pill ${p.cls}`;
-        span.textContent = p.text;
-        currentPills.appendChild(span);
+      const nextBlock = blocks.find(b => {
+        const s = timeToDate(selectedDate, b.start);
+        return now < s;
       });
 
-      // Notification on block transition
-      if (lastActiveId !== null && active.id !== lastActiveId) {
-        notify("Block changed", active.title);
+      // NOW card
+      if (active) {
+        nowCard.style.display = "";
+        currentTitle.textContent = active.title;
+        currentNote.textContent = active.note || "";
+
+        const s = timeToDate(selectedDate, active.start);
+        const e = timeToDate(selectedDate, active.end);
+        currentTimer.textContent = durationLabel(e - now);
+
+        const pct = Math.min(100, ((now - s) / (e - s)) * 100);
+        currentProgress.style.width = `${pct}%`;
+
+        currentPills.innerHTML = "";
+        [
+          { text: active.location, cls: "" },
+          { text: active.priority, cls: active.priority === "must" ? "pill-warn" : "" },
+          { text: active.type, cls: active.type === "prayer" ? "pill-good" : "" },
+        ].forEach(p => {
+          const span = document.createElement("span");
+          span.className = `pill ${p.cls}`;
+          span.textContent = p.text;
+          currentPills.appendChild(span);
+        });
+
+        if (lastActiveId !== null && active.id !== lastActiveId) {
+          notify("Block changed", active.title);
+        }
+        lastActiveId = active.id;
+      } else {
+        nowCard.style.display = "none";
       }
-      lastActiveId = active.id;
+
+      // NEXT card
+      if (nextBlock) {
+        nextCard.style.display = "";
+        nextTitle.textContent = nextBlock.title;
+        nextTime.textContent = `${nextBlock.start} - ${nextBlock.end}`;
+        const startsIn = timeToDate(selectedDate, nextBlock.start) - now;
+        nextTimer.textContent = startsIn > 0 ? `in ${durationLabel(startsIn)}` : "starting";
+
+        nextPills.innerHTML = "";
+        [
+          { text: nextBlock.type, cls: nextBlock.type === "prayer" ? "pill-good" : "" },
+          { text: nextBlock.priority, cls: "" },
+        ].forEach(p => {
+          const span = document.createElement("span");
+          span.className = `pill ${p.cls}`;
+          span.textContent = p.text;
+          nextPills.appendChild(span);
+        });
+      } else {
+        nextCard.style.display = "none";
+      }
     }
 
+    // === RENDER: DASHBOARD ===
     function renderDashboard() {
       if (blocks.length === 0) {
-        summaryValue.textContent = "--";
-        summaryLabel.textContent = "no schedule";
-        progressLabel.textContent = "0%";
+        $("focusHours").textContent = "--";
+        $("focusMeta").textContent = "no schedule";
+        progressLabel.textContent = "0 / 0";
         ringFill.style.strokeDashoffset = "213.6";
+        ringText.textContent = "0%";
         return;
       }
 
       const total = blocks.length;
-      const mustCount = blocks.filter(b => b.priority === "must").length;
-      const prayerCount = blocks.filter(b => b.type === "prayer").length;
       const doneCount = blocks.filter(b => completed.has(b.id)).length;
-
-      summaryValue.textContent = `${total}`;
-      summaryLabel.textContent = `${mustCount} must \u00b7 ${prayerCount} prayer`;
-
       const pct = Math.round((doneCount / total) * 100);
-      progressLabel.textContent = `${pct}%`;
+
+      // Progress ring
+      progressLabel.textContent = `${doneCount} / ${total}`;
       const circumference = 213.6;
       ringFill.style.strokeDashoffset = `${circumference - (circumference * pct) / 100}`;
+      ringText.textContent = `${pct}%`;
+
+      // Focus hours (desk blocks)
+      const deskBlocks = blocks.filter(b => b.location === "desk");
+      let focusMins = 0;
+      deskBlocks.forEach(b => {
+        const [sh, sm] = b.start.split(":").map(Number);
+        const [eh, em] = b.end.split(":").map(Number);
+        focusMins += (eh * 60 + em) - (sh * 60 + sm);
+      });
+      const focusH = (focusMins / 60).toFixed(1);
+      $("focusHours").textContent = `${focusH}h`;
+
+      const prayerCount = blocks.filter(b => b.type === "prayer").length;
+      const mustCount = blocks.filter(b => b.priority === "must").length;
+      $("focusMeta").innerHTML = `<span>${deskBlocks.length}</span> desk blocks<br><span>${mustCount}</span> must \u00b7 <span>${prayerCount}</span> prayer`;
+    }
+
+    // === RENDER: TYPE CHART ===
+    const TYPE_COLORS = {
+      prayer: "#32d6a0", routine: "#7aa2ff", spiritual: "#b08dff",
+      execution: "#ffd166", personal: "#ff9a56", build: "#5fc4ff",
+      company: "#ff6b81", logistics: "#a0a0a0", recovery: "#6dd4a0",
+      admin: "#c7a060", "r&d": "#d070d0", review: "#60c0c0",
+      product: "#5fa0ff", visibility: "#ffa06a",
+    };
+
+    function renderTypeChart() {
+      const chart = $("typeChart");
+      const legend = $("typeLegend");
+      chart.innerHTML = "";
+      legend.innerHTML = "";
+
+      if (blocks.length === 0) {
+        $("typeChartCard").style.display = "none";
+        return;
+      }
+      $("typeChartCard").style.display = "";
+
+      // Count minutes per type
+      const typeMins = {};
+      blocks.forEach(b => {
+        const [sh, sm] = b.start.split(":").map(Number);
+        const [eh, em] = b.end.split(":").map(Number);
+        const mins = (eh * 60 + em) - (sh * 60 + sm);
+        typeMins[b.type] = (typeMins[b.type] || 0) + mins;
+      });
+
+      const totalMins = Object.values(typeMins).reduce((a, b) => a + b, 0);
+
+      Object.entries(typeMins)
+        .sort((a, b) => b[1] - a[1])
+        .forEach(([type, mins]) => {
+          const bar = document.createElement("div");
+          bar.className = "type-bar";
+          bar.style.flex = `${mins}`;
+          bar.style.background = TYPE_COLORS[type] || "#888";
+          bar.title = `${type}: ${Math.round(mins / 60 * 10) / 10}h (${Math.round(mins / totalMins * 100)}%)`;
+          chart.appendChild(bar);
+
+          const item = document.createElement("div");
+          item.className = "type-legend-item";
+          item.innerHTML = `<div class="type-legend-dot" style="background:${TYPE_COLORS[type] || "#888"}"></div>${type} ${Math.round(mins/60*10)/10}h`;
+          legend.appendChild(item);
+        });
     }
 
     function renderTimeline() {
@@ -1057,6 +1479,7 @@
           selectedDate = dStr;
           loadBlocks();
           loadCompleted();
+          loadDayMeta();
           render();
         });
         weekDots.appendChild(dot);
@@ -1269,8 +1692,9 @@
     function render() {
       dateDisplay.textContent = formatDateShort(selectedDate);
       updateLifeBars();
-      renderCurrentBlock();
+      renderHeroBlocks();
       renderDashboard();
+      renderTypeChart();
       renderTimeline();
       renderWeekDots();
     }
@@ -1278,6 +1702,7 @@
     // === BOOT ===
     loadBlocks();
     loadCompleted();
+    loadDayMeta();
     render();
     updateClock();
     setInterval(() => { updateClock(); render(); }, 1000);
