@@ -1,856 +1,536 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Day Planner</title>
   <style>
+    /* === SHARED TOKENS === */
     :root {
-      --bg: #070b17;
-      --bg-2: #10182f;
-      --panel: rgba(255, 255, 255, 0.08);
-      --panel-strong: rgba(255, 255, 255, 0.12);
-      --text: #ebf1ff;
-      --muted: #a8b3cf;
-      --good: #32d6a0;
-      --warn: #ffd166;
-      --focus: #7aa2ff;
-      --danger: #ff6b81;
-      --ring: rgba(122, 162, 255, 0.35);
-      --shadow: 0 12px 34px rgba(0, 0, 0, 0.32);
       --font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --radius-sm: 10px;
-      --radius-md: 12px;
-      --radius-lg: 18px;
-      --radius-pill: 999px;
-      --ease-fast: 150ms ease;
-      --ease-normal: 210ms ease;
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-pill: 9999px;
+      --ease-fast: 120ms ease;
+      --ease-normal: 200ms ease;
       --ease-slow: 300ms ease;
     }
 
+    /* === DARK THEME (default) === */
+    [data-theme="dark"] {
+      --bg: #0c0f1a;
+      --surface-1: #141825;
+      --surface-2: #1c2033;
+      --surface-3: #252a3f;
+      --text: #e8ecf4;
+      --text-muted: #8891a8;
+      --border: #2a3048;
+      --border-hover: #3d4463;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.12);
+      --good: #34d399;
+      --good-soft: rgba(52, 211, 153, 0.12);
+      --warn: #fbbf24;
+      --warn-soft: rgba(251, 191, 36, 0.12);
+      --danger: #f87171;
+      --danger-soft: rgba(248, 113, 113, 0.12);
+      --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      --input-bg: #0f1220;
+    }
+
+    /* === LIGHT THEME (PostHog warm) === */
+    [data-theme="light"] {
+      --bg: #fdfdf8;
+      --surface-1: #f5f5f0;
+      --surface-2: #eeefe9;
+      --surface-3: #e5e7e0;
+      --text: #23251d;
+      --text-muted: #65675e;
+      --border: #bfc1b7;
+      --border-hover: #a0a298;
+      --accent: #F54E00;
+      --accent-soft: rgba(245, 78, 0, 0.08);
+      --good: #16a34a;
+      --good-soft: rgba(22, 163, 74, 0.08);
+      --warn: #d97706;
+      --warn-soft: rgba(217, 119, 6, 0.08);
+      --danger: #dc2626;
+      --danger-soft: rgba(220, 38, 38, 0.08);
+      --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      --input-bg: #eeefe9;
+    }
+
+    /* === RESET === */
     * { box-sizing: border-box; margin: 0; }
 
     html, body {
       height: 100%;
       font-family: var(--font-sans);
       color: var(--text);
-      background:
-        radial-gradient(1200px 700px at 80% -10%, #1a2f63 0%, transparent 58%),
-        radial-gradient(900px 500px at -10% 0%, #1a4c56 0%, transparent 52%),
-        linear-gradient(165deg, var(--bg), var(--bg-2));
+      background: var(--bg);
+      line-height: 1.5;
     }
 
-    /* --- Layout --- */
-    .app {
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      grid-template-rows: auto 1fr;
-      height: 100vh;
-      gap: 0;
-    }
+    /* === LAYOUT === */
+    .app { min-height: 100vh; }
 
     .header {
-      grid-column: 1 / -1;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 16px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 40;
     }
 
-    .header h1 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-    }
+    .header h1 { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.2px; }
 
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+
+    .location-bar { display: flex; align-items: center; gap: 6px; }
 
     .clock {
       font-family: var(--font-mono);
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-variant-numeric: tabular-nums;
-      color: var(--muted);
+      color: var(--text-muted);
     }
 
-    .location-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .location-bar input {
-      width: 120px;
-      padding: 5px 8px;
-      font-size: 0.8rem;
-      color: var(--text);
-      background: rgba(10, 14, 30, 0.7);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: var(--radius-sm);
-      outline: none;
-    }
-
-    .location-bar input:focus {
-      border-color: var(--focus);
-      box-shadow: 0 0 0 2px var(--ring);
-    }
-
-    .location-bar button {
-      padding: 5px 10px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text);
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-    }
-
-    /* --- Chat Panel --- */
-    .chat {
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.15);
-      overflow: hidden;
-    }
-
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
+    .main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 60px 16px 72px;
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    .msg {
-      max-width: 95%;
-      padding: 10px 14px;
+    /* === CARDS === */
+    .card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      font-size: 0.9rem;
-      line-height: 1.5;
-      white-space: pre-wrap;
+      padding: 14px;
+      transition: border-color var(--ease-fast);
     }
 
-    .msg.user {
-      align-self: flex-end;
-      background: linear-gradient(135deg, #2b66ff, #39a9d8);
-      border: 1px solid rgba(122,162,255,0.4);
+    .card:hover { border-color: var(--border-hover); }
+
+    .card h3 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
     }
 
-    .msg.agent {
-      align-self: flex-start;
-      background: var(--panel-strong);
-      border: 1px solid rgba(255,255,255,0.12);
-    }
-
-    .msg .schedule-preview {
-      margin-top: 8px;
-      padding: 8px;
-      background: rgba(0,0,0,0.3);
-      border-radius: var(--radius-sm);
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--good);
-    }
-
-    .chat-input-row {
-      display: flex;
-      gap: 8px;
-      padding: 12px 16px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.1);
-    }
-
-    .chat-input-row input {
-      flex: 1;
-      padding: 10px 12px;
-      font-size: 0.9rem;
-      color: var(--text);
-      background: rgba(10,14,30,0.7);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: var(--radius-sm);
-      outline: none;
-    }
-
-    .chat-input-row input:focus {
-      border-color: var(--focus);
-      box-shadow: 0 0 0 3px var(--ring);
-    }
-
-    .chat-input-row input::placeholder { color: rgba(168,179,207,0.5); }
-
+    /* === BUTTONS === */
     .btn {
-      padding: 9px 14px;
-      font-size: 0.85rem;
-      font-weight: 600;
+      background: var(--surface-2);
       color: var(--text);
-      border: 1px solid rgba(255,255,255,0.2);
+      border: 1px solid var(--border);
       border-radius: var(--radius-sm);
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: transform var(--ease-fast), border-color var(--ease-normal), background var(--ease-normal);
-      background: rgba(255,255,255,0.08);
+      transition: color var(--ease-fast), border-color var(--ease-fast);
+      font-family: var(--font-sans);
     }
 
-    .btn:hover {
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,0.36);
-      background: rgba(255,255,255,0.14);
-    }
+    .btn:hover { color: var(--accent); border-color: var(--border-hover); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
+    .btn-primary { background: var(--text); color: var(--bg); }
+    .btn-primary:hover { opacity: 0.7; color: var(--bg); }
 
-    .btn-primary {
-      background: linear-gradient(135deg, #2b66ff, #39a9d8);
-      border-color: rgba(122,162,255,0.55);
-    }
-
-    .btn-good {
-      background: linear-gradient(135deg, #0ea172, #2cb58b);
-      border-color: rgba(66,237,178,0.5);
-    }
+    .btn-good { background: var(--good-soft); color: var(--good); border-color: transparent; }
+    .btn-good:hover { opacity: 0.8; }
 
     .btn-mic {
-      width: 40px;
-      padding: 0;
-      display: grid;
-      place-items: center;
-      font-size: 1.1rem;
-      border-radius: 50%;
+      width: 36px; height: 36px; padding: 0;
+      display: grid; place-items: center;
+      font-size: 1rem; border-radius: 50%;
     }
 
     .btn-mic.listening {
       border-color: var(--danger);
-      box-shadow: 0 0 0 4px rgba(255,107,129,0.25);
+      box-shadow: 0 0 0 3px var(--danger-soft);
       animation: pulse 1.2s infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 4px rgba(255,107,129,0.25); }
-      50% { box-shadow: 0 0 0 8px rgba(255,107,129,0.1); }
+      0%, 100% { box-shadow: 0 0 0 3px var(--danger-soft); }
+      50% { box-shadow: 0 0 0 6px transparent; }
     }
 
-    /* --- Right Panel (schedule) --- */
-    .schedule {
-      overflow-y: auto;
-      padding: 16px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+    /* === INPUTS === */
+    input, select {
+      background: var(--input-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 7px 10px;
+      font-size: 0.85rem;
+      font-family: var(--font-sans);
+      outline: none;
+      transition: border-color var(--ease-fast), box-shadow var(--ease-fast);
     }
 
-    /* --- Day Header --- */
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+    input::placeholder { color: var(--text-muted); opacity: 0.6; }
+
+    .location-bar input { width: 90px; padding: 5px 8px; font-size: 0.78rem; }
+
+    /* === PILLS === */
+    .pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.72rem; font-weight: 600;
+      background: var(--surface-2);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      transition: color var(--ease-fast);
+    }
+
+    .pill:hover { color: var(--accent); }
+    .pill-good { background: var(--good-soft); color: var(--good); border-color: transparent; }
+    .pill-warn { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+
+    .pills { display: flex; flex-wrap: wrap; gap: 5px; }
+
+    /* === DAY HEADER === */
     .day-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      justify-content: space-between;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
     }
 
     .day-title-wrap { flex: 1; }
 
     .day-title-input {
-      width: 100%;
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--text);
-      background: transparent;
-      border: none;
-      border-bottom: 2px solid transparent;
-      padding: 4px 0;
-      outline: none;
-      transition: border-color var(--ease-fast);
+      width: 100%; font-size: 1.2rem; font-weight: 700;
+      color: var(--text); background: transparent; border: none;
+      border-bottom: 2px solid transparent; padding: 2px 0; outline: none;
     }
 
-    .day-title-input:hover { border-bottom-color: rgba(255,255,255,0.15); }
-    .day-title-input:focus { border-bottom-color: var(--focus); }
-    .day-title-input::placeholder { color: rgba(168,179,207,0.4); }
+    .day-title-input:hover { border-bottom-color: var(--border); }
+    .day-title-input:focus { border-bottom-color: var(--accent); }
+    .day-title-input::placeholder { color: var(--text-muted); opacity: 0.4; }
 
     .day-note-input {
-      width: 100%;
-      font-size: 0.85rem;
-      color: var(--muted);
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid transparent;
-      padding: 3px 0;
-      outline: none;
-      margin-top: 4px;
-      transition: border-color var(--ease-fast);
+      width: 100%; font-size: 0.82rem; color: var(--text-muted);
+      background: transparent; border: none;
+      border-bottom: 1px solid transparent; padding: 2px 0; margin-top: 4px; outline: none;
     }
 
-    .day-note-input:hover { border-bottom-color: rgba(255,255,255,0.1); }
-    .day-note-input:focus { border-bottom-color: var(--focus); color: var(--text); }
-    .day-note-input::placeholder { color: rgba(168,179,207,0.3); }
+    .day-note-input:hover { border-bottom-color: var(--border); }
+    .day-note-input:focus { border-bottom-color: var(--accent); color: var(--text); }
+    .day-note-input::placeholder { color: var(--text-muted); opacity: 0.3; }
 
-    /* --- Life Progress Bars (widget cards) --- */
-    .life-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+    .controls-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
+
+    .date-nav { display: flex; align-items: center; gap: 5px; font-size: 0.85rem; font-weight: 600; }
+
+    .date-nav button {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--surface-2);
+      color: var(--text); cursor: pointer; display: grid;
+      place-items: center; font-size: 0.85rem;
+      transition: color var(--ease-fast);
     }
 
-    .life-card {
-      padding: 14px;
-      cursor: default;
-      position: relative;
-      overflow: hidden;
-      transition: transform var(--ease-fast), box-shadow var(--ease-fast);
+    .date-nav button:hover { color: var(--accent); }
+
+    /* === HERO: NOW + NEXT === */
+    .hero-blocks { display: grid; grid-template-columns: 1.6fr 1fr; gap: 8px; }
+
+    .now-card {
+      border-left: 3px solid var(--good);
+      background: var(--good-soft);
     }
 
-    .life-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    .now-card .card-badge, .next-card .card-badge {
+      font-size: 0.65rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 6px;
     }
 
-    .life-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
+    .now-card .card-badge { color: var(--good); }
+    .next-card .card-badge { color: var(--accent); }
+
+    .now-card .block-title { font-size: 1.15rem; font-weight: 700; line-height: 1.25; margin-bottom: 3px; }
+    .now-card .block-note { color: var(--text-muted); font-size: 0.8rem; line-height: 1.4; }
+
+    .now-card .timer {
+      font-size: 2rem; font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--text); margin-top: 6px;
     }
+
+    .progress-track {
+      height: 4px; border-radius: var(--radius-pill);
+      background: var(--surface-3); overflow: hidden; margin-top: 8px;
+    }
+
+    .progress-fill {
+      height: 100%; border-radius: var(--radius-pill);
+      background: var(--accent); transition: width var(--ease-slow);
+    }
+
+    .next-card {
+      border-left: 3px solid var(--accent);
+      background: var(--accent-soft);
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    .next-card .block-title { font-size: 0.95rem; font-weight: 650; line-height: 1.3; margin-bottom: 2px; }
+    .next-card .block-time { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; }
+    .next-card .next-timer { font-size: 1.2rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--accent); }
+
+    /* === LIFE CARDS === */
+    .life-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+    .life-card { padding: 12px; cursor: default; transition: transform var(--ease-fast); }
+    .life-card:hover { transform: translateY(-1px); }
+
+    .life-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
 
     .life-card-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--muted);
+      font-size: 0.68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      color: var(--text-muted);
     }
 
     .life-card-pct {
-      font-size: 1.6rem;
-      font-weight: 800;
+      font-size: 1.5rem; font-weight: 800;
       font-variant-numeric: tabular-nums;
-      background: linear-gradient(135deg, #5f9bff, #61e0b3);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
     }
 
     .life-card-track {
-      height: 6px;
-      border-radius: var(--radius-pill);
-      background: rgba(255,255,255,0.08);
-      overflow: hidden;
-      margin: 8px 0;
+      height: 4px; border-radius: var(--radius-pill);
+      background: var(--surface-3); overflow: hidden; margin: 6px 0;
     }
 
     .life-card-fill {
-      height: 100%;
-      border-radius: var(--radius-pill);
-      background: linear-gradient(90deg, #5f9bff, #61e0b3);
-      transition: width var(--ease-slow);
+      height: 100%; border-radius: var(--radius-pill);
+      background: var(--accent); transition: width var(--ease-slow);
     }
 
-    .life-card-detail {
-      font-size: 0.73rem;
-      font-family: var(--font-mono);
-      color: var(--muted);
-      line-height: 1.5;
-    }
+    .life-card-detail { font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); line-height: 1.5; }
+    .life-card-detail span { color: var(--text); font-weight: 600; }
 
-    .life-card-detail span {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    /* Hover expand */
-    .life-card .life-card-extra {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height var(--ease-slow);
-    }
-
-    .life-card:hover .life-card-extra {
-      max-height: 80px;
-    }
+    .life-card .life-card-extra { max-height: 0; overflow: hidden; transition: max-height var(--ease-slow); }
+    .life-card:hover .life-card-extra { max-height: 80px; }
 
     .life-card-extra-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.7rem;
-      color: var(--muted);
-      padding-top: 6px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      margin-top: 6px;
+      display: flex; justify-content: space-between;
+      font-size: 0.68rem; color: var(--text-muted);
+      padding-top: 5px; border-top: 1px solid var(--border); margin-top: 5px;
     }
 
     .life-card-extra-row span { color: var(--text); font-weight: 600; }
 
-    /* --- Card --- */
-    .card {
-      background: var(--panel);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
-      padding: 16px;
-    }
-
-    .card h3 {
-      font-size: 0.85rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 10px;
-    }
-
-    /* --- Hero Block (NOW + NEXT) --- */
-    .hero-blocks {
-      display: grid;
-      grid-template-columns: 1.6fr 1fr;
-      gap: 10px;
-    }
-
-    .now-card {
-      border-color: rgba(97,224,179,0.35);
-      background: linear-gradient(135deg, rgba(97,224,179,0.08), rgba(50,214,160,0.04));
-      position: relative;
-      overflow: hidden;
-    }
-
-    .now-card::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 4px; height: 100%;
-      background: linear-gradient(180deg, var(--good), #5f9bff);
-      border-radius: 4px 0 0 4px;
-    }
-
-    .now-card .card-badge {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--good);
-      margin-bottom: 6px;
-    }
-
-    .now-card .block-title {
-      font-size: 1.25rem;
-      font-weight: 750;
-      line-height: 1.25;
-      margin-bottom: 4px;
-    }
-
-    .now-card .block-note { color: var(--muted); font-size: 0.82rem; line-height: 1.4; }
-
-    .now-card .timer {
-      font-size: 2.2rem;
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.5px;
-      margin-top: 6px;
-      background: linear-gradient(135deg, var(--text), var(--good));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .next-card {
-      border-color: rgba(122,162,255,0.25);
-      background: linear-gradient(135deg, rgba(122,162,255,0.06), rgba(57,169,216,0.03));
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .next-card .card-badge {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--focus);
-      margin-bottom: 6px;
-    }
-
-    .next-card .block-title {
-      font-size: 1rem;
-      font-weight: 650;
-      line-height: 1.3;
-      margin-bottom: 2px;
-    }
-
-    .next-card .block-time {
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .next-card .next-timer {
-      font-size: 1.3rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      color: var(--focus);
-    }
-
-    /* --- Focus Hours Widget --- */
-    .focus-card {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 14px;
-      align-items: center;
-    }
-
-    .focus-number {
-      font-size: 2.4rem;
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-      background: linear-gradient(135deg, #ffd166, #ff9a56);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-    }
-
-    .focus-meta {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .focus-meta span { color: var(--text); font-weight: 600; }
-
-    /* --- Type Breakdown Chart --- */
-    .type-chart {
-      display: flex;
-      gap: 2px;
-      height: 28px;
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      margin-top: 8px;
-    }
-
-    .type-bar {
-      transition: flex var(--ease-slow);
-      position: relative;
-      min-width: 4px;
-      cursor: default;
-    }
-
-    .type-bar:hover { opacity: 0.85; filter: brightness(1.2); }
-
-    .type-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .type-legend-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.68rem;
-      color: var(--muted);
-    }
-
-    .type-legend-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-    }
-
-    .pills { display: flex; flex-wrap: wrap; gap: 6px; }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 10px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(255,255,255,0.15);
-      font-size: 0.78rem;
-      background: rgba(255,255,255,0.05);
-    }
-
-    .pill-good { border-color: rgba(50,214,160,0.45); color: #b9ffe5; background: rgba(50,214,160,0.16); }
-    .pill-warn { border-color: rgba(255,209,102,0.5); color: #fff3c7; background: rgba(255,209,102,0.15); }
-
-    .progress-track {
-      height: 6px;
-      border-radius: var(--radius-pill);
-      background: rgba(255,255,255,0.1);
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #5f9bff, #61e0b3);
-      transition: width var(--ease-slow);
-    }
-
-    /* --- Dashboard Row --- */
-    .dash-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
+    /* === DASHBOARD ROW === */
+    .dash-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 
     .dash-card { text-align: center; }
+    .dash-card .dash-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
 
-    .dash-card .dash-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 4px;
+    .focus-card { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; text-align: left; }
+
+    .focus-number {
+      font-size: 2rem; font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--warn); line-height: 1;
     }
 
-    .dash-card .dash-label {
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
+    .focus-meta { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+    .focus-meta span { color: var(--text); font-weight: 600; }
 
     /* Progress ring */
     .ring-wrap { display: flex; justify-content: center; padding: 4px 0; }
-
-    .ring-svg {
-      width: 72px;
-      height: 72px;
-      transform: rotate(-90deg);
-    }
-
-    .ring-bg {
-      fill: none;
-      stroke: rgba(255,255,255,0.08);
-      stroke-width: 6;
-    }
-
-    .ring-fill {
-      fill: none;
-      stroke: url(#ringGrad);
-      stroke-width: 6;
-      stroke-linecap: round;
-      transition: stroke-dashoffset var(--ease-slow);
-    }
-
-    .ring-text {
-      font-size: 0.85rem;
-      font-weight: 700;
-      fill: var(--text);
-    }
+    .ring-svg { width: 68px; height: 68px; transform: rotate(-90deg); }
+    .ring-bg { fill: none; stroke: var(--surface-3); stroke-width: 6; }
+    .ring-fill { fill: none; stroke: var(--accent); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset var(--ease-slow); }
+    .ring-text { font-size: 0.85rem; font-weight: 700; fill: var(--text); }
 
     /* Week dots */
-    .week-dots { display: flex; justify-content: center; gap: 8px; padding: 8px 0; }
+    .week-dots { display: flex; justify-content: center; gap: 6px; padding: 6px 0; }
 
     .week-dot {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.15);
-      display: grid;
-      place-items: center;
-      font-size: 0.65rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: border-color var(--ease-fast), background var(--ease-fast);
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 2px solid var(--border); display: grid; place-items: center;
+      font-size: 0.62rem; font-weight: 600; cursor: pointer;
+      transition: border-color var(--ease-fast), color var(--ease-fast);
+      color: var(--text-muted);
     }
 
-    .week-dot:hover { border-color: var(--focus); }
-    .week-dot.planned { border-color: var(--good); background: rgba(50,214,160,0.15); }
-    .week-dot.today { border-color: var(--warn); background: rgba(255,209,102,0.18); color: #fff3c7; }
-    .week-dot.empty { border-color: rgba(255,255,255,0.08); color: var(--muted); }
+    .week-dot:hover { border-color: var(--accent); color: var(--accent); }
+    .week-dot.planned { border-color: var(--good); color: var(--good); background: var(--good-soft); }
+    .week-dot.today { border-color: var(--warn); color: var(--warn); background: var(--warn-soft); }
+    .week-dot.empty { border-color: var(--border); }
 
-    /* --- Timeline --- */
-    .timeline { display: flex; flex-direction: column; gap: 6px; }
+    /* === TYPE CHART === */
+    .type-chart { display: flex; gap: 2px; height: 24px; border-radius: var(--radius-sm); overflow: hidden; margin-top: 6px; }
+    .type-bar { transition: flex var(--ease-slow); min-width: 3px; cursor: default; }
+    .type-bar:hover { filter: brightness(1.2); }
+    .type-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .type-legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.66rem; color: var(--text-muted); }
+    .type-legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* === TIMELINE === */
+    .timeline { display: flex; flex-direction: column; gap: 4px; }
 
     .tl-item {
-      display: grid;
-      grid-template-columns: 90px 1fr 32px;
-      gap: 10px;
-      align-items: center;
-      padding: 10px 12px;
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.03);
-      transition: border-color var(--ease-fast), background var(--ease-fast);
-    }
-
-    .tl-item.current {
-      border-color: rgba(97,224,179,0.54);
-      background: rgba(97,224,179,0.1);
-    }
-
-    .tl-item.done { opacity: 0.5; }
-
-    .tl-item.missed {
-      border-color: rgba(255,107,129,0.4);
-      background: rgba(255,107,129,0.08);
-    }
-
-    .tl-item.prayer {
-      border-left: 3px solid var(--good);
-      background: rgba(50,214,160,0.06);
-    }
-
-    .tl-item.prayer .tl-title::before {
-      content: "\u262A ";
-      opacity: 0.7;
-    }
-
-    .tl-item.prayer.current {
-      border-color: rgba(97,224,179,0.54);
-      border-left: 3px solid var(--good);
-      background: rgba(97,224,179,0.14);
-    }
-
-    .anchor-label {
-      font-size: 0.65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--good);
-      opacity: 0.8;
-    }
-
-    .tl-time {
-      font-size: 0.8rem;
-      font-family: var(--font-mono);
-      color: #c7d7ff;
-    }
-
-    .tl-title {
-      font-size: 0.88rem;
-      font-weight: 600;
-      line-height: 1.3;
-    }
-
-    .tl-note {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .tl-meta {
-      font-size: 0.68rem;
-      color: var(--muted);
-      margin-top: 3px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-
-    .tl-check {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.3);
-      background: transparent;
-      color: var(--text);
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      font-size: 0.8rem;
-      padding: 0;
+      display: grid; grid-template-columns: 80px 1fr 28px;
+      gap: 8px; align-items: center;
+      padding: 8px 10px; border-radius: var(--radius-sm);
+      border: 1px solid transparent; background: transparent;
       transition: background var(--ease-fast), border-color var(--ease-fast);
     }
 
-    .tl-check.done {
-      background: rgba(50,214,160,0.22);
-      border-color: rgba(50,214,160,0.52);
+    .tl-item:hover { background: var(--surface-1); border-color: var(--border); }
+    .tl-item.current { background: var(--good-soft); border-color: var(--good); }
+    .tl-item.done { opacity: 0.45; }
+    .tl-item.missed { background: var(--danger-soft); border-color: var(--danger); }
+    .tl-item.prayer { border-left: 3px solid var(--good); }
+    .tl-item.prayer.current { border-color: var(--good); border-left: 3px solid var(--good); }
+
+    .tl-time { font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted); }
+    .tl-title { font-size: 0.85rem; font-weight: 600; line-height: 1.3; }
+    .tl-note { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+    .tl-meta { font-size: 0.65rem; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+    .anchor-label {
+      font-size: 0.6rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      color: var(--good); opacity: 0.8; margin-top: 2px;
     }
 
-    /* --- Controls Bar --- */
-    .controls-bar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+    .tl-check {
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text); display: grid; place-items: center;
+      cursor: pointer; font-size: 0.75rem; padding: 0;
+      transition: background var(--ease-fast), border-color var(--ease-fast), color var(--ease-fast);
     }
 
-    .date-nav {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.88rem;
-      font-weight: 600;
+    .tl-check:hover { border-color: var(--accent); color: var(--accent); }
+    .tl-check.done { background: var(--good-soft); border-color: var(--good); color: var(--good); }
+
+    /* === CHAT DRAWER === */
+    .chat-drawer {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--surface-1);
+      border-top: 1px solid var(--border);
+      z-index: 50; display: flex; flex-direction: column;
+      transition: height var(--ease-slow);
     }
 
-    .date-nav button {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.06);
+    .chat-drawer[data-state="collapsed"] { height: 56px; }
+    .chat-drawer[data-state="open"] { height: 40vh; }
+    .chat-drawer[data-state="full"] { height: 70vh; }
+
+    .chat-handle { display: flex; justify-content: center; padding: 6px; cursor: ns-resize; }
+    .chat-handle-bar { width: 36px; height: 4px; border-radius: var(--radius-pill); background: var(--border); }
+
+    .chat-input-row {
+      display: flex; gap: 6px; padding: 8px 16px;
+      flex-shrink: 0;
+    }
+
+    .chat-input-row input { flex: 1; }
+
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 12px 16px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+
+    .chat-drawer[data-state="collapsed"] .chat-messages { display: none; }
+
+    .msg {
+      max-width: 90%; padding: 8px 12px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem; line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
       color: var(--text);
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      font-size: 0.9rem;
     }
 
-    /* --- Toast --- */
+    .msg.agent {
+      align-self: flex-start;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+    }
+
+    .msg .schedule-preview {
+      margin-top: 6px; padding: 6px 8px;
+      background: var(--surface-3);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--good);
+    }
+
+    /* === TOAST === */
     .toast {
-      position: fixed;
-      bottom: 18px;
-      right: 18px;
-      width: min(360px, 90vw);
-      border-radius: 13px;
-      padding: 12px 14px;
-      background: rgba(8,14,31,0.92);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: #f3f7ff;
+      position: fixed; bottom: 68px; right: 16px;
+      width: min(340px, 85vw);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
       box-shadow: var(--shadow);
-      transform: translateY(24px);
-      opacity: 0;
+      transform: translateY(16px); opacity: 0;
       pointer-events: none;
       transition: transform var(--ease-normal), opacity var(--ease-normal);
-      z-index: 100;
-      font-size: 0.88rem;
+      z-index: 100; font-size: 0.82rem;
     }
 
     .toast.show { transform: translateY(0); opacity: 1; }
 
-    /* --- Empty state --- */
+    /* === EMPTY STATE === */
     .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 40px 20px;
-      color: var(--muted);
-      text-align: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; padding: 32px 16px;
+      color: var(--text-muted); text-align: center;
     }
 
-    .empty-state .empty-icon { font-size: 2.5rem; opacity: 0.4; }
-    .empty-state p { font-size: 0.9rem; line-height: 1.5; max-width: 300px; }
+    .empty-state .empty-icon { font-size: 2rem; opacity: 0.3; }
+    .empty-state p { font-size: 0.85rem; line-height: 1.5; max-width: 280px; }
 
-    /* --- Responsive --- */
-    @media (max-width: 800px) {
-      .app {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 280px 1fr;
-      }
-
-      .chat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
-      .dash-row { grid-template-columns: 1fr; }
+    /* === RESPONSIVE === */
+    @media (max-width: 700px) {
+      .life-cards { grid-template-columns: 1fr; }
+      .hero-blocks { grid-template-columns: 1fr; }
+      .dash-row { grid-template-columns: 1fr 1fr; }
+      .day-header { flex-direction: column; }
+      .location-bar input { display: none; }
     }
 
-    /* --- Scrollbar --- */
-    ::-webkit-scrollbar { width: 6px; }
+    /* === SCROLLBAR === */
+    ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 3px; }
   </style>
 </head>
 <body>
   <div class="app">
-    <!-- Header -->
     <header class="header">
       <h1>Day Planner</h1>
       <div class="header-right">
@@ -859,25 +539,12 @@
           <input id="countryInput" type="text" placeholder="Country" />
           <button class="btn" id="geoBtn" title="Use my location">GPS</button>
         </div>
+        <button class="btn" id="themeToggle" title="Toggle theme">&#9728;</button>
         <span class="clock" id="liveClock">--:--:--</span>
       </div>
     </header>
 
-    <!-- Chat Panel -->
-    <section class="chat">
-      <div class="chat-messages" id="chatMessages">
-        <div class="msg agent">What does your day look like? Tell me what you need to do and I'll build your schedule around your prayer times.</div>
-      </div>
-      <div class="chat-input-row">
-        <button class="btn btn-mic" id="micBtn" title="Voice input">&#127908;</button>
-        <input type="text" id="chatInput" placeholder="Describe your day..." autocomplete="off" />
-        <button class="btn btn-primary" id="sendBtn">Send</button>
-      </div>
-    </section>
-
-    <!-- Schedule Panel -->
-    <main class="schedule" id="schedulePanel">
-      <!-- Day Header: title + note + controls -->
+    <main class="main">
       <div class="day-header">
         <div class="day-title-wrap">
           <input class="day-title-input" id="dayTitleInput" type="text" placeholder="Name this day..." />
@@ -894,7 +561,6 @@
         </div>
       </div>
 
-      <!-- Hero: NOW + NEXT -->
       <div class="hero-blocks" id="heroBlocks">
         <div class="card now-card" id="nowCard" style="display:none;">
           <div class="card-badge">Now</div>
@@ -913,7 +579,6 @@
         </div>
       </div>
 
-      <!-- Life Progress Cards -->
       <div class="life-cards">
         <div class="card life-card" id="dayCard">
           <div class="life-card-header">
@@ -944,7 +609,6 @@
         </div>
       </div>
 
-      <!-- Dashboard Row: Focus Hours + Progress Ring + Week Dots + Type Chart -->
       <div class="dash-row">
         <div class="card dash-card focus-card">
           <div class="focus-number" id="focusHours">--</div>
@@ -957,7 +621,6 @@
           <h3>Done</h3>
           <div class="ring-wrap">
             <svg class="ring-svg" viewBox="0 0 80 80">
-              <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5f9bff"/><stop offset="100%" stop-color="#61e0b3"/></linearGradient></defs>
               <circle class="ring-bg" cx="40" cy="40" r="34"/>
               <circle class="ring-fill" id="ringFill" cx="40" cy="40" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
               <text class="ring-text" x="40" y="44" text-anchor="middle" transform="rotate(90 40 40)" id="ringText">0%</text>
@@ -972,14 +635,12 @@
         </div>
       </div>
 
-      <!-- Type Breakdown -->
       <div class="card" id="typeChartCard">
         <h3>Block types</h3>
         <div class="type-chart" id="typeChart"></div>
         <div class="type-legend" id="typeLegend"></div>
       </div>
 
-      <!-- Timeline -->
       <div id="timelineWrap">
         <div class="empty-state" id="emptyState">
           <div class="empty-icon">&#128197;</div>
@@ -988,6 +649,18 @@
         <div class="timeline" id="timeline" style="display:none;"></div>
       </div>
     </main>
+
+    <aside class="chat-drawer" id="chatDrawer" data-state="collapsed">
+      <div class="chat-handle" id="chatHandle"><div class="chat-handle-bar"></div></div>
+      <div class="chat-input-row">
+        <button class="btn btn-mic" id="micBtn" title="Voice input">&#127908;</button>
+        <input type="text" id="chatInput" placeholder="Chat with agent..." autocomplete="off" />
+        <button class="btn btn-primary" id="sendBtn">Send</button>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg agent">What does your day look like?</div>
+      </div>
+    </aside>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -1098,9 +771,7 @@
 
     function loadLocation() {
       const raw = localStorage.getItem("day-planner-location");
-      if (raw) {
-        try { return JSON.parse(raw); } catch {}
-      }
+      if (raw) { try { return JSON.parse(raw); } catch {} }
       return { lat: null, lng: null, city: "", country: "" };
     }
 
@@ -1113,7 +784,6 @@
       if (raw) {
         blocks = JSON.parse(raw);
       } else if (selectedDate === todayStr()) {
-        // Seed today with default schedule
         blocks = JSON.parse(JSON.stringify(DEFAULT_BLOCKS));
         saveBlocks();
       } else {
@@ -1138,10 +808,7 @@
       const d = new Date(selectedDate + "T12:00:00");
       d.setDate(d.getDate() + offset);
       selectedDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-      loadBlocks();
-      loadCompleted();
-      loadDayMeta();
-      render();
+      loadBlocks(); loadCompleted(); loadDayMeta(); render();
     }
 
     // === DAY TITLE + NOTE ===
@@ -1159,8 +826,7 @@
 
     function saveDayMeta() {
       localStorage.setItem(`day-planner-meta-${selectedDate}`, JSON.stringify({
-        title: dayTitleInput.value,
-        note: dayNoteInput.value,
+        title: dayTitleInput.value, note: dayNoteInput.value,
       }));
     }
 
@@ -1171,7 +837,6 @@
     function updateLifeBars() {
       const now = new Date();
 
-      // Day
       let dayStart, dayEnd;
       if (blocks.length > 0) {
         dayStart = timeToDate(selectedDate, blocks[0].start);
@@ -1180,8 +845,7 @@
         dayStart = timeToDate(todayStr(), "06:00");
         dayEnd = timeToDate(todayStr(), "23:00");
       }
-      const dayPctRaw = ((now - dayStart) / (dayEnd - dayStart)) * 100;
-      const dayPct = Math.max(0, Math.min(100, dayPctRaw));
+      const dayPct = Math.max(0, Math.min(100, ((now - dayStart) / (dayEnd - dayStart)) * 100));
       const dayLeft = Math.max(0, dayEnd - now);
       const dayLeftH = Math.floor(dayLeft / 3600000);
       const dayLeftM = Math.floor((dayLeft % 3600000) / 60000);
@@ -1189,32 +853,20 @@
       $("dayPct").textContent = `${Math.round(dayPct)}%`;
       $("dayDetail").innerHTML = `<span>${dayLeftH}h ${dayLeftM}m</span> remaining`;
 
-      // Day extra: blocks done / total
       const doneToday = blocks.filter(b => completed.has(b.id)).length;
-      $("dayExtra").innerHTML = `<div class="life-card-extra-row">
-        <span>Blocks done</span><span>${doneToday}/${blocks.length}</span>
-      </div><div class="life-card-extra-row">
-        <span>Schedule</span><span>${blocks.length > 0 ? blocks[0].start + " - " + blocks[blocks.length-1].end : "--"}</span>
-      </div>`;
+      $("dayExtra").innerHTML = `<div class="life-card-extra-row"><span>Blocks done</span><span>${doneToday}/${blocks.length}</span></div><div class="life-card-extra-row"><span>Schedule</span><span>${blocks.length > 0 ? blocks[0].start + " - " + blocks[blocks.length-1].end : "--"}</span></div>`;
 
-      // Week: Mon=0
       const dow = (now.getDay() + 6) % 7;
       const dayFraction = (now.getHours() * 60 + now.getMinutes()) / 1440;
-      const weekPctRaw = ((dow + dayFraction) / 7) * 100;
-      const weekPct = Math.max(0, Math.min(100, weekPctRaw));
+      const weekPct = Math.max(0, Math.min(100, ((dow + dayFraction) / 7) * 100));
       const daysNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
       weekBar.style.width = `${weekPct}%`;
       $("weekPct").textContent = `${Math.round(weekPct)}%`;
       $("weekDetail").innerHTML = `<span>${daysNames[dow]}</span> \u00b7 Day ${dow + 1} of 7`;
 
       const daysLeft = 7 - dow - dayFraction;
-      $("weekExtra").innerHTML = `<div class="life-card-extra-row">
-        <span>Days left</span><span>${daysLeft.toFixed(1)}</span>
-      </div><div class="life-card-extra-row">
-        <span>Weekend</span><span>${dow >= 5 ? "Now" : `in ${5 - dow} days`}</span>
-      </div>`;
+      $("weekExtra").innerHTML = `<div class="life-card-extra-row"><span>Days left</span><span>${daysLeft.toFixed(1)}</span></div><div class="life-card-extra-row"><span>Weekend</span><span>${dow >= 5 ? "Now" : `in ${5 - dow} days`}</span></div>`;
 
-      // Year
       const startOfYear = new Date(now.getFullYear(), 0, 1);
       const dayOfYear = Math.floor((now - startOfYear) / 86400000) + 1;
       const isLeap = (now.getFullYear() % 4 === 0 && now.getFullYear() % 100 !== 0) || now.getFullYear() % 400 === 0;
@@ -1226,228 +878,95 @@
 
       const monthName = now.toLocaleString("default", { month: "long" });
       const weeksLeft = Math.round((totalDays - dayOfYear) / 7);
-      $("yearExtra").innerHTML = `<div class="life-card-extra-row">
-        <span>Month</span><span>${monthName}</span>
-      </div><div class="life-card-extra-row">
-        <span>Weeks left</span><span>${weeksLeft}</span>
-      </div>`;
+      $("yearExtra").innerHTML = `<div class="life-card-extra-row"><span>Month</span><span>${monthName}</span></div><div class="life-card-extra-row"><span>Weeks left</span><span>${weeksLeft}</span></div>`;
     }
 
-    // === CLOCK ===
-    function updateClock() {
-      liveClock.textContent = formatTime(new Date());
-    }
+    function updateClock() { liveClock.textContent = formatTime(new Date()); }
 
     // === RENDER: HERO (NOW + NEXT) ===
     function renderHeroBlocks() {
-      if (blocks.length === 0) {
-        nowCard.style.display = "none";
-        nextCard.style.display = "none";
-        return;
-      }
+      if (blocks.length === 0) { nowCard.style.display = "none"; nextCard.style.display = "none"; return; }
 
       const now = new Date();
-      const active = blocks.find(b => {
-        const s = timeToDate(selectedDate, b.start);
-        const e = timeToDate(selectedDate, b.end);
-        return now >= s && now < e;
-      });
-      const nextBlock = blocks.find(b => {
-        const s = timeToDate(selectedDate, b.start);
-        return now < s;
-      });
+      const active = blocks.find(b => { const s = timeToDate(selectedDate, b.start); const e = timeToDate(selectedDate, b.end); return now >= s && now < e; });
+      const nextBlock = blocks.find(b => now < timeToDate(selectedDate, b.start));
 
-      // NOW card
       if (active) {
         nowCard.style.display = "";
         currentTitle.textContent = active.title;
         currentNote.textContent = active.note || "";
-
         const s = timeToDate(selectedDate, active.start);
         const e = timeToDate(selectedDate, active.end);
         currentTimer.textContent = durationLabel(e - now);
-
-        const pct = Math.min(100, ((now - s) / (e - s)) * 100);
-        currentProgress.style.width = `${pct}%`;
-
+        currentProgress.style.width = `${Math.min(100, ((now - s) / (e - s)) * 100)}%`;
         currentPills.innerHTML = "";
-        [
-          { text: active.location, cls: "" },
-          { text: active.priority, cls: active.priority === "must" ? "pill-warn" : "" },
-          { text: active.type, cls: active.type === "prayer" ? "pill-good" : "" },
-        ].forEach(p => {
-          const span = document.createElement("span");
-          span.className = `pill ${p.cls}`;
-          span.textContent = p.text;
-          currentPills.appendChild(span);
-        });
-
-        if (lastActiveId !== null && active.id !== lastActiveId) {
-          notify("Block changed", active.title);
-        }
+        [{ text: active.location, cls: "" }, { text: active.priority, cls: active.priority === "must" ? "pill-warn" : "" }, { text: active.type, cls: active.type === "prayer" ? "pill-good" : "" }].forEach(p => { const span = document.createElement("span"); span.className = `pill ${p.cls}`; span.textContent = p.text; currentPills.appendChild(span); });
+        if (lastActiveId !== null && active.id !== lastActiveId) notify("Block changed", active.title);
         lastActiveId = active.id;
-      } else {
-        nowCard.style.display = "none";
-      }
+      } else { nowCard.style.display = "none"; }
 
-      // NEXT card
       if (nextBlock) {
         nextCard.style.display = "";
         nextTitle.textContent = nextBlock.title;
         nextTime.textContent = `${nextBlock.start} - ${nextBlock.end}`;
         const startsIn = timeToDate(selectedDate, nextBlock.start) - now;
         nextTimer.textContent = startsIn > 0 ? `in ${durationLabel(startsIn)}` : "starting";
-
         nextPills.innerHTML = "";
-        [
-          { text: nextBlock.type, cls: nextBlock.type === "prayer" ? "pill-good" : "" },
-          { text: nextBlock.priority, cls: "" },
-        ].forEach(p => {
-          const span = document.createElement("span");
-          span.className = `pill ${p.cls}`;
-          span.textContent = p.text;
-          nextPills.appendChild(span);
-        });
-      } else {
-        nextCard.style.display = "none";
-      }
+        [{ text: nextBlock.type, cls: nextBlock.type === "prayer" ? "pill-good" : "" }, { text: nextBlock.priority, cls: "" }].forEach(p => { const span = document.createElement("span"); span.className = `pill ${p.cls}`; span.textContent = p.text; nextPills.appendChild(span); });
+      } else { nextCard.style.display = "none"; }
     }
 
     // === RENDER: DASHBOARD ===
     function renderDashboard() {
-      if (blocks.length === 0) {
-        $("focusHours").textContent = "--";
-        $("focusMeta").textContent = "no schedule";
-        progressLabel.textContent = "0 / 0";
-        ringFill.style.strokeDashoffset = "213.6";
-        ringText.textContent = "0%";
-        return;
-      }
-
+      if (blocks.length === 0) { $("focusHours").textContent = "--"; $("focusMeta").textContent = "no schedule"; progressLabel.textContent = "0 / 0"; ringFill.style.strokeDashoffset = "213.6"; ringText.textContent = "0%"; return; }
       const total = blocks.length;
       const doneCount = blocks.filter(b => completed.has(b.id)).length;
       const pct = Math.round((doneCount / total) * 100);
-
-      // Progress ring
       progressLabel.textContent = `${doneCount} / ${total}`;
       const circumference = 213.6;
       ringFill.style.strokeDashoffset = `${circumference - (circumference * pct) / 100}`;
       ringText.textContent = `${pct}%`;
-
-      // Focus hours (desk blocks)
       const deskBlocks = blocks.filter(b => b.location === "desk");
       let focusMins = 0;
-      deskBlocks.forEach(b => {
-        const [sh, sm] = b.start.split(":").map(Number);
-        const [eh, em] = b.end.split(":").map(Number);
-        focusMins += (eh * 60 + em) - (sh * 60 + sm);
-      });
-      const focusH = (focusMins / 60).toFixed(1);
-      $("focusHours").textContent = `${focusH}h`;
-
+      deskBlocks.forEach(b => { const [sh, sm] = b.start.split(":").map(Number); const [eh, em] = b.end.split(":").map(Number); focusMins += (eh * 60 + em) - (sh * 60 + sm); });
+      $("focusHours").textContent = `${(focusMins / 60).toFixed(1)}h`;
       const prayerCount = blocks.filter(b => b.type === "prayer").length;
       const mustCount = blocks.filter(b => b.priority === "must").length;
       $("focusMeta").innerHTML = `<span>${deskBlocks.length}</span> desk blocks<br><span>${mustCount}</span> must \u00b7 <span>${prayerCount}</span> prayer`;
     }
 
     // === RENDER: TYPE CHART ===
-    const TYPE_COLORS = {
-      prayer: "#32d6a0", routine: "#7aa2ff", spiritual: "#b08dff",
-      execution: "#ffd166", personal: "#ff9a56", build: "#5fc4ff",
-      company: "#ff6b81", logistics: "#a0a0a0", recovery: "#6dd4a0",
-      admin: "#c7a060", "r&d": "#d070d0", review: "#60c0c0",
-      product: "#5fa0ff", visibility: "#ffa06a",
-    };
+    const TYPE_COLORS = { prayer: "#34d399", routine: "#6b8afd", spiritual: "#a78bfa", execution: "#fbbf24", personal: "#fb923c", build: "#38bdf8", company: "#f87171", logistics: "#94a3b8", recovery: "#4ade80", admin: "#d4a054", "r&d": "#c084fc", review: "#2dd4bf", product: "#60a5fa", visibility: "#fb923c" };
 
     function renderTypeChart() {
-      const chart = $("typeChart");
-      const legend = $("typeLegend");
-      chart.innerHTML = "";
-      legend.innerHTML = "";
-
-      if (blocks.length === 0) {
-        $("typeChartCard").style.display = "none";
-        return;
-      }
+      const chart = $("typeChart"); const legend = $("typeLegend");
+      chart.innerHTML = ""; legend.innerHTML = "";
+      if (blocks.length === 0) { $("typeChartCard").style.display = "none"; return; }
       $("typeChartCard").style.display = "";
-
-      // Count minutes per type
       const typeMins = {};
-      blocks.forEach(b => {
-        const [sh, sm] = b.start.split(":").map(Number);
-        const [eh, em] = b.end.split(":").map(Number);
-        const mins = (eh * 60 + em) - (sh * 60 + sm);
-        typeMins[b.type] = (typeMins[b.type] || 0) + mins;
-      });
-
+      blocks.forEach(b => { const [sh, sm] = b.start.split(":").map(Number); const [eh, em] = b.end.split(":").map(Number); typeMins[b.type] = (typeMins[b.type] || 0) + (eh * 60 + em) - (sh * 60 + sm); });
       const totalMins = Object.values(typeMins).reduce((a, b) => a + b, 0);
-
-      Object.entries(typeMins)
-        .sort((a, b) => b[1] - a[1])
-        .forEach(([type, mins]) => {
-          const bar = document.createElement("div");
-          bar.className = "type-bar";
-          bar.style.flex = `${mins}`;
-          bar.style.background = TYPE_COLORS[type] || "#888";
-          bar.title = `${type}: ${Math.round(mins / 60 * 10) / 10}h (${Math.round(mins / totalMins * 100)}%)`;
-          chart.appendChild(bar);
-
-          const item = document.createElement("div");
-          item.className = "type-legend-item";
-          item.innerHTML = `<div class="type-legend-dot" style="background:${TYPE_COLORS[type] || "#888"}"></div>${type} ${Math.round(mins/60*10)/10}h`;
-          legend.appendChild(item);
-        });
+      Object.entries(typeMins).sort((a, b) => b[1] - a[1]).forEach(([type, mins]) => {
+        const bar = document.createElement("div"); bar.className = "type-bar"; bar.style.flex = `${mins}`; bar.style.background = TYPE_COLORS[type] || "#888"; bar.title = `${type}: ${Math.round(mins / 60 * 10) / 10}h (${Math.round(mins / totalMins * 100)}%)`; chart.appendChild(bar);
+        const item = document.createElement("div"); item.className = "type-legend-item"; item.innerHTML = `<div class="type-legend-dot" style="background:${TYPE_COLORS[type] || "#888"}"></div>${type} ${Math.round(mins/60*10)/10}h`; legend.appendChild(item);
+      });
     }
 
     function renderTimeline() {
-      if (blocks.length === 0) {
-        emptyState.style.display = "";
-        timeline.style.display = "none";
-        return;
-      }
-
-      emptyState.style.display = "none";
-      timeline.style.display = "";
-      timeline.innerHTML = "";
-
+      if (blocks.length === 0) { emptyState.style.display = ""; timeline.style.display = "none"; return; }
+      emptyState.style.display = "none"; timeline.style.display = ""; timeline.innerHTML = "";
       const now = new Date();
-
       blocks.forEach(b => {
-        const s = timeToDate(selectedDate, b.start);
-        const e = timeToDate(selectedDate, b.end);
-        const isDone = completed.has(b.id);
-        const isCurrent = now >= s && now < e;
-        const isMissed = !isDone && !isCurrent && now >= e;
-
-        let stateClass = "";
-        if (isDone) stateClass = "done";
-        else if (isCurrent) stateClass = "current";
-        else if (isMissed) stateClass = "missed";
-
+        const s = timeToDate(selectedDate, b.start); const e = timeToDate(selectedDate, b.end);
+        const isDone = completed.has(b.id); const isCurrent = now >= s && now < e; const isMissed = !isDone && !isCurrent && now >= e;
+        let stateClass = ""; if (isDone) stateClass = "done"; else if (isCurrent) stateClass = "current"; else if (isMissed) stateClass = "missed";
         const isPrayer = b.type === "prayer";
         const item = document.createElement("div");
         item.className = `tl-item ${stateClass} ${isPrayer ? "prayer" : ""}`;
-        item.innerHTML = `
-          <div class="tl-time">${b.start} - ${b.end}${isPrayer ? '<div class="anchor-label">anchor</div>' : ""}</div>
-          <div>
-            <div class="tl-title">${escapeHtml(b.title)}</div>
-            <div class="tl-note">${escapeHtml(b.note || "")}</div>
-            <div class="tl-meta">${escapeHtml(b.location)} \u00b7 ${escapeHtml(b.priority)} \u00b7 ${escapeHtml(b.type)}</div>
-          </div>
-        `;
-
-        const check = document.createElement("button");
-        check.className = `tl-check ${isDone ? "done" : ""}`;
-        check.textContent = isDone ? "\u2713" : "";
-        check.title = isDone ? "Mark undone" : "Mark done";
-        check.addEventListener("click", () => {
-          if (completed.has(b.id)) completed.delete(b.id);
-          else completed.add(b.id);
-          saveCompleted();
-          render();
-        });
-        item.appendChild(check);
-        timeline.appendChild(item);
+        item.innerHTML = `<div class="tl-time">${b.start} - ${b.end}${isPrayer ? '<div class="anchor-label">anchor</div>' : ""}</div><div><div class="tl-title">${escapeHtml(b.title)}</div><div class="tl-note">${escapeHtml(b.note || "")}</div><div class="tl-meta">${escapeHtml(b.location)} \u00b7 ${escapeHtml(b.priority)} \u00b7 ${escapeHtml(b.type)}</div></div>`;
+        const check = document.createElement("button"); check.className = `tl-check ${isDone ? "done" : ""}`; check.textContent = isDone ? "\u2713" : ""; check.title = isDone ? "Mark undone" : "Mark done";
+        check.addEventListener("click", () => { if (completed.has(b.id)) completed.delete(b.id); else completed.add(b.id); saveCompleted(); render(); });
+        item.appendChild(check); timeline.appendChild(item);
       });
     }
 
@@ -1456,215 +975,75 @@
       const dayLetters = ["M", "T", "W", "T", "F", "S", "S"];
       const base = new Date(selectedDate + "T12:00:00");
       const dow = (base.getDay() + 6) % 7;
-      const monday = new Date(base);
-      monday.setDate(monday.getDate() - dow);
-
+      const monday = new Date(base); monday.setDate(monday.getDate() - dow);
       let plannedCount = 0;
       for (let i = 0; i < 7; i++) {
-        const d = new Date(monday);
-        d.setDate(d.getDate() + i);
+        const d = new Date(monday); d.setDate(d.getDate() + i);
         const dStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
         const hasBlocks = localStorage.getItem(`day-planner-blocks-${dStr}`);
-        const isToday = dStr === todayStr();
-        const isSelected = dStr === selectedDate;
-
+        const isToday = dStr === todayStr(); const isSelected = dStr === selectedDate;
         if (hasBlocks) plannedCount++;
-
         const dot = document.createElement("div");
         dot.className = `week-dot ${hasBlocks ? "planned" : "empty"} ${isToday ? "today" : ""}`;
-        dot.textContent = dayLetters[i];
-        dot.title = formatDateShort(dStr);
-        if (isSelected) dot.style.outline = "2px solid var(--focus)";
-        dot.addEventListener("click", () => {
-          selectedDate = dStr;
-          loadBlocks();
-          loadCompleted();
-          loadDayMeta();
-          render();
-        });
+        dot.textContent = dayLetters[i]; dot.title = formatDateShort(dStr);
+        if (isSelected) dot.style.outline = `2px solid var(--accent)`;
+        dot.addEventListener("click", () => { selectedDate = dStr; loadBlocks(); loadCompleted(); loadDayMeta(); render(); });
         weekDots.appendChild(dot);
       }
       weekLabel.textContent = `${plannedCount}/7 planned`;
     }
 
-    function escapeHtml(str) {
-      const div = document.createElement("div");
-      div.textContent = str;
-      return div.innerHTML;
-    }
+    function escapeHtml(str) { const div = document.createElement("div"); div.textContent = str; return div.innerHTML; }
 
     // === NOTIFICATIONS ===
-    function notify(title, body) {
-      showToast(`${title}: ${body}`);
-      playTone();
-      if ("Notification" in window && Notification.permission === "granted") {
-        new Notification(title, { body });
-      }
-    }
+    function notify(title, body) { showToast(`${title}: ${body}`); playTone(); if ("Notification" in window && Notification.permission === "granted") new Notification(title, { body }); }
 
-    function playTone() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.value = 880;
-        gain.gain.value = 0.01;
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
-        osc.stop(ctx.currentTime + 0.2);
-      } catch {}
-    }
+    function playTone() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.type = "sine"; osc.frequency.value = 880; gain.gain.value = 0.01; osc.connect(gain); gain.connect(ctx.destination); osc.start(); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18); osc.stop(ctx.currentTime + 0.2); } catch {} }
 
-    $("notifyBtn").addEventListener("click", async () => {
-      if (!("Notification" in window)) return showToast("Notifications not supported");
-      if (Notification.permission === "granted") return showToast("Already enabled");
-      const result = await Notification.requestPermission();
-      showToast(result === "granted" ? "Notifications enabled" : "Notifications denied");
-    });
+    $("notifyBtn").addEventListener("click", async () => { if (!("Notification" in window)) return showToast("Notifications not supported"); if (Notification.permission === "granted") return showToast("Already enabled"); const result = await Notification.requestPermission(); showToast(result === "granted" ? "Notifications enabled" : "Notifications denied"); });
 
-    $("saveBtn").addEventListener("click", () => {
-      if (blocks.length === 0) return showToast("No schedule to save");
-      saveBlocks();
-      saveCompleted();
-      showToast("Schedule saved");
-    });
+    $("saveBtn").addEventListener("click", () => { if (blocks.length === 0) return showToast("No schedule to save"); saveBlocks(); saveCompleted(); showToast("Schedule saved"); });
 
     // === CHAT ===
     async function sendMessage(text) {
       if (!text.trim()) return;
-      chatHistory.push({ role: "user", content: text });
-      appendChatMsg("user", text);
-      chatInput.value = "";
-      chatInput.disabled = true;
-      $("sendBtn").disabled = true;
-
+      chatHistory.push({ role: "user", content: text }); appendChatMsg("user", text);
+      chatInput.value = ""; chatInput.disabled = true; $("sendBtn").disabled = true;
       const thinkingEl = appendChatMsg("agent", "Thinking...");
-
       try {
-        const payload = {
-          messages: chatHistory,
-          date: selectedDate,
-          lat: userLocation.lat,
-          lng: userLocation.lng,
-        };
-
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error || `Server error ${res.status}`);
-        }
-
+        const payload = { messages: chatHistory, date: selectedDate, lat: userLocation.lat, lng: userLocation.lng };
+        const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+        if (!res.ok) { const err = await res.json(); throw new Error(err.error || `Server error ${res.status}`); }
         const data = await res.json();
         const content = data.choices?.[0]?.message?.content || "No response from agent.";
-
         chatHistory.push({ role: "assistant", content });
-
-        // Parse schedule JSON from response
         const jsonMatch = content.match(/```json\s*([\s\S]*?)```/);
         let newBlocks = null;
-        if (jsonMatch) {
-          try {
-            newBlocks = JSON.parse(jsonMatch[1]);
-            if (Array.isArray(newBlocks) && newBlocks.length > 0) {
-              blocks = newBlocks;
-              saveBlocks();
-              completed.clear();
-              saveCompleted();
-              render();
-            }
-          } catch (parseErr) {
-            console.error("Failed to parse schedule JSON:", parseErr);
-          }
-        }
-
-        // Display agent message (text only, without JSON block)
+        if (jsonMatch) { try { newBlocks = JSON.parse(jsonMatch[1]); if (Array.isArray(newBlocks) && newBlocks.length > 0) { blocks = newBlocks; saveBlocks(); completed.clear(); saveCompleted(); render(); } } catch (parseErr) { console.error("Failed to parse schedule JSON:", parseErr); } }
         thinkingEl.remove();
         const textPart = content.replace(/```json[\s\S]*?```/, "").trim();
         const msgEl = appendChatMsg("agent", textPart);
-        if (newBlocks) {
-          const preview = document.createElement("div");
-          preview.className = "schedule-preview";
-          preview.textContent = `Schedule generated: ${newBlocks.length} blocks`;
-          msgEl.appendChild(preview);
-        }
-      } catch (err) {
-        thinkingEl.remove();
-        appendChatMsg("agent", `Error: ${err.message}`);
-        showToast(`Chat error: ${err.message}`);
-      } finally {
-        chatInput.disabled = false;
-        $("sendBtn").disabled = false;
-        chatInput.focus();
-      }
+        if (newBlocks) { const preview = document.createElement("div"); preview.className = "schedule-preview"; preview.textContent = `Schedule generated: ${newBlocks.length} blocks`; msgEl.appendChild(preview); }
+      } catch (err) { thinkingEl.remove(); appendChatMsg("agent", `Error: ${err.message}`); showToast(`Chat error: ${err.message}`); }
+      finally { chatInput.disabled = false; $("sendBtn").disabled = false; chatInput.focus(); }
     }
 
-    function appendChatMsg(role, text) {
-      const div = document.createElement("div");
-      div.className = `msg ${role}`;
-      div.textContent = text;
-      chatMessages.appendChild(div);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-      return div;
-    }
+    function appendChatMsg(role, text) { const div = document.createElement("div"); div.className = `msg ${role}`; div.textContent = text; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; return div; }
 
     $("sendBtn").addEventListener("click", () => sendMessage(chatInput.value));
-    chatInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage(chatInput.value);
-      }
-    });
+    chatInput.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(chatInput.value); } });
 
     // === VOICE INPUT ===
-    let recognition = null;
-    let isListening = false;
-
+    let recognition = null; let isListening = false;
     if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = "en-US";
-
-      recognition.onresult = (e) => {
-        const transcript = e.results[0][0].transcript;
-        chatInput.value = transcript;
-        stopListening();
-      };
-
-      recognition.onerror = () => {
-        stopListening();
-        showToast("Voice input failed - try again");
-      };
-
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition; recognition = new SR(); recognition.continuous = false; recognition.interimResults = false; recognition.lang = "en-US";
+      recognition.onresult = (e) => { chatInput.value = e.results[0][0].transcript; stopListening(); };
+      recognition.onerror = () => { stopListening(); showToast("Voice input failed"); };
       recognition.onend = () => stopListening();
     }
-
-    function startListening() {
-      if (!recognition) return showToast("Voice input not supported in this browser");
-      recognition.start();
-      isListening = true;
-      $("micBtn").classList.add("listening");
-    }
-
-    function stopListening() {
-      if (recognition && isListening) recognition.stop();
-      isListening = false;
-      $("micBtn").classList.remove("listening");
-    }
-
-    $("micBtn").addEventListener("click", () => {
-      if (isListening) stopListening();
-      else startListening();
-    });
+    function startListening() { if (!recognition) return showToast("Voice not supported"); recognition.start(); isListening = true; $("micBtn").classList.add("listening"); }
+    function stopListening() { if (recognition && isListening) recognition.stop(); isListening = false; $("micBtn").classList.remove("listening"); }
+    $("micBtn").addEventListener("click", () => { if (isListening) stopListening(); else startListening(); });
 
     // === DATE NAV ===
     $("prevDay").addEventListener("click", () => shiftDate(-1));
@@ -1678,33 +1057,59 @@
     $("geoBtn").addEventListener("click", () => {
       if (!navigator.geolocation) return showToast("Geolocation not supported");
       navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          userLocation.lat = pos.coords.latitude;
-          userLocation.lng = pos.coords.longitude;
-          saveLocation();
-          showToast(`Location: ${userLocation.lat.toFixed(2)}, ${userLocation.lng.toFixed(2)}`);
-        },
+        (pos) => { userLocation.lat = pos.coords.latitude; userLocation.lng = pos.coords.longitude; saveLocation(); showToast(`Location: ${userLocation.lat.toFixed(2)}, ${userLocation.lng.toFixed(2)}`); },
         () => showToast("Location access denied")
       );
+    });
+
+    // === THEME TOGGLE ===
+    function initTheme() {
+      const saved = localStorage.getItem("day-planner-theme") || "dark";
+      document.documentElement.setAttribute("data-theme", saved);
+      $("themeToggle").textContent = saved === "dark" ? "\u2600" : "\u263D";
+    }
+
+    $("themeToggle").addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("day-planner-theme", next);
+      $("themeToggle").textContent = next === "dark" ? "\u2600" : "\u263D";
+    });
+
+    // === CHAT DRAWER ===
+    const chatDrawer = $("chatDrawer");
+    const chatHandle = $("chatHandle");
+
+    function setChatState(state) { chatDrawer.setAttribute("data-state", state); }
+
+    chatHandle.addEventListener("click", () => {
+      const s = chatDrawer.getAttribute("data-state");
+      if (s === "collapsed") setChatState("open");
+      else if (s === "open") setChatState("full");
+      else setChatState("collapsed");
+    });
+
+    chatInput.addEventListener("focus", () => {
+      if (chatDrawer.getAttribute("data-state") === "collapsed") setChatState("open");
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && chatDrawer.getAttribute("data-state") !== "collapsed") {
+        setChatState("collapsed"); chatInput.blur();
+      }
     });
 
     // === MAIN RENDER ===
     function render() {
       dateDisplay.textContent = formatDateShort(selectedDate);
-      updateLifeBars();
-      renderHeroBlocks();
-      renderDashboard();
-      renderTypeChart();
-      renderTimeline();
-      renderWeekDots();
+      updateLifeBars(); renderHeroBlocks(); renderDashboard(); renderTypeChart(); renderTimeline(); renderWeekDots();
     }
 
     // === BOOT ===
-    loadBlocks();
-    loadCompleted();
-    loadDayMeta();
-    render();
-    updateClock();
+    initTheme();
+    loadBlocks(); loadCompleted(); loadDayMeta();
+    render(); updateClock();
     setInterval(() => { updateClock(); render(); }, 1000);
   </script>
 </body>
