@@ -6,7 +6,11 @@ import { StatsRow } from "~/components/shared/StatsRow";
 import { TypeChart } from "~/components/shared/TypeChart";
 import { BlockList } from "~/components/shared/BlockList";
 import { DateNav } from "~/components/shared/DateNav";
+import { RadialClock } from "~/components/visualizations/RadialClock";
+import { RibbonPills } from "~/components/visualizations/RibbonPills";
 import type { useSchedule } from "~/hooks/useSchedule";
+
+type VizMode = "list" | "clock" | "ribbon";
 
 interface ClassicViewProps {
   date: string;
@@ -15,6 +19,8 @@ interface ClassicViewProps {
 }
 
 export function ClassicView({ date, schedule, onShiftDate }: ClassicViewProps) {
+  const [vizMode, setVizMode] = useState<VizMode>("list");
+  const [clockScale, setClockScale] = useState<"day" | "week" | "month">("day");
   const clock = new Date().toLocaleString([], { weekday: "short", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 
   return (
@@ -55,12 +61,46 @@ export function ClassicView({ date, schedule, onShiftDate }: ClassicViewProps) {
 
           <TypeChart typeMins={schedule.typeMins} />
 
-          <BlockList
-            blocks={schedule.blocks}
-            date={date}
-            activeId={schedule.active?.id}
-            onToggle={schedule.toggleBlock}
-          />
+          {/* Visualization toggle */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", gap: 2 }}>
+              {([["list", "List"], ["clock", "Clock"], ["ribbon", "Ribbon"]] as [VizMode, string][]).map(([mode, label]) => (
+                <button key={mode} onClick={() => setVizMode(mode)} style={{
+                  padding: "4px 12px", borderRadius: 4, border: "1px solid var(--border)",
+                  background: vizMode === mode ? "var(--surface-2)" : "transparent",
+                  color: vizMode === mode ? "var(--text)" : "var(--text-muted)",
+                  fontSize: "0.72rem", fontWeight: 600, cursor: "pointer", fontFamily: "var(--font-sans)",
+                }}>
+                  {label}
+                </button>
+              ))}
+            </div>
+            {vizMode === "clock" && (
+              <div style={{ display: "flex", gap: 2 }}>
+                {([["day", "Day"], ["week", "Week"], ["month", "Month"]] as ["day" | "week" | "month", string][]).map(([scale, label]) => (
+                  <button key={scale} onClick={() => setClockScale(scale)} style={{
+                    padding: "3px 10px", borderRadius: 4, border: "1px solid var(--border)",
+                    background: clockScale === scale ? "var(--accent-soft)" : "transparent",
+                    color: clockScale === scale ? "var(--accent)" : "var(--text-muted)",
+                    fontSize: "0.68rem", fontWeight: 600, cursor: "pointer", fontFamily: "var(--font-sans)",
+                  }}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Active visualization */}
+          {vizMode === "list" && (
+            <BlockList blocks={schedule.blocks} date={date} activeId={schedule.active?.id} onToggle={schedule.toggleBlock} />
+          )}
+          {vizMode === "clock" && (
+            <RadialClock scale={clockScale} blocks={schedule.blocks} date={date} />
+          )}
+          {vizMode === "ribbon" && (
+            <RibbonPills blocks={schedule.blocks} date={date} />
+          )}
         </div>
       </div>
     </div>
