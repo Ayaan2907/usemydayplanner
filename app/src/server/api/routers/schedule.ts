@@ -22,6 +22,17 @@ export const scheduleRouter = createTRPCRouter({
       });
     }),
 
+  // Range query for week/month views — returns all schedules within a date range
+  getByRange: publicProcedure
+    .input(z.object({ start: z.string(), end: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.schedule.findMany({
+        where: { date: { gte: input.start, lte: input.end } },
+        include: { blocks: { orderBy: { sortOrder: "asc" } } },
+        orderBy: { date: "asc" },
+      });
+    }),
+
   upsert: publicProcedure
     .input(z.object({
       date: z.string(),
