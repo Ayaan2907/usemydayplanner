@@ -118,11 +118,37 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.PostScalarFieldEnum = {
+exports.Prisma.ScheduleScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  date: 'date',
+  title: 'title',
+  note: 'note',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BlockScalarFieldEnum = {
+  id: 'id',
+  scheduleId: 'scheduleId',
+  blockId: 'blockId',
+  start: 'start',
+  end: 'end',
+  title: 'title',
+  note: 'note',
+  location: 'location',
+  priority: 'priority',
+  type: 'type',
+  sortOrder: 'sortOrder',
+  completed: 'completed'
+};
+
+exports.Prisma.PatternLogScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  blockType: 'blockType',
+  action: 'action',
+  context: 'context',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -132,7 +158,9 @@ exports.Prisma.SortOrder = {
 
 
 exports.Prisma.ModelName = {
-  Post: 'Post'
+  Schedule: 'Schedule',
+  Block: 'Block',
+  PatternLog: 'PatternLog'
 };
 
 /**

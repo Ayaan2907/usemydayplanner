@@ -14,10 +14,20 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
- * Model Post
+ * Model Schedule
  * 
  */
-export type Post = $Result.DefaultSelection<Prisma.$PostPayload>
+export type Schedule = $Result.DefaultSelection<Prisma.$SchedulePayload>
+/**
+ * Model Block
+ * 
+ */
+export type Block = $Result.DefaultSelection<Prisma.$BlockPayload>
+/**
+ * Model PatternLog
+ * 
+ */
+export type PatternLog = $Result.DefaultSelection<Prisma.$PatternLogPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -26,8 +36,8 @@ export type Post = $Result.DefaultSelection<Prisma.$PostPayload>
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Posts
- * const posts = await prisma.post.findMany()
+ * // Fetch zero or more Schedules
+ * const schedules = await prisma.schedule.findMany()
  * ```
  *
  *
@@ -47,8 +57,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Posts
-   * const posts = await prisma.post.findMany()
+   * // Fetch zero or more Schedules
+   * const schedules = await prisma.schedule.findMany()
    * ```
    *
    *
@@ -138,14 +148,34 @@ export class PrismaClient<
   }>>
 
       /**
-   * `prisma.post`: Exposes CRUD operations for the **Post** model.
+   * `prisma.schedule`: Exposes CRUD operations for the **Schedule** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Posts
-    * const posts = await prisma.post.findMany()
+    * // Fetch zero or more Schedules
+    * const schedules = await prisma.schedule.findMany()
     * ```
     */
-  get post(): Prisma.PostDelegate<ExtArgs, ClientOptions>;
+  get schedule(): Prisma.ScheduleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.block`: Exposes CRUD operations for the **Block** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Blocks
+    * const blocks = await prisma.block.findMany()
+    * ```
+    */
+  get block(): Prisma.BlockDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.patternLog`: Exposes CRUD operations for the **PatternLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PatternLogs
+    * const patternLogs = await prisma.patternLog.findMany()
+    * ```
+    */
+  get patternLog(): Prisma.PatternLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -587,7 +617,9 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    Post: 'Post'
+    Schedule: 'Schedule',
+    Block: 'Block',
+    PatternLog: 'PatternLog'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -606,81 +638,229 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "post"
+      modelProps: "schedule" | "block" | "patternLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
-      Post: {
-        payload: Prisma.$PostPayload<ExtArgs>
-        fields: Prisma.PostFieldRefs
+      Schedule: {
+        payload: Prisma.$SchedulePayload<ExtArgs>
+        fields: Prisma.ScheduleFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.PostFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostPayload> | null
+            args: Prisma.ScheduleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SchedulePayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.PostFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+            args: Prisma.ScheduleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SchedulePayload>
           }
           findFirst: {
-            args: Prisma.PostFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostPayload> | null
+            args: Prisma.ScheduleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SchedulePayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.PostFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+            args: Prisma.ScheduleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SchedulePayload>
           }
           findMany: {
-            args: Prisma.PostFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostPayload>[]
+            args: Prisma.ScheduleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SchedulePayload>[]
           }
           create: {
-            args: Prisma.PostCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+            args: Prisma.ScheduleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SchedulePayload>
           }
           createMany: {
-            args: Prisma.PostCreateManyArgs<ExtArgs>
+            args: Prisma.ScheduleCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.PostCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostPayload>[]
+            args: Prisma.ScheduleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SchedulePayload>[]
           }
           delete: {
-            args: Prisma.PostDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+            args: Prisma.ScheduleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SchedulePayload>
           }
           update: {
-            args: Prisma.PostUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+            args: Prisma.ScheduleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SchedulePayload>
           }
           deleteMany: {
-            args: Prisma.PostDeleteManyArgs<ExtArgs>
+            args: Prisma.ScheduleDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.PostUpdateManyArgs<ExtArgs>
+            args: Prisma.ScheduleUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.PostUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostPayload>[]
+            args: Prisma.ScheduleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SchedulePayload>[]
           }
           upsert: {
-            args: Prisma.PostUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostPayload>
+            args: Prisma.ScheduleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SchedulePayload>
           }
           aggregate: {
-            args: Prisma.PostAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregatePost>
+            args: Prisma.ScheduleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSchedule>
           }
           groupBy: {
-            args: Prisma.PostGroupByArgs<ExtArgs>
-            result: $Utils.Optional<PostGroupByOutputType>[]
+            args: Prisma.ScheduleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ScheduleGroupByOutputType>[]
           }
           count: {
-            args: Prisma.PostCountArgs<ExtArgs>
-            result: $Utils.Optional<PostCountAggregateOutputType> | number
+            args: Prisma.ScheduleCountArgs<ExtArgs>
+            result: $Utils.Optional<ScheduleCountAggregateOutputType> | number
+          }
+        }
+      }
+      Block: {
+        payload: Prisma.$BlockPayload<ExtArgs>
+        fields: Prisma.BlockFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BlockFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BlockFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          findFirst: {
+            args: Prisma.BlockFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BlockFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          findMany: {
+            args: Prisma.BlockFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>[]
+          }
+          create: {
+            args: Prisma.BlockCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          createMany: {
+            args: Prisma.BlockCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BlockCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>[]
+          }
+          delete: {
+            args: Prisma.BlockDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          update: {
+            args: Prisma.BlockUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          deleteMany: {
+            args: Prisma.BlockDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BlockUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BlockUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>[]
+          }
+          upsert: {
+            args: Prisma.BlockUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          aggregate: {
+            args: Prisma.BlockAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBlock>
+          }
+          groupBy: {
+            args: Prisma.BlockGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BlockGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BlockCountArgs<ExtArgs>
+            result: $Utils.Optional<BlockCountAggregateOutputType> | number
+          }
+        }
+      }
+      PatternLog: {
+        payload: Prisma.$PatternLogPayload<ExtArgs>
+        fields: Prisma.PatternLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PatternLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatternLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PatternLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatternLogPayload>
+          }
+          findFirst: {
+            args: Prisma.PatternLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatternLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PatternLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatternLogPayload>
+          }
+          findMany: {
+            args: Prisma.PatternLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatternLogPayload>[]
+          }
+          create: {
+            args: Prisma.PatternLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatternLogPayload>
+          }
+          createMany: {
+            args: Prisma.PatternLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PatternLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatternLogPayload>[]
+          }
+          delete: {
+            args: Prisma.PatternLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatternLogPayload>
+          }
+          update: {
+            args: Prisma.PatternLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatternLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.PatternLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PatternLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PatternLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatternLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.PatternLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatternLogPayload>
+          }
+          aggregate: {
+            args: Prisma.PatternLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePatternLog>
+          }
+          groupBy: {
+            args: Prisma.PatternLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PatternLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PatternLogCountArgs<ExtArgs>
+            result: $Utils.Optional<PatternLogCountAggregateOutputType> | number
           }
         }
       }
@@ -780,7 +960,9 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
-    post?: PostOmit
+    schedule?: ScheduleOmit
+    block?: BlockOmit
+    patternLog?: PatternLogOmit
   }
 
   /* Types for Logging */
@@ -856,364 +1038,394 @@ export namespace Prisma {
    */
 
 
+  /**
+   * Count Type ScheduleCountOutputType
+   */
+
+  export type ScheduleCountOutputType = {
+    blocks: number
+  }
+
+  export type ScheduleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    blocks?: boolean | ScheduleCountOutputTypeCountBlocksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ScheduleCountOutputType without action
+   */
+  export type ScheduleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ScheduleCountOutputType
+     */
+    select?: ScheduleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ScheduleCountOutputType without action
+   */
+  export type ScheduleCountOutputTypeCountBlocksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BlockWhereInput
+  }
+
 
   /**
    * Models
    */
 
   /**
-   * Model Post
+   * Model Schedule
    */
 
-  export type AggregatePost = {
-    _count: PostCountAggregateOutputType | null
-    _avg: PostAvgAggregateOutputType | null
-    _sum: PostSumAggregateOutputType | null
-    _min: PostMinAggregateOutputType | null
-    _max: PostMaxAggregateOutputType | null
+  export type AggregateSchedule = {
+    _count: ScheduleCountAggregateOutputType | null
+    _min: ScheduleMinAggregateOutputType | null
+    _max: ScheduleMaxAggregateOutputType | null
   }
 
-  export type PostAvgAggregateOutputType = {
-    id: number | null
-  }
-
-  export type PostSumAggregateOutputType = {
-    id: number | null
-  }
-
-  export type PostMinAggregateOutputType = {
-    id: number | null
-    name: string | null
+  export type ScheduleMinAggregateOutputType = {
+    id: string | null
+    date: string | null
+    title: string | null
+    note: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type PostMaxAggregateOutputType = {
-    id: number | null
-    name: string | null
+  export type ScheduleMaxAggregateOutputType = {
+    id: string | null
+    date: string | null
+    title: string | null
+    note: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type PostCountAggregateOutputType = {
+  export type ScheduleCountAggregateOutputType = {
     id: number
-    name: number
+    date: number
+    title: number
+    note: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
-  export type PostAvgAggregateInputType = {
+  export type ScheduleMinAggregateInputType = {
     id?: true
-  }
-
-  export type PostSumAggregateInputType = {
-    id?: true
-  }
-
-  export type PostMinAggregateInputType = {
-    id?: true
-    name?: true
+    date?: true
+    title?: true
+    note?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type PostMaxAggregateInputType = {
+  export type ScheduleMaxAggregateInputType = {
     id?: true
-    name?: true
+    date?: true
+    title?: true
+    note?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type PostCountAggregateInputType = {
+  export type ScheduleCountAggregateInputType = {
     id?: true
-    name?: true
+    date?: true
+    title?: true
+    note?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
   }
 
-  export type PostAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ScheduleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Post to aggregate.
+     * Filter which Schedule to aggregate.
      */
-    where?: PostWhereInput
+    where?: ScheduleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Posts to fetch.
+     * Determine the order of Schedules to fetch.
      */
-    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    orderBy?: ScheduleOrderByWithRelationInput | ScheduleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: PostWhereUniqueInput
+    cursor?: ScheduleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Posts from the position of the cursor.
+     * Take `±n` Schedules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Posts.
+     * Skip the first `n` Schedules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Posts
+     * Count returned Schedules
     **/
-    _count?: true | PostCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: PostAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: PostSumAggregateInputType
+    _count?: true | ScheduleCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: PostMinAggregateInputType
+    _min?: ScheduleMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: PostMaxAggregateInputType
+    _max?: ScheduleMaxAggregateInputType
   }
 
-  export type GetPostAggregateType<T extends PostAggregateArgs> = {
-        [P in keyof T & keyof AggregatePost]: P extends '_count' | 'count'
+  export type GetScheduleAggregateType<T extends ScheduleAggregateArgs> = {
+        [P in keyof T & keyof AggregateSchedule]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregatePost[P]>
-      : GetScalarType<T[P], AggregatePost[P]>
+        : GetScalarType<T[P], AggregateSchedule[P]>
+      : GetScalarType<T[P], AggregateSchedule[P]>
   }
 
 
 
 
-  export type PostGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PostWhereInput
-    orderBy?: PostOrderByWithAggregationInput | PostOrderByWithAggregationInput[]
-    by: PostScalarFieldEnum[] | PostScalarFieldEnum
-    having?: PostScalarWhereWithAggregatesInput
+  export type ScheduleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ScheduleWhereInput
+    orderBy?: ScheduleOrderByWithAggregationInput | ScheduleOrderByWithAggregationInput[]
+    by: ScheduleScalarFieldEnum[] | ScheduleScalarFieldEnum
+    having?: ScheduleScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: PostCountAggregateInputType | true
-    _avg?: PostAvgAggregateInputType
-    _sum?: PostSumAggregateInputType
-    _min?: PostMinAggregateInputType
-    _max?: PostMaxAggregateInputType
+    _count?: ScheduleCountAggregateInputType | true
+    _min?: ScheduleMinAggregateInputType
+    _max?: ScheduleMaxAggregateInputType
   }
 
-  export type PostGroupByOutputType = {
-    id: number
-    name: string
+  export type ScheduleGroupByOutputType = {
+    id: string
+    date: string
+    title: string
+    note: string
     createdAt: Date
     updatedAt: Date
-    _count: PostCountAggregateOutputType | null
-    _avg: PostAvgAggregateOutputType | null
-    _sum: PostSumAggregateOutputType | null
-    _min: PostMinAggregateOutputType | null
-    _max: PostMaxAggregateOutputType | null
+    _count: ScheduleCountAggregateOutputType | null
+    _min: ScheduleMinAggregateOutputType | null
+    _max: ScheduleMaxAggregateOutputType | null
   }
 
-  type GetPostGroupByPayload<T extends PostGroupByArgs> = Prisma.PrismaPromise<
+  type GetScheduleGroupByPayload<T extends ScheduleGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<PostGroupByOutputType, T['by']> &
+      PickEnumerable<ScheduleGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof PostGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof ScheduleGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], PostGroupByOutputType[P]>
-            : GetScalarType<T[P], PostGroupByOutputType[P]>
+              : GetScalarType<T[P], ScheduleGroupByOutputType[P]>
+            : GetScalarType<T[P], ScheduleGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type PostSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ScheduleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    name?: boolean
+    date?: boolean
+    title?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["post"]>
+    blocks?: boolean | Schedule$blocksArgs<ExtArgs>
+    _count?: boolean | ScheduleCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["schedule"]>
 
-  export type PostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ScheduleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    name?: boolean
+    date?: boolean
+    title?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["post"]>
+  }, ExtArgs["result"]["schedule"]>
 
-  export type PostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ScheduleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    name?: boolean
+    date?: boolean
+    title?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["post"]>
+  }, ExtArgs["result"]["schedule"]>
 
-  export type PostSelectScalar = {
+  export type ScheduleSelectScalar = {
     id?: boolean
-    name?: boolean
+    date?: boolean
+    title?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
+  export type ScheduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "date" | "title" | "note" | "createdAt" | "updatedAt", ExtArgs["result"]["schedule"]>
+  export type ScheduleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    blocks?: boolean | Schedule$blocksArgs<ExtArgs>
+    _count?: boolean | ScheduleCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ScheduleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ScheduleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
-  export type $PostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Post"
-    objects: {}
+  export type $SchedulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Schedule"
+    objects: {
+      blocks: Prisma.$BlockPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
-      name: string
+      id: string
+      date: string
+      title: string
+      note: string
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["post"]>
+    }, ExtArgs["result"]["schedule"]>
     composites: {}
   }
 
-  type PostGetPayload<S extends boolean | null | undefined | PostDefaultArgs> = $Result.GetResult<Prisma.$PostPayload, S>
+  type ScheduleGetPayload<S extends boolean | null | undefined | ScheduleDefaultArgs> = $Result.GetResult<Prisma.$SchedulePayload, S>
 
-  type PostCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<PostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: PostCountAggregateInputType | true
+  type ScheduleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ScheduleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ScheduleCountAggregateInputType | true
     }
 
-  export interface PostDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Post'], meta: { name: 'Post' } }
+  export interface ScheduleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Schedule'], meta: { name: 'Schedule' } }
     /**
-     * Find zero or one Post that matches the filter.
-     * @param {PostFindUniqueArgs} args - Arguments to find a Post
+     * Find zero or one Schedule that matches the filter.
+     * @param {ScheduleFindUniqueArgs} args - Arguments to find a Schedule
      * @example
-     * // Get one Post
-     * const post = await prisma.post.findUnique({
+     * // Get one Schedule
+     * const schedule = await prisma.schedule.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends PostFindUniqueArgs>(args: SelectSubset<T, PostFindUniqueArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends ScheduleFindUniqueArgs>(args: SelectSubset<T, ScheduleFindUniqueArgs<ExtArgs>>): Prisma__ScheduleClient<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Post that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Schedule that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {PostFindUniqueOrThrowArgs} args - Arguments to find a Post
+     * @param {ScheduleFindUniqueOrThrowArgs} args - Arguments to find a Schedule
      * @example
-     * // Get one Post
-     * const post = await prisma.post.findUniqueOrThrow({
+     * // Get one Schedule
+     * const schedule = await prisma.schedule.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends PostFindUniqueOrThrowArgs>(args: SelectSubset<T, PostFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends ScheduleFindUniqueOrThrowArgs>(args: SelectSubset<T, ScheduleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ScheduleClient<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Post that matches the filter.
+     * Find the first Schedule that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostFindFirstArgs} args - Arguments to find a Post
+     * @param {ScheduleFindFirstArgs} args - Arguments to find a Schedule
      * @example
-     * // Get one Post
-     * const post = await prisma.post.findFirst({
+     * // Get one Schedule
+     * const schedule = await prisma.schedule.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends PostFindFirstArgs>(args?: SelectSubset<T, PostFindFirstArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends ScheduleFindFirstArgs>(args?: SelectSubset<T, ScheduleFindFirstArgs<ExtArgs>>): Prisma__ScheduleClient<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Post that matches the filter or
+     * Find the first Schedule that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostFindFirstOrThrowArgs} args - Arguments to find a Post
+     * @param {ScheduleFindFirstOrThrowArgs} args - Arguments to find a Schedule
      * @example
-     * // Get one Post
-     * const post = await prisma.post.findFirstOrThrow({
+     * // Get one Schedule
+     * const schedule = await prisma.schedule.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends PostFindFirstOrThrowArgs>(args?: SelectSubset<T, PostFindFirstOrThrowArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends ScheduleFindFirstOrThrowArgs>(args?: SelectSubset<T, ScheduleFindFirstOrThrowArgs<ExtArgs>>): Prisma__ScheduleClient<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Posts that matches the filter.
+     * Find zero or more Schedules that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {ScheduleFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Posts
-     * const posts = await prisma.post.findMany()
+     * // Get all Schedules
+     * const schedules = await prisma.schedule.findMany()
      * 
-     * // Get first 10 Posts
-     * const posts = await prisma.post.findMany({ take: 10 })
+     * // Get first 10 Schedules
+     * const schedules = await prisma.schedule.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const postWithIdOnly = await prisma.post.findMany({ select: { id: true } })
+     * const scheduleWithIdOnly = await prisma.schedule.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends PostFindManyArgs>(args?: SelectSubset<T, PostFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends ScheduleFindManyArgs>(args?: SelectSubset<T, ScheduleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Post.
-     * @param {PostCreateArgs} args - Arguments to create a Post.
+     * Create a Schedule.
+     * @param {ScheduleCreateArgs} args - Arguments to create a Schedule.
      * @example
-     * // Create one Post
-     * const Post = await prisma.post.create({
+     * // Create one Schedule
+     * const Schedule = await prisma.schedule.create({
      *   data: {
-     *     // ... data to create a Post
+     *     // ... data to create a Schedule
      *   }
      * })
      * 
      */
-    create<T extends PostCreateArgs>(args: SelectSubset<T, PostCreateArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends ScheduleCreateArgs>(args: SelectSubset<T, ScheduleCreateArgs<ExtArgs>>): Prisma__ScheduleClient<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Posts.
-     * @param {PostCreateManyArgs} args - Arguments to create many Posts.
+     * Create many Schedules.
+     * @param {ScheduleCreateManyArgs} args - Arguments to create many Schedules.
      * @example
-     * // Create many Posts
-     * const post = await prisma.post.createMany({
+     * // Create many Schedules
+     * const schedule = await prisma.schedule.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends PostCreateManyArgs>(args?: SelectSubset<T, PostCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends ScheduleCreateManyArgs>(args?: SelectSubset<T, ScheduleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Posts and returns the data saved in the database.
-     * @param {PostCreateManyAndReturnArgs} args - Arguments to create many Posts.
+     * Create many Schedules and returns the data saved in the database.
+     * @param {ScheduleCreateManyAndReturnArgs} args - Arguments to create many Schedules.
      * @example
-     * // Create many Posts
-     * const post = await prisma.post.createManyAndReturn({
+     * // Create many Schedules
+     * const schedule = await prisma.schedule.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Posts and only return the `id`
-     * const postWithIdOnly = await prisma.post.createManyAndReturn({
+     * // Create many Schedules and only return the `id`
+     * const scheduleWithIdOnly = await prisma.schedule.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -1223,28 +1435,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends PostCreateManyAndReturnArgs>(args?: SelectSubset<T, PostCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends ScheduleCreateManyAndReturnArgs>(args?: SelectSubset<T, ScheduleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Post.
-     * @param {PostDeleteArgs} args - Arguments to delete one Post.
+     * Delete a Schedule.
+     * @param {ScheduleDeleteArgs} args - Arguments to delete one Schedule.
      * @example
-     * // Delete one Post
-     * const Post = await prisma.post.delete({
+     * // Delete one Schedule
+     * const Schedule = await prisma.schedule.delete({
      *   where: {
-     *     // ... filter to delete one Post
+     *     // ... filter to delete one Schedule
      *   }
      * })
      * 
      */
-    delete<T extends PostDeleteArgs>(args: SelectSubset<T, PostDeleteArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends ScheduleDeleteArgs>(args: SelectSubset<T, ScheduleDeleteArgs<ExtArgs>>): Prisma__ScheduleClient<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Post.
-     * @param {PostUpdateArgs} args - Arguments to update one Post.
+     * Update one Schedule.
+     * @param {ScheduleUpdateArgs} args - Arguments to update one Schedule.
      * @example
-     * // Update one Post
-     * const post = await prisma.post.update({
+     * // Update one Schedule
+     * const schedule = await prisma.schedule.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -1254,30 +1466,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends PostUpdateArgs>(args: SelectSubset<T, PostUpdateArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends ScheduleUpdateArgs>(args: SelectSubset<T, ScheduleUpdateArgs<ExtArgs>>): Prisma__ScheduleClient<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Posts.
-     * @param {PostDeleteManyArgs} args - Arguments to filter Posts to delete.
+     * Delete zero or more Schedules.
+     * @param {ScheduleDeleteManyArgs} args - Arguments to filter Schedules to delete.
      * @example
-     * // Delete a few Posts
-     * const { count } = await prisma.post.deleteMany({
+     * // Delete a few Schedules
+     * const { count } = await prisma.schedule.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends PostDeleteManyArgs>(args?: SelectSubset<T, PostDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends ScheduleDeleteManyArgs>(args?: SelectSubset<T, ScheduleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Posts.
+     * Update zero or more Schedules.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {ScheduleUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Posts
-     * const post = await prisma.post.updateMany({
+     * // Update many Schedules
+     * const schedule = await prisma.schedule.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -1287,14 +1499,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends PostUpdateManyArgs>(args: SelectSubset<T, PostUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends ScheduleUpdateManyArgs>(args: SelectSubset<T, ScheduleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Posts and returns the data updated in the database.
-     * @param {PostUpdateManyAndReturnArgs} args - Arguments to update many Posts.
+     * Update zero or more Schedules and returns the data updated in the database.
+     * @param {ScheduleUpdateManyAndReturnArgs} args - Arguments to update many Schedules.
      * @example
-     * // Update many Posts
-     * const post = await prisma.post.updateManyAndReturn({
+     * // Update many Schedules
+     * const schedule = await prisma.schedule.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -1303,8 +1515,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Posts and only return the `id`
-     * const postWithIdOnly = await prisma.post.updateManyAndReturn({
+     * // Update zero or more Schedules and only return the `id`
+     * const scheduleWithIdOnly = await prisma.schedule.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -1317,56 +1529,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends PostUpdateManyAndReturnArgs>(args: SelectSubset<T, PostUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends ScheduleUpdateManyAndReturnArgs>(args: SelectSubset<T, ScheduleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Post.
-     * @param {PostUpsertArgs} args - Arguments to update or create a Post.
+     * Create or update one Schedule.
+     * @param {ScheduleUpsertArgs} args - Arguments to update or create a Schedule.
      * @example
-     * // Update or create a Post
-     * const post = await prisma.post.upsert({
+     * // Update or create a Schedule
+     * const schedule = await prisma.schedule.upsert({
      *   create: {
-     *     // ... data to create a Post
+     *     // ... data to create a Schedule
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Post we want to update
+     *     // ... the filter for the Schedule we want to update
      *   }
      * })
      */
-    upsert<T extends PostUpsertArgs>(args: SelectSubset<T, PostUpsertArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends ScheduleUpsertArgs>(args: SelectSubset<T, ScheduleUpsertArgs<ExtArgs>>): Prisma__ScheduleClient<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Posts.
+     * Count the number of Schedules.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostCountArgs} args - Arguments to filter Posts to count.
+     * @param {ScheduleCountArgs} args - Arguments to filter Schedules to count.
      * @example
-     * // Count the number of Posts
-     * const count = await prisma.post.count({
+     * // Count the number of Schedules
+     * const count = await prisma.schedule.count({
      *   where: {
-     *     // ... the filter for the Posts we want to count
+     *     // ... the filter for the Schedules we want to count
      *   }
      * })
     **/
-    count<T extends PostCountArgs>(
-      args?: Subset<T, PostCountArgs>,
+    count<T extends ScheduleCountArgs>(
+      args?: Subset<T, ScheduleCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], PostCountAggregateOutputType>
+          : GetScalarType<T['select'], ScheduleCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Post.
+     * Allows you to perform aggregations operations on a Schedule.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {ScheduleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -1386,13 +1598,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends PostAggregateArgs>(args: Subset<T, PostAggregateArgs>): Prisma.PrismaPromise<GetPostAggregateType<T>>
+    aggregate<T extends ScheduleAggregateArgs>(args: Subset<T, ScheduleAggregateArgs>): Prisma.PrismaPromise<GetScheduleAggregateType<T>>
 
     /**
-     * Group by Post.
+     * Group by Schedule.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostGroupByArgs} args - Group by arguments.
+     * @param {ScheduleGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -1407,14 +1619,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends PostGroupByArgs,
+      T extends ScheduleGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: PostGroupByArgs['orderBy'] }
-        : { orderBy?: PostGroupByArgs['orderBy'] },
+        ? { orderBy: ScheduleGroupByArgs['orderBy'] }
+        : { orderBy?: ScheduleGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -1463,20 +1675,2272 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, PostGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPostGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, ScheduleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetScheduleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Post model
+   * Fields of the Schedule model
    */
-  readonly fields: PostFieldRefs;
+  readonly fields: ScheduleFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Post.
+   * The delegate class that acts as a "Promise-like" for Schedule.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__PostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__ScheduleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    blocks<T extends Schedule$blocksArgs<ExtArgs> = {}>(args?: Subset<T, Schedule$blocksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Schedule model
+   */
+  interface ScheduleFieldRefs {
+    readonly id: FieldRef<"Schedule", 'String'>
+    readonly date: FieldRef<"Schedule", 'String'>
+    readonly title: FieldRef<"Schedule", 'String'>
+    readonly note: FieldRef<"Schedule", 'String'>
+    readonly createdAt: FieldRef<"Schedule", 'DateTime'>
+    readonly updatedAt: FieldRef<"Schedule", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Schedule findUnique
+   */
+  export type ScheduleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which Schedule to fetch.
+     */
+    where: ScheduleWhereUniqueInput
+  }
+
+  /**
+   * Schedule findUniqueOrThrow
+   */
+  export type ScheduleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which Schedule to fetch.
+     */
+    where: ScheduleWhereUniqueInput
+  }
+
+  /**
+   * Schedule findFirst
+   */
+  export type ScheduleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which Schedule to fetch.
+     */
+    where?: ScheduleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Schedules to fetch.
+     */
+    orderBy?: ScheduleOrderByWithRelationInput | ScheduleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Schedules.
+     */
+    cursor?: ScheduleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Schedules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Schedules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Schedules.
+     */
+    distinct?: ScheduleScalarFieldEnum | ScheduleScalarFieldEnum[]
+  }
+
+  /**
+   * Schedule findFirstOrThrow
+   */
+  export type ScheduleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which Schedule to fetch.
+     */
+    where?: ScheduleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Schedules to fetch.
+     */
+    orderBy?: ScheduleOrderByWithRelationInput | ScheduleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Schedules.
+     */
+    cursor?: ScheduleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Schedules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Schedules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Schedules.
+     */
+    distinct?: ScheduleScalarFieldEnum | ScheduleScalarFieldEnum[]
+  }
+
+  /**
+   * Schedule findMany
+   */
+  export type ScheduleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which Schedules to fetch.
+     */
+    where?: ScheduleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Schedules to fetch.
+     */
+    orderBy?: ScheduleOrderByWithRelationInput | ScheduleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Schedules.
+     */
+    cursor?: ScheduleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Schedules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Schedules.
+     */
+    skip?: number
+    distinct?: ScheduleScalarFieldEnum | ScheduleScalarFieldEnum[]
+  }
+
+  /**
+   * Schedule create
+   */
+  export type ScheduleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ScheduleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Schedule.
+     */
+    data: XOR<ScheduleCreateInput, ScheduleUncheckedCreateInput>
+  }
+
+  /**
+   * Schedule createMany
+   */
+  export type ScheduleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Schedules.
+     */
+    data: ScheduleCreateManyInput | ScheduleCreateManyInput[]
+  }
+
+  /**
+   * Schedule createManyAndReturn
+   */
+  export type ScheduleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * The data used to create many Schedules.
+     */
+    data: ScheduleCreateManyInput | ScheduleCreateManyInput[]
+  }
+
+  /**
+   * Schedule update
+   */
+  export type ScheduleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ScheduleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Schedule.
+     */
+    data: XOR<ScheduleUpdateInput, ScheduleUncheckedUpdateInput>
+    /**
+     * Choose, which Schedule to update.
+     */
+    where: ScheduleWhereUniqueInput
+  }
+
+  /**
+   * Schedule updateMany
+   */
+  export type ScheduleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Schedules.
+     */
+    data: XOR<ScheduleUpdateManyMutationInput, ScheduleUncheckedUpdateManyInput>
+    /**
+     * Filter which Schedules to update
+     */
+    where?: ScheduleWhereInput
+    /**
+     * Limit how many Schedules to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Schedule updateManyAndReturn
+   */
+  export type ScheduleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * The data used to update Schedules.
+     */
+    data: XOR<ScheduleUpdateManyMutationInput, ScheduleUncheckedUpdateManyInput>
+    /**
+     * Filter which Schedules to update
+     */
+    where?: ScheduleWhereInput
+    /**
+     * Limit how many Schedules to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Schedule upsert
+   */
+  export type ScheduleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ScheduleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Schedule to update in case it exists.
+     */
+    where: ScheduleWhereUniqueInput
+    /**
+     * In case the Schedule found by the `where` argument doesn't exist, create a new Schedule with this data.
+     */
+    create: XOR<ScheduleCreateInput, ScheduleUncheckedCreateInput>
+    /**
+     * In case the Schedule was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ScheduleUpdateInput, ScheduleUncheckedUpdateInput>
+  }
+
+  /**
+   * Schedule delete
+   */
+  export type ScheduleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ScheduleInclude<ExtArgs> | null
+    /**
+     * Filter which Schedule to delete.
+     */
+    where: ScheduleWhereUniqueInput
+  }
+
+  /**
+   * Schedule deleteMany
+   */
+  export type ScheduleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Schedules to delete
+     */
+    where?: ScheduleWhereInput
+    /**
+     * Limit how many Schedules to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Schedule.blocks
+   */
+  export type Schedule$blocksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    where?: BlockWhereInput
+    orderBy?: BlockOrderByWithRelationInput | BlockOrderByWithRelationInput[]
+    cursor?: BlockWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BlockScalarFieldEnum | BlockScalarFieldEnum[]
+  }
+
+  /**
+   * Schedule without action
+   */
+  export type ScheduleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Schedule
+     */
+    select?: ScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Schedule
+     */
+    omit?: ScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ScheduleInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Block
+   */
+
+  export type AggregateBlock = {
+    _count: BlockCountAggregateOutputType | null
+    _avg: BlockAvgAggregateOutputType | null
+    _sum: BlockSumAggregateOutputType | null
+    _min: BlockMinAggregateOutputType | null
+    _max: BlockMaxAggregateOutputType | null
+  }
+
+  export type BlockAvgAggregateOutputType = {
+    sortOrder: number | null
+  }
+
+  export type BlockSumAggregateOutputType = {
+    sortOrder: number | null
+  }
+
+  export type BlockMinAggregateOutputType = {
+    id: string | null
+    scheduleId: string | null
+    blockId: string | null
+    start: string | null
+    end: string | null
+    title: string | null
+    note: string | null
+    location: string | null
+    priority: string | null
+    type: string | null
+    sortOrder: number | null
+    completed: boolean | null
+  }
+
+  export type BlockMaxAggregateOutputType = {
+    id: string | null
+    scheduleId: string | null
+    blockId: string | null
+    start: string | null
+    end: string | null
+    title: string | null
+    note: string | null
+    location: string | null
+    priority: string | null
+    type: string | null
+    sortOrder: number | null
+    completed: boolean | null
+  }
+
+  export type BlockCountAggregateOutputType = {
+    id: number
+    scheduleId: number
+    blockId: number
+    start: number
+    end: number
+    title: number
+    note: number
+    location: number
+    priority: number
+    type: number
+    sortOrder: number
+    completed: number
+    _all: number
+  }
+
+
+  export type BlockAvgAggregateInputType = {
+    sortOrder?: true
+  }
+
+  export type BlockSumAggregateInputType = {
+    sortOrder?: true
+  }
+
+  export type BlockMinAggregateInputType = {
+    id?: true
+    scheduleId?: true
+    blockId?: true
+    start?: true
+    end?: true
+    title?: true
+    note?: true
+    location?: true
+    priority?: true
+    type?: true
+    sortOrder?: true
+    completed?: true
+  }
+
+  export type BlockMaxAggregateInputType = {
+    id?: true
+    scheduleId?: true
+    blockId?: true
+    start?: true
+    end?: true
+    title?: true
+    note?: true
+    location?: true
+    priority?: true
+    type?: true
+    sortOrder?: true
+    completed?: true
+  }
+
+  export type BlockCountAggregateInputType = {
+    id?: true
+    scheduleId?: true
+    blockId?: true
+    start?: true
+    end?: true
+    title?: true
+    note?: true
+    location?: true
+    priority?: true
+    type?: true
+    sortOrder?: true
+    completed?: true
+    _all?: true
+  }
+
+  export type BlockAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Block to aggregate.
+     */
+    where?: BlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Blocks to fetch.
+     */
+    orderBy?: BlockOrderByWithRelationInput | BlockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Blocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Blocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Blocks
+    **/
+    _count?: true | BlockCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: BlockAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BlockSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BlockMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BlockMaxAggregateInputType
+  }
+
+  export type GetBlockAggregateType<T extends BlockAggregateArgs> = {
+        [P in keyof T & keyof AggregateBlock]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBlock[P]>
+      : GetScalarType<T[P], AggregateBlock[P]>
+  }
+
+
+
+
+  export type BlockGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BlockWhereInput
+    orderBy?: BlockOrderByWithAggregationInput | BlockOrderByWithAggregationInput[]
+    by: BlockScalarFieldEnum[] | BlockScalarFieldEnum
+    having?: BlockScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BlockCountAggregateInputType | true
+    _avg?: BlockAvgAggregateInputType
+    _sum?: BlockSumAggregateInputType
+    _min?: BlockMinAggregateInputType
+    _max?: BlockMaxAggregateInputType
+  }
+
+  export type BlockGroupByOutputType = {
+    id: string
+    scheduleId: string
+    blockId: string
+    start: string
+    end: string
+    title: string
+    note: string
+    location: string
+    priority: string
+    type: string
+    sortOrder: number
+    completed: boolean
+    _count: BlockCountAggregateOutputType | null
+    _avg: BlockAvgAggregateOutputType | null
+    _sum: BlockSumAggregateOutputType | null
+    _min: BlockMinAggregateOutputType | null
+    _max: BlockMaxAggregateOutputType | null
+  }
+
+  type GetBlockGroupByPayload<T extends BlockGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BlockGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BlockGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BlockGroupByOutputType[P]>
+            : GetScalarType<T[P], BlockGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BlockSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    scheduleId?: boolean
+    blockId?: boolean
+    start?: boolean
+    end?: boolean
+    title?: boolean
+    note?: boolean
+    location?: boolean
+    priority?: boolean
+    type?: boolean
+    sortOrder?: boolean
+    completed?: boolean
+    schedule?: boolean | ScheduleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["block"]>
+
+  export type BlockSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    scheduleId?: boolean
+    blockId?: boolean
+    start?: boolean
+    end?: boolean
+    title?: boolean
+    note?: boolean
+    location?: boolean
+    priority?: boolean
+    type?: boolean
+    sortOrder?: boolean
+    completed?: boolean
+    schedule?: boolean | ScheduleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["block"]>
+
+  export type BlockSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    scheduleId?: boolean
+    blockId?: boolean
+    start?: boolean
+    end?: boolean
+    title?: boolean
+    note?: boolean
+    location?: boolean
+    priority?: boolean
+    type?: boolean
+    sortOrder?: boolean
+    completed?: boolean
+    schedule?: boolean | ScheduleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["block"]>
+
+  export type BlockSelectScalar = {
+    id?: boolean
+    scheduleId?: boolean
+    blockId?: boolean
+    start?: boolean
+    end?: boolean
+    title?: boolean
+    note?: boolean
+    location?: boolean
+    priority?: boolean
+    type?: boolean
+    sortOrder?: boolean
+    completed?: boolean
+  }
+
+  export type BlockOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "scheduleId" | "blockId" | "start" | "end" | "title" | "note" | "location" | "priority" | "type" | "sortOrder" | "completed", ExtArgs["result"]["block"]>
+  export type BlockInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    schedule?: boolean | ScheduleDefaultArgs<ExtArgs>
+  }
+  export type BlockIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    schedule?: boolean | ScheduleDefaultArgs<ExtArgs>
+  }
+  export type BlockIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    schedule?: boolean | ScheduleDefaultArgs<ExtArgs>
+  }
+
+  export type $BlockPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Block"
+    objects: {
+      schedule: Prisma.$SchedulePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      scheduleId: string
+      blockId: string
+      start: string
+      end: string
+      title: string
+      note: string
+      location: string
+      priority: string
+      type: string
+      sortOrder: number
+      completed: boolean
+    }, ExtArgs["result"]["block"]>
+    composites: {}
+  }
+
+  type BlockGetPayload<S extends boolean | null | undefined | BlockDefaultArgs> = $Result.GetResult<Prisma.$BlockPayload, S>
+
+  type BlockCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BlockFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BlockCountAggregateInputType | true
+    }
+
+  export interface BlockDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Block'], meta: { name: 'Block' } }
+    /**
+     * Find zero or one Block that matches the filter.
+     * @param {BlockFindUniqueArgs} args - Arguments to find a Block
+     * @example
+     * // Get one Block
+     * const block = await prisma.block.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BlockFindUniqueArgs>(args: SelectSubset<T, BlockFindUniqueArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Block that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BlockFindUniqueOrThrowArgs} args - Arguments to find a Block
+     * @example
+     * // Get one Block
+     * const block = await prisma.block.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BlockFindUniqueOrThrowArgs>(args: SelectSubset<T, BlockFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Block that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockFindFirstArgs} args - Arguments to find a Block
+     * @example
+     * // Get one Block
+     * const block = await prisma.block.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BlockFindFirstArgs>(args?: SelectSubset<T, BlockFindFirstArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Block that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockFindFirstOrThrowArgs} args - Arguments to find a Block
+     * @example
+     * // Get one Block
+     * const block = await prisma.block.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BlockFindFirstOrThrowArgs>(args?: SelectSubset<T, BlockFindFirstOrThrowArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Blocks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Blocks
+     * const blocks = await prisma.block.findMany()
+     * 
+     * // Get first 10 Blocks
+     * const blocks = await prisma.block.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const blockWithIdOnly = await prisma.block.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BlockFindManyArgs>(args?: SelectSubset<T, BlockFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Block.
+     * @param {BlockCreateArgs} args - Arguments to create a Block.
+     * @example
+     * // Create one Block
+     * const Block = await prisma.block.create({
+     *   data: {
+     *     // ... data to create a Block
+     *   }
+     * })
+     * 
+     */
+    create<T extends BlockCreateArgs>(args: SelectSubset<T, BlockCreateArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Blocks.
+     * @param {BlockCreateManyArgs} args - Arguments to create many Blocks.
+     * @example
+     * // Create many Blocks
+     * const block = await prisma.block.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BlockCreateManyArgs>(args?: SelectSubset<T, BlockCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Blocks and returns the data saved in the database.
+     * @param {BlockCreateManyAndReturnArgs} args - Arguments to create many Blocks.
+     * @example
+     * // Create many Blocks
+     * const block = await prisma.block.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Blocks and only return the `id`
+     * const blockWithIdOnly = await prisma.block.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BlockCreateManyAndReturnArgs>(args?: SelectSubset<T, BlockCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Block.
+     * @param {BlockDeleteArgs} args - Arguments to delete one Block.
+     * @example
+     * // Delete one Block
+     * const Block = await prisma.block.delete({
+     *   where: {
+     *     // ... filter to delete one Block
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BlockDeleteArgs>(args: SelectSubset<T, BlockDeleteArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Block.
+     * @param {BlockUpdateArgs} args - Arguments to update one Block.
+     * @example
+     * // Update one Block
+     * const block = await prisma.block.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BlockUpdateArgs>(args: SelectSubset<T, BlockUpdateArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Blocks.
+     * @param {BlockDeleteManyArgs} args - Arguments to filter Blocks to delete.
+     * @example
+     * // Delete a few Blocks
+     * const { count } = await prisma.block.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BlockDeleteManyArgs>(args?: SelectSubset<T, BlockDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Blocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Blocks
+     * const block = await prisma.block.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BlockUpdateManyArgs>(args: SelectSubset<T, BlockUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Blocks and returns the data updated in the database.
+     * @param {BlockUpdateManyAndReturnArgs} args - Arguments to update many Blocks.
+     * @example
+     * // Update many Blocks
+     * const block = await prisma.block.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Blocks and only return the `id`
+     * const blockWithIdOnly = await prisma.block.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BlockUpdateManyAndReturnArgs>(args: SelectSubset<T, BlockUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Block.
+     * @param {BlockUpsertArgs} args - Arguments to update or create a Block.
+     * @example
+     * // Update or create a Block
+     * const block = await prisma.block.upsert({
+     *   create: {
+     *     // ... data to create a Block
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Block we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BlockUpsertArgs>(args: SelectSubset<T, BlockUpsertArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Blocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockCountArgs} args - Arguments to filter Blocks to count.
+     * @example
+     * // Count the number of Blocks
+     * const count = await prisma.block.count({
+     *   where: {
+     *     // ... the filter for the Blocks we want to count
+     *   }
+     * })
+    **/
+    count<T extends BlockCountArgs>(
+      args?: Subset<T, BlockCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BlockCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Block.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BlockAggregateArgs>(args: Subset<T, BlockAggregateArgs>): Prisma.PrismaPromise<GetBlockAggregateType<T>>
+
+    /**
+     * Group by Block.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BlockGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BlockGroupByArgs['orderBy'] }
+        : { orderBy?: BlockGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BlockGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBlockGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Block model
+   */
+  readonly fields: BlockFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Block.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BlockClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    schedule<T extends ScheduleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ScheduleDefaultArgs<ExtArgs>>): Prisma__ScheduleClient<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Block model
+   */
+  interface BlockFieldRefs {
+    readonly id: FieldRef<"Block", 'String'>
+    readonly scheduleId: FieldRef<"Block", 'String'>
+    readonly blockId: FieldRef<"Block", 'String'>
+    readonly start: FieldRef<"Block", 'String'>
+    readonly end: FieldRef<"Block", 'String'>
+    readonly title: FieldRef<"Block", 'String'>
+    readonly note: FieldRef<"Block", 'String'>
+    readonly location: FieldRef<"Block", 'String'>
+    readonly priority: FieldRef<"Block", 'String'>
+    readonly type: FieldRef<"Block", 'String'>
+    readonly sortOrder: FieldRef<"Block", 'Int'>
+    readonly completed: FieldRef<"Block", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Block findUnique
+   */
+  export type BlockFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter, which Block to fetch.
+     */
+    where: BlockWhereUniqueInput
+  }
+
+  /**
+   * Block findUniqueOrThrow
+   */
+  export type BlockFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter, which Block to fetch.
+     */
+    where: BlockWhereUniqueInput
+  }
+
+  /**
+   * Block findFirst
+   */
+  export type BlockFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter, which Block to fetch.
+     */
+    where?: BlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Blocks to fetch.
+     */
+    orderBy?: BlockOrderByWithRelationInput | BlockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Blocks.
+     */
+    cursor?: BlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Blocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Blocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Blocks.
+     */
+    distinct?: BlockScalarFieldEnum | BlockScalarFieldEnum[]
+  }
+
+  /**
+   * Block findFirstOrThrow
+   */
+  export type BlockFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter, which Block to fetch.
+     */
+    where?: BlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Blocks to fetch.
+     */
+    orderBy?: BlockOrderByWithRelationInput | BlockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Blocks.
+     */
+    cursor?: BlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Blocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Blocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Blocks.
+     */
+    distinct?: BlockScalarFieldEnum | BlockScalarFieldEnum[]
+  }
+
+  /**
+   * Block findMany
+   */
+  export type BlockFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter, which Blocks to fetch.
+     */
+    where?: BlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Blocks to fetch.
+     */
+    orderBy?: BlockOrderByWithRelationInput | BlockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Blocks.
+     */
+    cursor?: BlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Blocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Blocks.
+     */
+    skip?: number
+    distinct?: BlockScalarFieldEnum | BlockScalarFieldEnum[]
+  }
+
+  /**
+   * Block create
+   */
+  export type BlockCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Block.
+     */
+    data: XOR<BlockCreateInput, BlockUncheckedCreateInput>
+  }
+
+  /**
+   * Block createMany
+   */
+  export type BlockCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Blocks.
+     */
+    data: BlockCreateManyInput | BlockCreateManyInput[]
+  }
+
+  /**
+   * Block createManyAndReturn
+   */
+  export type BlockCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * The data used to create many Blocks.
+     */
+    data: BlockCreateManyInput | BlockCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Block update
+   */
+  export type BlockUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Block.
+     */
+    data: XOR<BlockUpdateInput, BlockUncheckedUpdateInput>
+    /**
+     * Choose, which Block to update.
+     */
+    where: BlockWhereUniqueInput
+  }
+
+  /**
+   * Block updateMany
+   */
+  export type BlockUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Blocks.
+     */
+    data: XOR<BlockUpdateManyMutationInput, BlockUncheckedUpdateManyInput>
+    /**
+     * Filter which Blocks to update
+     */
+    where?: BlockWhereInput
+    /**
+     * Limit how many Blocks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Block updateManyAndReturn
+   */
+  export type BlockUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * The data used to update Blocks.
+     */
+    data: XOR<BlockUpdateManyMutationInput, BlockUncheckedUpdateManyInput>
+    /**
+     * Filter which Blocks to update
+     */
+    where?: BlockWhereInput
+    /**
+     * Limit how many Blocks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Block upsert
+   */
+  export type BlockUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Block to update in case it exists.
+     */
+    where: BlockWhereUniqueInput
+    /**
+     * In case the Block found by the `where` argument doesn't exist, create a new Block with this data.
+     */
+    create: XOR<BlockCreateInput, BlockUncheckedCreateInput>
+    /**
+     * In case the Block was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BlockUpdateInput, BlockUncheckedUpdateInput>
+  }
+
+  /**
+   * Block delete
+   */
+  export type BlockDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter which Block to delete.
+     */
+    where: BlockWhereUniqueInput
+  }
+
+  /**
+   * Block deleteMany
+   */
+  export type BlockDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Blocks to delete
+     */
+    where?: BlockWhereInput
+    /**
+     * Limit how many Blocks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Block without action
+   */
+  export type BlockDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PatternLog
+   */
+
+  export type AggregatePatternLog = {
+    _count: PatternLogCountAggregateOutputType | null
+    _min: PatternLogMinAggregateOutputType | null
+    _max: PatternLogMaxAggregateOutputType | null
+  }
+
+  export type PatternLogMinAggregateOutputType = {
+    id: string | null
+    date: string | null
+    blockType: string | null
+    action: string | null
+    context: string | null
+    createdAt: Date | null
+  }
+
+  export type PatternLogMaxAggregateOutputType = {
+    id: string | null
+    date: string | null
+    blockType: string | null
+    action: string | null
+    context: string | null
+    createdAt: Date | null
+  }
+
+  export type PatternLogCountAggregateOutputType = {
+    id: number
+    date: number
+    blockType: number
+    action: number
+    context: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PatternLogMinAggregateInputType = {
+    id?: true
+    date?: true
+    blockType?: true
+    action?: true
+    context?: true
+    createdAt?: true
+  }
+
+  export type PatternLogMaxAggregateInputType = {
+    id?: true
+    date?: true
+    blockType?: true
+    action?: true
+    context?: true
+    createdAt?: true
+  }
+
+  export type PatternLogCountAggregateInputType = {
+    id?: true
+    date?: true
+    blockType?: true
+    action?: true
+    context?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PatternLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PatternLog to aggregate.
+     */
+    where?: PatternLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PatternLogs to fetch.
+     */
+    orderBy?: PatternLogOrderByWithRelationInput | PatternLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PatternLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PatternLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PatternLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PatternLogs
+    **/
+    _count?: true | PatternLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PatternLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PatternLogMaxAggregateInputType
+  }
+
+  export type GetPatternLogAggregateType<T extends PatternLogAggregateArgs> = {
+        [P in keyof T & keyof AggregatePatternLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePatternLog[P]>
+      : GetScalarType<T[P], AggregatePatternLog[P]>
+  }
+
+
+
+
+  export type PatternLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PatternLogWhereInput
+    orderBy?: PatternLogOrderByWithAggregationInput | PatternLogOrderByWithAggregationInput[]
+    by: PatternLogScalarFieldEnum[] | PatternLogScalarFieldEnum
+    having?: PatternLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PatternLogCountAggregateInputType | true
+    _min?: PatternLogMinAggregateInputType
+    _max?: PatternLogMaxAggregateInputType
+  }
+
+  export type PatternLogGroupByOutputType = {
+    id: string
+    date: string
+    blockType: string
+    action: string
+    context: string
+    createdAt: Date
+    _count: PatternLogCountAggregateOutputType | null
+    _min: PatternLogMinAggregateOutputType | null
+    _max: PatternLogMaxAggregateOutputType | null
+  }
+
+  type GetPatternLogGroupByPayload<T extends PatternLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PatternLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PatternLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PatternLogGroupByOutputType[P]>
+            : GetScalarType<T[P], PatternLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PatternLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    date?: boolean
+    blockType?: boolean
+    action?: boolean
+    context?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["patternLog"]>
+
+  export type PatternLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    date?: boolean
+    blockType?: boolean
+    action?: boolean
+    context?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["patternLog"]>
+
+  export type PatternLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    date?: boolean
+    blockType?: boolean
+    action?: boolean
+    context?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["patternLog"]>
+
+  export type PatternLogSelectScalar = {
+    id?: boolean
+    date?: boolean
+    blockType?: boolean
+    action?: boolean
+    context?: boolean
+    createdAt?: boolean
+  }
+
+  export type PatternLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "date" | "blockType" | "action" | "context" | "createdAt", ExtArgs["result"]["patternLog"]>
+
+  export type $PatternLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PatternLog"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      date: string
+      blockType: string
+      action: string
+      context: string
+      createdAt: Date
+    }, ExtArgs["result"]["patternLog"]>
+    composites: {}
+  }
+
+  type PatternLogGetPayload<S extends boolean | null | undefined | PatternLogDefaultArgs> = $Result.GetResult<Prisma.$PatternLogPayload, S>
+
+  type PatternLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PatternLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PatternLogCountAggregateInputType | true
+    }
+
+  export interface PatternLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PatternLog'], meta: { name: 'PatternLog' } }
+    /**
+     * Find zero or one PatternLog that matches the filter.
+     * @param {PatternLogFindUniqueArgs} args - Arguments to find a PatternLog
+     * @example
+     * // Get one PatternLog
+     * const patternLog = await prisma.patternLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PatternLogFindUniqueArgs>(args: SelectSubset<T, PatternLogFindUniqueArgs<ExtArgs>>): Prisma__PatternLogClient<$Result.GetResult<Prisma.$PatternLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PatternLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PatternLogFindUniqueOrThrowArgs} args - Arguments to find a PatternLog
+     * @example
+     * // Get one PatternLog
+     * const patternLog = await prisma.patternLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PatternLogFindUniqueOrThrowArgs>(args: SelectSubset<T, PatternLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PatternLogClient<$Result.GetResult<Prisma.$PatternLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PatternLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatternLogFindFirstArgs} args - Arguments to find a PatternLog
+     * @example
+     * // Get one PatternLog
+     * const patternLog = await prisma.patternLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PatternLogFindFirstArgs>(args?: SelectSubset<T, PatternLogFindFirstArgs<ExtArgs>>): Prisma__PatternLogClient<$Result.GetResult<Prisma.$PatternLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PatternLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatternLogFindFirstOrThrowArgs} args - Arguments to find a PatternLog
+     * @example
+     * // Get one PatternLog
+     * const patternLog = await prisma.patternLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PatternLogFindFirstOrThrowArgs>(args?: SelectSubset<T, PatternLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__PatternLogClient<$Result.GetResult<Prisma.$PatternLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PatternLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatternLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PatternLogs
+     * const patternLogs = await prisma.patternLog.findMany()
+     * 
+     * // Get first 10 PatternLogs
+     * const patternLogs = await prisma.patternLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const patternLogWithIdOnly = await prisma.patternLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PatternLogFindManyArgs>(args?: SelectSubset<T, PatternLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PatternLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PatternLog.
+     * @param {PatternLogCreateArgs} args - Arguments to create a PatternLog.
+     * @example
+     * // Create one PatternLog
+     * const PatternLog = await prisma.patternLog.create({
+     *   data: {
+     *     // ... data to create a PatternLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends PatternLogCreateArgs>(args: SelectSubset<T, PatternLogCreateArgs<ExtArgs>>): Prisma__PatternLogClient<$Result.GetResult<Prisma.$PatternLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PatternLogs.
+     * @param {PatternLogCreateManyArgs} args - Arguments to create many PatternLogs.
+     * @example
+     * // Create many PatternLogs
+     * const patternLog = await prisma.patternLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PatternLogCreateManyArgs>(args?: SelectSubset<T, PatternLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PatternLogs and returns the data saved in the database.
+     * @param {PatternLogCreateManyAndReturnArgs} args - Arguments to create many PatternLogs.
+     * @example
+     * // Create many PatternLogs
+     * const patternLog = await prisma.patternLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PatternLogs and only return the `id`
+     * const patternLogWithIdOnly = await prisma.patternLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PatternLogCreateManyAndReturnArgs>(args?: SelectSubset<T, PatternLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PatternLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PatternLog.
+     * @param {PatternLogDeleteArgs} args - Arguments to delete one PatternLog.
+     * @example
+     * // Delete one PatternLog
+     * const PatternLog = await prisma.patternLog.delete({
+     *   where: {
+     *     // ... filter to delete one PatternLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PatternLogDeleteArgs>(args: SelectSubset<T, PatternLogDeleteArgs<ExtArgs>>): Prisma__PatternLogClient<$Result.GetResult<Prisma.$PatternLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PatternLog.
+     * @param {PatternLogUpdateArgs} args - Arguments to update one PatternLog.
+     * @example
+     * // Update one PatternLog
+     * const patternLog = await prisma.patternLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PatternLogUpdateArgs>(args: SelectSubset<T, PatternLogUpdateArgs<ExtArgs>>): Prisma__PatternLogClient<$Result.GetResult<Prisma.$PatternLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PatternLogs.
+     * @param {PatternLogDeleteManyArgs} args - Arguments to filter PatternLogs to delete.
+     * @example
+     * // Delete a few PatternLogs
+     * const { count } = await prisma.patternLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PatternLogDeleteManyArgs>(args?: SelectSubset<T, PatternLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PatternLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatternLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PatternLogs
+     * const patternLog = await prisma.patternLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PatternLogUpdateManyArgs>(args: SelectSubset<T, PatternLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PatternLogs and returns the data updated in the database.
+     * @param {PatternLogUpdateManyAndReturnArgs} args - Arguments to update many PatternLogs.
+     * @example
+     * // Update many PatternLogs
+     * const patternLog = await prisma.patternLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PatternLogs and only return the `id`
+     * const patternLogWithIdOnly = await prisma.patternLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PatternLogUpdateManyAndReturnArgs>(args: SelectSubset<T, PatternLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PatternLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PatternLog.
+     * @param {PatternLogUpsertArgs} args - Arguments to update or create a PatternLog.
+     * @example
+     * // Update or create a PatternLog
+     * const patternLog = await prisma.patternLog.upsert({
+     *   create: {
+     *     // ... data to create a PatternLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PatternLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PatternLogUpsertArgs>(args: SelectSubset<T, PatternLogUpsertArgs<ExtArgs>>): Prisma__PatternLogClient<$Result.GetResult<Prisma.$PatternLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PatternLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatternLogCountArgs} args - Arguments to filter PatternLogs to count.
+     * @example
+     * // Count the number of PatternLogs
+     * const count = await prisma.patternLog.count({
+     *   where: {
+     *     // ... the filter for the PatternLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends PatternLogCountArgs>(
+      args?: Subset<T, PatternLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PatternLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PatternLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatternLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PatternLogAggregateArgs>(args: Subset<T, PatternLogAggregateArgs>): Prisma.PrismaPromise<GetPatternLogAggregateType<T>>
+
+    /**
+     * Group by PatternLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatternLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PatternLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PatternLogGroupByArgs['orderBy'] }
+        : { orderBy?: PatternLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PatternLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPatternLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PatternLog model
+   */
+  readonly fields: PatternLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PatternLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PatternLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1504,374 +3968,376 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Post model
+   * Fields of the PatternLog model
    */
-  interface PostFieldRefs {
-    readonly id: FieldRef<"Post", 'Int'>
-    readonly name: FieldRef<"Post", 'String'>
-    readonly createdAt: FieldRef<"Post", 'DateTime'>
-    readonly updatedAt: FieldRef<"Post", 'DateTime'>
+  interface PatternLogFieldRefs {
+    readonly id: FieldRef<"PatternLog", 'String'>
+    readonly date: FieldRef<"PatternLog", 'String'>
+    readonly blockType: FieldRef<"PatternLog", 'String'>
+    readonly action: FieldRef<"PatternLog", 'String'>
+    readonly context: FieldRef<"PatternLog", 'String'>
+    readonly createdAt: FieldRef<"PatternLog", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Post findUnique
+   * PatternLog findUnique
    */
-  export type PostFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelect<ExtArgs> | null
+    select?: PatternLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
     /**
-     * Filter, which Post to fetch.
+     * Filter, which PatternLog to fetch.
      */
-    where: PostWhereUniqueInput
+    where: PatternLogWhereUniqueInput
   }
 
   /**
-   * Post findUniqueOrThrow
+   * PatternLog findUniqueOrThrow
    */
-  export type PostFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelect<ExtArgs> | null
+    select?: PatternLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
     /**
-     * Filter, which Post to fetch.
+     * Filter, which PatternLog to fetch.
      */
-    where: PostWhereUniqueInput
+    where: PatternLogWhereUniqueInput
   }
 
   /**
-   * Post findFirst
+   * PatternLog findFirst
    */
-  export type PostFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelect<ExtArgs> | null
+    select?: PatternLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
     /**
-     * Filter, which Post to fetch.
+     * Filter, which PatternLog to fetch.
      */
-    where?: PostWhereInput
+    where?: PatternLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Posts to fetch.
+     * Determine the order of PatternLogs to fetch.
      */
-    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    orderBy?: PatternLogOrderByWithRelationInput | PatternLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Posts.
+     * Sets the position for searching for PatternLogs.
      */
-    cursor?: PostWhereUniqueInput
+    cursor?: PatternLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Posts from the position of the cursor.
+     * Take `±n` PatternLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Posts.
+     * Skip the first `n` PatternLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Posts.
+     * Filter by unique combinations of PatternLogs.
      */
-    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+    distinct?: PatternLogScalarFieldEnum | PatternLogScalarFieldEnum[]
   }
 
   /**
-   * Post findFirstOrThrow
+   * PatternLog findFirstOrThrow
    */
-  export type PostFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelect<ExtArgs> | null
+    select?: PatternLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
     /**
-     * Filter, which Post to fetch.
+     * Filter, which PatternLog to fetch.
      */
-    where?: PostWhereInput
+    where?: PatternLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Posts to fetch.
+     * Determine the order of PatternLogs to fetch.
      */
-    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    orderBy?: PatternLogOrderByWithRelationInput | PatternLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Posts.
+     * Sets the position for searching for PatternLogs.
      */
-    cursor?: PostWhereUniqueInput
+    cursor?: PatternLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Posts from the position of the cursor.
+     * Take `±n` PatternLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Posts.
+     * Skip the first `n` PatternLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Posts.
+     * Filter by unique combinations of PatternLogs.
      */
-    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+    distinct?: PatternLogScalarFieldEnum | PatternLogScalarFieldEnum[]
   }
 
   /**
-   * Post findMany
+   * PatternLog findMany
    */
-  export type PostFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelect<ExtArgs> | null
+    select?: PatternLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
     /**
-     * Filter, which Posts to fetch.
+     * Filter, which PatternLogs to fetch.
      */
-    where?: PostWhereInput
+    where?: PatternLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Posts to fetch.
+     * Determine the order of PatternLogs to fetch.
      */
-    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    orderBy?: PatternLogOrderByWithRelationInput | PatternLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Posts.
+     * Sets the position for listing PatternLogs.
      */
-    cursor?: PostWhereUniqueInput
+    cursor?: PatternLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Posts from the position of the cursor.
+     * Take `±n` PatternLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Posts.
+     * Skip the first `n` PatternLogs.
      */
     skip?: number
-    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+    distinct?: PatternLogScalarFieldEnum | PatternLogScalarFieldEnum[]
   }
 
   /**
-   * Post create
+   * PatternLog create
    */
-  export type PostCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelect<ExtArgs> | null
+    select?: PatternLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
     /**
-     * The data needed to create a Post.
+     * The data needed to create a PatternLog.
      */
-    data: XOR<PostCreateInput, PostUncheckedCreateInput>
+    data: XOR<PatternLogCreateInput, PatternLogUncheckedCreateInput>
   }
 
   /**
-   * Post createMany
+   * PatternLog createMany
    */
-  export type PostCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Posts.
+     * The data used to create many PatternLogs.
      */
-    data: PostCreateManyInput | PostCreateManyInput[]
+    data: PatternLogCreateManyInput | PatternLogCreateManyInput[]
   }
 
   /**
-   * Post createManyAndReturn
+   * PatternLog createManyAndReturn
    */
-  export type PostCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelectCreateManyAndReturn<ExtArgs> | null
+    select?: PatternLogSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
     /**
-     * The data used to create many Posts.
+     * The data used to create many PatternLogs.
      */
-    data: PostCreateManyInput | PostCreateManyInput[]
+    data: PatternLogCreateManyInput | PatternLogCreateManyInput[]
   }
 
   /**
-   * Post update
+   * PatternLog update
    */
-  export type PostUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelect<ExtArgs> | null
+    select?: PatternLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
     /**
-     * The data needed to update a Post.
+     * The data needed to update a PatternLog.
      */
-    data: XOR<PostUpdateInput, PostUncheckedUpdateInput>
+    data: XOR<PatternLogUpdateInput, PatternLogUncheckedUpdateInput>
     /**
-     * Choose, which Post to update.
+     * Choose, which PatternLog to update.
      */
-    where: PostWhereUniqueInput
+    where: PatternLogWhereUniqueInput
   }
 
   /**
-   * Post updateMany
+   * PatternLog updateMany
    */
-  export type PostUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Posts.
+     * The data used to update PatternLogs.
      */
-    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyInput>
+    data: XOR<PatternLogUpdateManyMutationInput, PatternLogUncheckedUpdateManyInput>
     /**
-     * Filter which Posts to update
+     * Filter which PatternLogs to update
      */
-    where?: PostWhereInput
+    where?: PatternLogWhereInput
     /**
-     * Limit how many Posts to update.
+     * Limit how many PatternLogs to update.
      */
     limit?: number
   }
 
   /**
-   * Post updateManyAndReturn
+   * PatternLog updateManyAndReturn
    */
-  export type PostUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: PatternLogSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
     /**
-     * The data used to update Posts.
+     * The data used to update PatternLogs.
      */
-    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyInput>
+    data: XOR<PatternLogUpdateManyMutationInput, PatternLogUncheckedUpdateManyInput>
     /**
-     * Filter which Posts to update
+     * Filter which PatternLogs to update
      */
-    where?: PostWhereInput
+    where?: PatternLogWhereInput
     /**
-     * Limit how many Posts to update.
+     * Limit how many PatternLogs to update.
      */
     limit?: number
   }
 
   /**
-   * Post upsert
+   * PatternLog upsert
    */
-  export type PostUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelect<ExtArgs> | null
+    select?: PatternLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
     /**
-     * The filter to search for the Post to update in case it exists.
+     * The filter to search for the PatternLog to update in case it exists.
      */
-    where: PostWhereUniqueInput
+    where: PatternLogWhereUniqueInput
     /**
-     * In case the Post found by the `where` argument doesn't exist, create a new Post with this data.
+     * In case the PatternLog found by the `where` argument doesn't exist, create a new PatternLog with this data.
      */
-    create: XOR<PostCreateInput, PostUncheckedCreateInput>
+    create: XOR<PatternLogCreateInput, PatternLogUncheckedCreateInput>
     /**
-     * In case the Post was found with the provided `where` argument, update it with this data.
+     * In case the PatternLog was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<PostUpdateInput, PostUncheckedUpdateInput>
+    update: XOR<PatternLogUpdateInput, PatternLogUncheckedUpdateInput>
   }
 
   /**
-   * Post delete
+   * PatternLog delete
    */
-  export type PostDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelect<ExtArgs> | null
+    select?: PatternLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
     /**
-     * Filter which Post to delete.
+     * Filter which PatternLog to delete.
      */
-    where: PostWhereUniqueInput
+    where: PatternLogWhereUniqueInput
   }
 
   /**
-   * Post deleteMany
+   * PatternLog deleteMany
    */
-  export type PostDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Posts to delete
+     * Filter which PatternLogs to delete
      */
-    where?: PostWhereInput
+    where?: PatternLogWhereInput
     /**
-     * Limit how many Posts to delete.
+     * Limit how many PatternLogs to delete.
      */
     limit?: number
   }
 
   /**
-   * Post without action
+   * PatternLog without action
    */
-  export type PostDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Post
+     * Select specific fields to fetch from the PatternLog
      */
-    select?: PostSelect<ExtArgs> | null
+    select?: PatternLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Post
+     * Omit specific fields from the PatternLog
      */
-    omit?: PostOmit<ExtArgs> | null
+    omit?: PatternLogOmit<ExtArgs> | null
   }
 
 
@@ -1886,14 +4352,46 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-  export const PostScalarFieldEnum: {
+  export const ScheduleScalarFieldEnum: {
     id: 'id',
-    name: 'name',
+    date: 'date',
+    title: 'title',
+    note: 'note',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+  export type ScheduleScalarFieldEnum = (typeof ScheduleScalarFieldEnum)[keyof typeof ScheduleScalarFieldEnum]
+
+
+  export const BlockScalarFieldEnum: {
+    id: 'id',
+    scheduleId: 'scheduleId',
+    blockId: 'blockId',
+    start: 'start',
+    end: 'end',
+    title: 'title',
+    note: 'note',
+    location: 'location',
+    priority: 'priority',
+    type: 'type',
+    sortOrder: 'sortOrder',
+    completed: 'completed'
+  };
+
+  export type BlockScalarFieldEnum = (typeof BlockScalarFieldEnum)[keyof typeof BlockScalarFieldEnum]
+
+
+  export const PatternLogScalarFieldEnum: {
+    id: 'id',
+    date: 'date',
+    blockType: 'blockType',
+    action: 'action',
+    context: 'context',
+    createdAt: 'createdAt'
+  };
+
+  export type PatternLogScalarFieldEnum = (typeof PatternLogScalarFieldEnum)[keyof typeof PatternLogScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -1907,13 +4405,6 @@ export namespace Prisma {
   /**
    * Field references
    */
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
 
 
   /**
@@ -1931,6 +4422,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1940,110 +4445,447 @@ export namespace Prisma {
    */
 
 
-  export type PostWhereInput = {
-    AND?: PostWhereInput | PostWhereInput[]
-    OR?: PostWhereInput[]
-    NOT?: PostWhereInput | PostWhereInput[]
-    id?: IntFilter<"Post"> | number
-    name?: StringFilter<"Post"> | string
-    createdAt?: DateTimeFilter<"Post"> | Date | string
-    updatedAt?: DateTimeFilter<"Post"> | Date | string
+  export type ScheduleWhereInput = {
+    AND?: ScheduleWhereInput | ScheduleWhereInput[]
+    OR?: ScheduleWhereInput[]
+    NOT?: ScheduleWhereInput | ScheduleWhereInput[]
+    id?: StringFilter<"Schedule"> | string
+    date?: StringFilter<"Schedule"> | string
+    title?: StringFilter<"Schedule"> | string
+    note?: StringFilter<"Schedule"> | string
+    createdAt?: DateTimeFilter<"Schedule"> | Date | string
+    updatedAt?: DateTimeFilter<"Schedule"> | Date | string
+    blocks?: BlockListRelationFilter
   }
 
-  export type PostOrderByWithRelationInput = {
+  export type ScheduleOrderByWithRelationInput = {
     id?: SortOrder
-    name?: SortOrder
+    date?: SortOrder
+    title?: SortOrder
+    note?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    blocks?: BlockOrderByRelationAggregateInput
   }
 
-  export type PostWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: PostWhereInput | PostWhereInput[]
-    OR?: PostWhereInput[]
-    NOT?: PostWhereInput | PostWhereInput[]
-    name?: StringFilter<"Post"> | string
-    createdAt?: DateTimeFilter<"Post"> | Date | string
-    updatedAt?: DateTimeFilter<"Post"> | Date | string
+  export type ScheduleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    date?: string
+    AND?: ScheduleWhereInput | ScheduleWhereInput[]
+    OR?: ScheduleWhereInput[]
+    NOT?: ScheduleWhereInput | ScheduleWhereInput[]
+    title?: StringFilter<"Schedule"> | string
+    note?: StringFilter<"Schedule"> | string
+    createdAt?: DateTimeFilter<"Schedule"> | Date | string
+    updatedAt?: DateTimeFilter<"Schedule"> | Date | string
+    blocks?: BlockListRelationFilter
+  }, "id" | "date">
+
+  export type ScheduleOrderByWithAggregationInput = {
+    id?: SortOrder
+    date?: SortOrder
+    title?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ScheduleCountOrderByAggregateInput
+    _max?: ScheduleMaxOrderByAggregateInput
+    _min?: ScheduleMinOrderByAggregateInput
+  }
+
+  export type ScheduleScalarWhereWithAggregatesInput = {
+    AND?: ScheduleScalarWhereWithAggregatesInput | ScheduleScalarWhereWithAggregatesInput[]
+    OR?: ScheduleScalarWhereWithAggregatesInput[]
+    NOT?: ScheduleScalarWhereWithAggregatesInput | ScheduleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Schedule"> | string
+    date?: StringWithAggregatesFilter<"Schedule"> | string
+    title?: StringWithAggregatesFilter<"Schedule"> | string
+    note?: StringWithAggregatesFilter<"Schedule"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Schedule"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Schedule"> | Date | string
+  }
+
+  export type BlockWhereInput = {
+    AND?: BlockWhereInput | BlockWhereInput[]
+    OR?: BlockWhereInput[]
+    NOT?: BlockWhereInput | BlockWhereInput[]
+    id?: StringFilter<"Block"> | string
+    scheduleId?: StringFilter<"Block"> | string
+    blockId?: StringFilter<"Block"> | string
+    start?: StringFilter<"Block"> | string
+    end?: StringFilter<"Block"> | string
+    title?: StringFilter<"Block"> | string
+    note?: StringFilter<"Block"> | string
+    location?: StringFilter<"Block"> | string
+    priority?: StringFilter<"Block"> | string
+    type?: StringFilter<"Block"> | string
+    sortOrder?: IntFilter<"Block"> | number
+    completed?: BoolFilter<"Block"> | boolean
+    schedule?: XOR<ScheduleScalarRelationFilter, ScheduleWhereInput>
+  }
+
+  export type BlockOrderByWithRelationInput = {
+    id?: SortOrder
+    scheduleId?: SortOrder
+    blockId?: SortOrder
+    start?: SortOrder
+    end?: SortOrder
+    title?: SortOrder
+    note?: SortOrder
+    location?: SortOrder
+    priority?: SortOrder
+    type?: SortOrder
+    sortOrder?: SortOrder
+    completed?: SortOrder
+    schedule?: ScheduleOrderByWithRelationInput
+  }
+
+  export type BlockWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: BlockWhereInput | BlockWhereInput[]
+    OR?: BlockWhereInput[]
+    NOT?: BlockWhereInput | BlockWhereInput[]
+    scheduleId?: StringFilter<"Block"> | string
+    blockId?: StringFilter<"Block"> | string
+    start?: StringFilter<"Block"> | string
+    end?: StringFilter<"Block"> | string
+    title?: StringFilter<"Block"> | string
+    note?: StringFilter<"Block"> | string
+    location?: StringFilter<"Block"> | string
+    priority?: StringFilter<"Block"> | string
+    type?: StringFilter<"Block"> | string
+    sortOrder?: IntFilter<"Block"> | number
+    completed?: BoolFilter<"Block"> | boolean
+    schedule?: XOR<ScheduleScalarRelationFilter, ScheduleWhereInput>
   }, "id">
 
-  export type PostOrderByWithAggregationInput = {
+  export type BlockOrderByWithAggregationInput = {
     id?: SortOrder
-    name?: SortOrder
+    scheduleId?: SortOrder
+    blockId?: SortOrder
+    start?: SortOrder
+    end?: SortOrder
+    title?: SortOrder
+    note?: SortOrder
+    location?: SortOrder
+    priority?: SortOrder
+    type?: SortOrder
+    sortOrder?: SortOrder
+    completed?: SortOrder
+    _count?: BlockCountOrderByAggregateInput
+    _avg?: BlockAvgOrderByAggregateInput
+    _max?: BlockMaxOrderByAggregateInput
+    _min?: BlockMinOrderByAggregateInput
+    _sum?: BlockSumOrderByAggregateInput
+  }
+
+  export type BlockScalarWhereWithAggregatesInput = {
+    AND?: BlockScalarWhereWithAggregatesInput | BlockScalarWhereWithAggregatesInput[]
+    OR?: BlockScalarWhereWithAggregatesInput[]
+    NOT?: BlockScalarWhereWithAggregatesInput | BlockScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Block"> | string
+    scheduleId?: StringWithAggregatesFilter<"Block"> | string
+    blockId?: StringWithAggregatesFilter<"Block"> | string
+    start?: StringWithAggregatesFilter<"Block"> | string
+    end?: StringWithAggregatesFilter<"Block"> | string
+    title?: StringWithAggregatesFilter<"Block"> | string
+    note?: StringWithAggregatesFilter<"Block"> | string
+    location?: StringWithAggregatesFilter<"Block"> | string
+    priority?: StringWithAggregatesFilter<"Block"> | string
+    type?: StringWithAggregatesFilter<"Block"> | string
+    sortOrder?: IntWithAggregatesFilter<"Block"> | number
+    completed?: BoolWithAggregatesFilter<"Block"> | boolean
+  }
+
+  export type PatternLogWhereInput = {
+    AND?: PatternLogWhereInput | PatternLogWhereInput[]
+    OR?: PatternLogWhereInput[]
+    NOT?: PatternLogWhereInput | PatternLogWhereInput[]
+    id?: StringFilter<"PatternLog"> | string
+    date?: StringFilter<"PatternLog"> | string
+    blockType?: StringFilter<"PatternLog"> | string
+    action?: StringFilter<"PatternLog"> | string
+    context?: StringFilter<"PatternLog"> | string
+    createdAt?: DateTimeFilter<"PatternLog"> | Date | string
+  }
+
+  export type PatternLogOrderByWithRelationInput = {
+    id?: SortOrder
+    date?: SortOrder
+    blockType?: SortOrder
+    action?: SortOrder
+    context?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: PostCountOrderByAggregateInput
-    _avg?: PostAvgOrderByAggregateInput
-    _max?: PostMaxOrderByAggregateInput
-    _min?: PostMinOrderByAggregateInput
-    _sum?: PostSumOrderByAggregateInput
   }
 
-  export type PostScalarWhereWithAggregatesInput = {
-    AND?: PostScalarWhereWithAggregatesInput | PostScalarWhereWithAggregatesInput[]
-    OR?: PostScalarWhereWithAggregatesInput[]
-    NOT?: PostScalarWhereWithAggregatesInput | PostScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Post"> | number
-    name?: StringWithAggregatesFilter<"Post"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
+  export type PatternLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PatternLogWhereInput | PatternLogWhereInput[]
+    OR?: PatternLogWhereInput[]
+    NOT?: PatternLogWhereInput | PatternLogWhereInput[]
+    date?: StringFilter<"PatternLog"> | string
+    blockType?: StringFilter<"PatternLog"> | string
+    action?: StringFilter<"PatternLog"> | string
+    context?: StringFilter<"PatternLog"> | string
+    createdAt?: DateTimeFilter<"PatternLog"> | Date | string
+  }, "id">
+
+  export type PatternLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    date?: SortOrder
+    blockType?: SortOrder
+    action?: SortOrder
+    context?: SortOrder
+    createdAt?: SortOrder
+    _count?: PatternLogCountOrderByAggregateInput
+    _max?: PatternLogMaxOrderByAggregateInput
+    _min?: PatternLogMinOrderByAggregateInput
   }
 
-  export type PostCreateInput = {
-    name: string
+  export type PatternLogScalarWhereWithAggregatesInput = {
+    AND?: PatternLogScalarWhereWithAggregatesInput | PatternLogScalarWhereWithAggregatesInput[]
+    OR?: PatternLogScalarWhereWithAggregatesInput[]
+    NOT?: PatternLogScalarWhereWithAggregatesInput | PatternLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PatternLog"> | string
+    date?: StringWithAggregatesFilter<"PatternLog"> | string
+    blockType?: StringWithAggregatesFilter<"PatternLog"> | string
+    action?: StringWithAggregatesFilter<"PatternLog"> | string
+    context?: StringWithAggregatesFilter<"PatternLog"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PatternLog"> | Date | string
+  }
+
+  export type ScheduleCreateInput = {
+    id?: string
+    date: string
+    title?: string
+    note?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    blocks?: BlockCreateNestedManyWithoutScheduleInput
+  }
+
+  export type ScheduleUncheckedCreateInput = {
+    id?: string
+    date: string
+    title?: string
+    note?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    blocks?: BlockUncheckedCreateNestedManyWithoutScheduleInput
+  }
+
+  export type ScheduleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    blocks?: BlockUpdateManyWithoutScheduleNestedInput
+  }
+
+  export type ScheduleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    blocks?: BlockUncheckedUpdateManyWithoutScheduleNestedInput
+  }
+
+  export type ScheduleCreateManyInput = {
+    id?: string
+    date: string
+    title?: string
+    note?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type PostUncheckedCreateInput = {
-    id?: number
-    name: string
+  export type ScheduleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ScheduleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BlockCreateInput = {
+    id?: string
+    blockId: string
+    start: string
+    end: string
+    title: string
+    note?: string
+    location: string
+    priority: string
+    type: string
+    sortOrder: number
+    completed?: boolean
+    schedule: ScheduleCreateNestedOneWithoutBlocksInput
+  }
+
+  export type BlockUncheckedCreateInput = {
+    id?: string
+    scheduleId: string
+    blockId: string
+    start: string
+    end: string
+    title: string
+    note?: string
+    location: string
+    priority: string
+    type: string
+    sortOrder: number
+    completed?: boolean
+  }
+
+  export type BlockUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blockId?: StringFieldUpdateOperationsInput | string
+    start?: StringFieldUpdateOperationsInput | string
+    end?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    schedule?: ScheduleUpdateOneRequiredWithoutBlocksNestedInput
+  }
+
+  export type BlockUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    scheduleId?: StringFieldUpdateOperationsInput | string
+    blockId?: StringFieldUpdateOperationsInput | string
+    start?: StringFieldUpdateOperationsInput | string
+    end?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    completed?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type BlockCreateManyInput = {
+    id?: string
+    scheduleId: string
+    blockId: string
+    start: string
+    end: string
+    title: string
+    note?: string
+    location: string
+    priority: string
+    type: string
+    sortOrder: number
+    completed?: boolean
+  }
+
+  export type BlockUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blockId?: StringFieldUpdateOperationsInput | string
+    start?: StringFieldUpdateOperationsInput | string
+    end?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    completed?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type BlockUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    scheduleId?: StringFieldUpdateOperationsInput | string
+    blockId?: StringFieldUpdateOperationsInput | string
+    start?: StringFieldUpdateOperationsInput | string
+    end?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    completed?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type PatternLogCreateInput = {
+    id?: string
+    date: string
+    blockType: string
+    action: string
+    context?: string
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
-  export type PostUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PostUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PostCreateManyInput = {
-    id?: number
-    name: string
+  export type PatternLogUncheckedCreateInput = {
+    id?: string
+    date: string
+    blockType: string
+    action: string
+    context?: string
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
-  export type PostUpdateManyMutationInput = {
-    name?: StringFieldUpdateOperationsInput | string
+  export type PatternLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: StringFieldUpdateOperationsInput | string
+    blockType?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    context?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PostUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
+  export type PatternLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: StringFieldUpdateOperationsInput | string
+    blockType?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    context?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type PatternLogCreateManyInput = {
+    id?: string
+    date: string
+    blockType: string
+    action: string
+    context?: string
+    createdAt?: Date | string
+  }
+
+  export type PatternLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: StringFieldUpdateOperationsInput | string
+    blockType?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    context?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PatternLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: StringFieldUpdateOperationsInput | string
+    blockType?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    context?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -2071,49 +4913,41 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type PostCountOrderByAggregateInput = {
+  export type BlockListRelationFilter = {
+    every?: BlockWhereInput
+    some?: BlockWhereInput
+    none?: BlockWhereInput
+  }
+
+  export type BlockOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ScheduleCountOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
+    date?: SortOrder
+    title?: SortOrder
+    note?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type PostAvgOrderByAggregateInput = {
+  export type ScheduleMaxOrderByAggregateInput = {
     id?: SortOrder
-  }
-
-  export type PostMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
+    date?: SortOrder
+    title?: SortOrder
+    note?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type PostMinOrderByAggregateInput = {
+  export type ScheduleMinOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
+    date?: SortOrder
+    title?: SortOrder
+    note?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type PostSumOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2147,12 +4981,185 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type ScheduleScalarRelationFilter = {
+    is?: ScheduleWhereInput
+    isNot?: ScheduleWhereInput
+  }
+
+  export type BlockCountOrderByAggregateInput = {
+    id?: SortOrder
+    scheduleId?: SortOrder
+    blockId?: SortOrder
+    start?: SortOrder
+    end?: SortOrder
+    title?: SortOrder
+    note?: SortOrder
+    location?: SortOrder
+    priority?: SortOrder
+    type?: SortOrder
+    sortOrder?: SortOrder
+    completed?: SortOrder
+  }
+
+  export type BlockAvgOrderByAggregateInput = {
+    sortOrder?: SortOrder
+  }
+
+  export type BlockMaxOrderByAggregateInput = {
+    id?: SortOrder
+    scheduleId?: SortOrder
+    blockId?: SortOrder
+    start?: SortOrder
+    end?: SortOrder
+    title?: SortOrder
+    note?: SortOrder
+    location?: SortOrder
+    priority?: SortOrder
+    type?: SortOrder
+    sortOrder?: SortOrder
+    completed?: SortOrder
+  }
+
+  export type BlockMinOrderByAggregateInput = {
+    id?: SortOrder
+    scheduleId?: SortOrder
+    blockId?: SortOrder
+    start?: SortOrder
+    end?: SortOrder
+    title?: SortOrder
+    note?: SortOrder
+    location?: SortOrder
+    priority?: SortOrder
+    type?: SortOrder
+    sortOrder?: SortOrder
+    completed?: SortOrder
+  }
+
+  export type BlockSumOrderByAggregateInput = {
+    sortOrder?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type PatternLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    date?: SortOrder
+    blockType?: SortOrder
+    action?: SortOrder
+    context?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PatternLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    date?: SortOrder
+    blockType?: SortOrder
+    action?: SortOrder
+    context?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PatternLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    date?: SortOrder
+    blockType?: SortOrder
+    action?: SortOrder
+    context?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BlockCreateNestedManyWithoutScheduleInput = {
+    create?: XOR<BlockCreateWithoutScheduleInput, BlockUncheckedCreateWithoutScheduleInput> | BlockCreateWithoutScheduleInput[] | BlockUncheckedCreateWithoutScheduleInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutScheduleInput | BlockCreateOrConnectWithoutScheduleInput[]
+    createMany?: BlockCreateManyScheduleInputEnvelope
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+  }
+
+  export type BlockUncheckedCreateNestedManyWithoutScheduleInput = {
+    create?: XOR<BlockCreateWithoutScheduleInput, BlockUncheckedCreateWithoutScheduleInput> | BlockCreateWithoutScheduleInput[] | BlockUncheckedCreateWithoutScheduleInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutScheduleInput | BlockCreateOrConnectWithoutScheduleInput[]
+    createMany?: BlockCreateManyScheduleInputEnvelope
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type BlockUpdateManyWithoutScheduleNestedInput = {
+    create?: XOR<BlockCreateWithoutScheduleInput, BlockUncheckedCreateWithoutScheduleInput> | BlockCreateWithoutScheduleInput[] | BlockUncheckedCreateWithoutScheduleInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutScheduleInput | BlockCreateOrConnectWithoutScheduleInput[]
+    upsert?: BlockUpsertWithWhereUniqueWithoutScheduleInput | BlockUpsertWithWhereUniqueWithoutScheduleInput[]
+    createMany?: BlockCreateManyScheduleInputEnvelope
+    set?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    disconnect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    delete?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    update?: BlockUpdateWithWhereUniqueWithoutScheduleInput | BlockUpdateWithWhereUniqueWithoutScheduleInput[]
+    updateMany?: BlockUpdateManyWithWhereWithoutScheduleInput | BlockUpdateManyWithWhereWithoutScheduleInput[]
+    deleteMany?: BlockScalarWhereInput | BlockScalarWhereInput[]
+  }
+
+  export type BlockUncheckedUpdateManyWithoutScheduleNestedInput = {
+    create?: XOR<BlockCreateWithoutScheduleInput, BlockUncheckedCreateWithoutScheduleInput> | BlockCreateWithoutScheduleInput[] | BlockUncheckedCreateWithoutScheduleInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutScheduleInput | BlockCreateOrConnectWithoutScheduleInput[]
+    upsert?: BlockUpsertWithWhereUniqueWithoutScheduleInput | BlockUpsertWithWhereUniqueWithoutScheduleInput[]
+    createMany?: BlockCreateManyScheduleInputEnvelope
+    set?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    disconnect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    delete?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    update?: BlockUpdateWithWhereUniqueWithoutScheduleInput | BlockUpdateWithWhereUniqueWithoutScheduleInput[]
+    updateMany?: BlockUpdateManyWithWhereWithoutScheduleInput | BlockUpdateManyWithWhereWithoutScheduleInput[]
+    deleteMany?: BlockScalarWhereInput | BlockScalarWhereInput[]
+  }
+
+  export type ScheduleCreateNestedOneWithoutBlocksInput = {
+    create?: XOR<ScheduleCreateWithoutBlocksInput, ScheduleUncheckedCreateWithoutBlocksInput>
+    connectOrCreate?: ScheduleCreateOrConnectWithoutBlocksInput
+    connect?: ScheduleWhereUniqueInput
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -2163,15 +5170,16 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type ScheduleUpdateOneRequiredWithoutBlocksNestedInput = {
+    create?: XOR<ScheduleCreateWithoutBlocksInput, ScheduleUncheckedCreateWithoutBlocksInput>
+    connectOrCreate?: ScheduleCreateOrConnectWithoutBlocksInput
+    upsert?: ScheduleUpsertWithoutBlocksInput
+    connect?: ScheduleWhereUniqueInput
+    update?: XOR<XOR<ScheduleUpdateToOneWithWhereWithoutBlocksInput, ScheduleUpdateWithoutBlocksInput>, ScheduleUncheckedUpdateWithoutBlocksInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -2197,6 +5205,53 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -2226,35 +5281,191 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
+  export type BlockCreateWithoutScheduleInput = {
+    id?: string
+    blockId: string
+    start: string
+    end: string
+    title: string
+    note?: string
+    location: string
+    priority: string
+    type: string
+    sortOrder: number
+    completed?: boolean
+  }
+
+  export type BlockUncheckedCreateWithoutScheduleInput = {
+    id?: string
+    blockId: string
+    start: string
+    end: string
+    title: string
+    note?: string
+    location: string
+    priority: string
+    type: string
+    sortOrder: number
+    completed?: boolean
+  }
+
+  export type BlockCreateOrConnectWithoutScheduleInput = {
+    where: BlockWhereUniqueInput
+    create: XOR<BlockCreateWithoutScheduleInput, BlockUncheckedCreateWithoutScheduleInput>
+  }
+
+  export type BlockCreateManyScheduleInputEnvelope = {
+    data: BlockCreateManyScheduleInput | BlockCreateManyScheduleInput[]
+  }
+
+  export type BlockUpsertWithWhereUniqueWithoutScheduleInput = {
+    where: BlockWhereUniqueInput
+    update: XOR<BlockUpdateWithoutScheduleInput, BlockUncheckedUpdateWithoutScheduleInput>
+    create: XOR<BlockCreateWithoutScheduleInput, BlockUncheckedCreateWithoutScheduleInput>
+  }
+
+  export type BlockUpdateWithWhereUniqueWithoutScheduleInput = {
+    where: BlockWhereUniqueInput
+    data: XOR<BlockUpdateWithoutScheduleInput, BlockUncheckedUpdateWithoutScheduleInput>
+  }
+
+  export type BlockUpdateManyWithWhereWithoutScheduleInput = {
+    where: BlockScalarWhereInput
+    data: XOR<BlockUpdateManyMutationInput, BlockUncheckedUpdateManyWithoutScheduleInput>
+  }
+
+  export type BlockScalarWhereInput = {
+    AND?: BlockScalarWhereInput | BlockScalarWhereInput[]
+    OR?: BlockScalarWhereInput[]
+    NOT?: BlockScalarWhereInput | BlockScalarWhereInput[]
+    id?: StringFilter<"Block"> | string
+    scheduleId?: StringFilter<"Block"> | string
+    blockId?: StringFilter<"Block"> | string
+    start?: StringFilter<"Block"> | string
+    end?: StringFilter<"Block"> | string
+    title?: StringFilter<"Block"> | string
+    note?: StringFilter<"Block"> | string
+    location?: StringFilter<"Block"> | string
+    priority?: StringFilter<"Block"> | string
+    type?: StringFilter<"Block"> | string
+    sortOrder?: IntFilter<"Block"> | number
+    completed?: BoolFilter<"Block"> | boolean
+  }
+
+  export type ScheduleCreateWithoutBlocksInput = {
+    id?: string
+    date: string
+    title?: string
+    note?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ScheduleUncheckedCreateWithoutBlocksInput = {
+    id?: string
+    date: string
+    title?: string
+    note?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ScheduleCreateOrConnectWithoutBlocksInput = {
+    where: ScheduleWhereUniqueInput
+    create: XOR<ScheduleCreateWithoutBlocksInput, ScheduleUncheckedCreateWithoutBlocksInput>
+  }
+
+  export type ScheduleUpsertWithoutBlocksInput = {
+    update: XOR<ScheduleUpdateWithoutBlocksInput, ScheduleUncheckedUpdateWithoutBlocksInput>
+    create: XOR<ScheduleCreateWithoutBlocksInput, ScheduleUncheckedCreateWithoutBlocksInput>
+    where?: ScheduleWhereInput
+  }
+
+  export type ScheduleUpdateToOneWithWhereWithoutBlocksInput = {
+    where?: ScheduleWhereInput
+    data: XOR<ScheduleUpdateWithoutBlocksInput, ScheduleUncheckedUpdateWithoutBlocksInput>
+  }
+
+  export type ScheduleUpdateWithoutBlocksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ScheduleUncheckedUpdateWithoutBlocksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BlockCreateManyScheduleInput = {
+    id?: string
+    blockId: string
+    start: string
+    end: string
+    title: string
+    note?: string
+    location: string
+    priority: string
+    type: string
+    sortOrder: number
+    completed?: boolean
+  }
+
+  export type BlockUpdateWithoutScheduleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blockId?: StringFieldUpdateOperationsInput | string
+    start?: StringFieldUpdateOperationsInput | string
+    end?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    completed?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type BlockUncheckedUpdateWithoutScheduleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blockId?: StringFieldUpdateOperationsInput | string
+    start?: StringFieldUpdateOperationsInput | string
+    end?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    completed?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type BlockUncheckedUpdateManyWithoutScheduleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blockId?: StringFieldUpdateOperationsInput | string
+    start?: StringFieldUpdateOperationsInput | string
+    end?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    note?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    completed?: BoolFieldUpdateOperationsInput | boolean
   }
 
 
