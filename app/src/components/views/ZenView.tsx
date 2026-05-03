@@ -5,13 +5,16 @@ import { timeToDate, durationLabel } from "~/lib/utils";
 import { BlockList } from "~/components/shared/BlockList";
 import type { useSchedule } from "~/hooks/useSchedule";
 
+import type { ViewId } from "~/hooks/useViewPreference";
+
 interface ZenViewProps {
   date: string;
   schedule: ReturnType<typeof useSchedule>;
   onShiftDate: (offset: number) => void;
+  onChangeView?: (view: ViewId) => void;
 }
 
-export function ZenView({ date, schedule }: ZenViewProps) {
+export function ZenView({ date, schedule, onChangeView }: ZenViewProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { active, nextBlock, blocks, doneCount, completionPct } = schedule;
 
@@ -33,9 +36,18 @@ export function ZenView({ date, schedule }: ZenViewProps) {
 
   return (
     <div style={{ width: "100%", height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative" }}>
-      {/* Minimal top bar */}
+      {/* Minimal top bar with exit */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 32px" }}>
-        <span style={{ fontSize: 12, color: "var(--text-muted)", letterSpacing: "0.1em" }}>DAY PLANNER</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <button onClick={() => onChangeView?.("classic")} style={{
+            background: "var(--surface-2)", color: "var(--text-muted)", border: "1px solid var(--border)",
+            borderRadius: 4, padding: "4px 10px", cursor: "pointer", fontSize: 11, fontWeight: 600,
+            fontFamily: "var(--font-sans)", transition: "color 120ms ease",
+          }} title="Exit Zen mode">
+            &#8592; Exit
+          </button>
+          <span style={{ fontSize: 12, color: "var(--text-muted)", letterSpacing: "0.1em" }}>ZEN</span>
+        </div>
         <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
           {new Date(date + "T12:00:00").toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" })}
         </span>

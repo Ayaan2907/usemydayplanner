@@ -1,10 +1,4 @@
 "use client";
-/**
- * T3 CONCEPT: This is a "view" component — it composes shared components
- * into a specific layout. It receives all data via props from page.tsx.
- * No hooks called here except useState for local UI state (tabs).
- * This keeps the view testable and reusable.
- */
 import { useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { NowNextCards } from "~/components/shared/NowNextCards";
@@ -21,7 +15,6 @@ interface ClassicViewProps {
 }
 
 export function ClassicView({ date, schedule, onShiftDate }: ClassicViewProps) {
-  const [activeTab, setActiveTab] = useState<"today" | "week" | "month">("today");
   const clock = new Date().toLocaleString([], { weekday: "short", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 
   return (
@@ -29,9 +22,9 @@ export function ClassicView({ date, schedule, onShiftDate }: ClassicViewProps) {
       <Sidebar clock={clock} />
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        {/* Top bar with tabs */}
-        <div style={{ borderBottom: "1px solid var(--border)", background: "var(--bg)" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 24px 0" }}>
+        {/* Top bar */}
+        <div style={{ borderBottom: "1px solid var(--border)", background: "var(--bg)", padding: "14px 24px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
               <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0 }}>
                 {schedule.schedule?.title || new Date(date + "T12:00:00").toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" })}
@@ -40,28 +33,7 @@ export function ClassicView({ date, schedule, onShiftDate }: ClassicViewProps) {
                 <span style={{ fontSize: 13, color: "var(--text-muted)" }}>{schedule.schedule.note}</span>
               )}
             </div>
-            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              <DateNav dateStr={date} onPrev={() => onShiftDate(-1)} onNext={() => onShiftDate(1)} />
-              <button style={{
-                padding: "6px 14px", borderRadius: 6, border: "none",
-                background: "var(--accent)", color: "white", fontSize: 13,
-                fontWeight: 600, cursor: "pointer",
-              }}>Save</button>
-            </div>
-          </div>
-          <div style={{ display: "flex", gap: 0, padding: "0 24px", marginTop: 12 }}>
-            {(["today", "week", "month"] as const).map(tab => (
-              <button key={tab} onClick={() => setActiveTab(tab)}
-                style={{
-                  padding: "8px 16px", border: "none", background: "none",
-                  fontSize: 13, fontWeight: 500, cursor: "pointer",
-                  color: activeTab === tab ? "var(--accent)" : "var(--text-muted)",
-                  borderBottom: activeTab === tab ? "2px solid var(--accent)" : "2px solid transparent",
-                  textTransform: "capitalize", fontFamily: "var(--font-sans)",
-                }}>
-                {tab}
-              </button>
-            ))}
+            <DateNav dateStr={date} onPrev={() => onShiftDate(-1)} onNext={() => onShiftDate(1)} />
           </div>
         </div>
 
@@ -69,7 +41,6 @@ export function ClassicView({ date, schedule, onShiftDate }: ClassicViewProps) {
         <div style={{ flex: 1, overflow: "auto", padding: 24, display: "flex", flexDirection: "column", gap: 16 }}>
           <NowNextCards active={schedule.active} nextBlock={schedule.nextBlock} date={date} />
 
-          {/* Day/Week/Year progress row */}
           <LifeProgressRow />
 
           <StatsRow
@@ -96,7 +67,6 @@ export function ClassicView({ date, schedule, onShiftDate }: ClassicViewProps) {
   );
 }
 
-/** Inline life progress row for Classic view */
 function LifeProgressRow() {
   const now = new Date();
   const dow = (now.getDay() + 6) % 7;
@@ -107,7 +77,7 @@ function LifeProgressRow() {
 
   const items = [
     { label: "DAY", pct: Math.round(dayFrac * 100), sub: `${Math.round((1 - dayFrac) * 24)}h remaining` },
-    { label: "WEEK", pct: Math.round(((dow + dayFrac) / 7) * 100), sub: `${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][dow]} · Day ${dow + 1} of 7` },
+    { label: "WEEK", pct: Math.round(((dow + dayFrac) / 7) * 100), sub: `${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][dow]} \u00b7 Day ${dow + 1} of 7` },
     { label: "YEAR", pct: Math.round((dayOfYear / totalDays) * 100), sub: `Day ${dayOfYear} of ${totalDays}` },
   ];
 

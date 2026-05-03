@@ -2,11 +2,10 @@
 import { useState } from "react";
 
 const NAV_ITEMS = [
-  { id: "planner", icon: "◫", label: "Planner" },
-  { id: "history", icon: "↻", label: "History" },
-  { id: "insights", icon: "◔", label: "Insights" },
-  { id: "templates", icon: "❐", label: "Templates" },
-  { id: "settings", icon: "⚙", label: "Settings" },
+  { id: "planner", icon: "◫", label: "Planner", active: true },
+  { id: "history", icon: "↻", label: "History", active: false },
+  { id: "insights", icon: "◔", label: "Insights", active: false },
+  { id: "settings", icon: "⚙", label: "Settings", active: false },
 ];
 
 export function Sidebar({ clock }: { clock: string }) {
@@ -22,17 +21,19 @@ export function Sidebar({ clock }: { clock: string }) {
       </div>
       <nav style={{ padding: 8, flex: 1 }}>
         {NAV_ITEMS.map(item => (
-          <div key={item.id} onClick={() => setActiveNav(item.id)}
+          <div key={item.id} onClick={() => item.active && setActiveNav(item.id)}
             style={{
               display: "flex", alignItems: "center", gap: 10, padding: "8px 12px",
-              borderRadius: 6, cursor: "pointer", fontSize: 14,
+              borderRadius: 6, cursor: item.active ? "pointer" : "default", fontSize: 14,
               fontWeight: activeNav === item.id ? 600 : 400,
               background: activeNav === item.id ? "var(--surface-2)" : "transparent",
               color: activeNav === item.id ? "var(--text)" : "var(--text-muted)",
+              opacity: item.active ? 1 : 0.5,
               marginBottom: 2, transition: "all 0.15s",
             }}>
             <span style={{ fontSize: 16, opacity: 0.7 }}>{item.icon}</span>
             {item.label}
+            {!item.active && <span style={{ fontSize: 9, color: "var(--text-muted)", marginLeft: "auto" }}>soon</span>}
           </div>
         ))}
       </nav>

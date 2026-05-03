@@ -100,7 +100,7 @@ export default function Page() {
       {view === "classic" && <ClassicView {...viewProps} />}
       {view === "timeline" && <TimelineView {...viewProps} />}
       {view === "chat" && <ChatView {...chatViewProps} />}
-      {view === "zen" && <ZenView {...viewProps} />}
+      {view === "zen" && <ZenView {...viewProps} onChangeView={setView} />}
       {view === "dense" && <DenseView {...chatViewProps} />}
 
       {/* Chat drawer — views with their own chat (chat, dense) don't need it */}
