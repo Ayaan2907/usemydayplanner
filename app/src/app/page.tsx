@@ -23,6 +23,10 @@ import { ThemeToggle } from "~/components/shared/ThemeToggle";
 import { LiveClock } from "~/components/shared/LiveClock";
 import { ChatDrawer } from "~/components/chat/ChatDrawer";
 import { ClassicView } from "~/components/views/ClassicView";
+import { TimelineView } from "~/components/views/TimelineView";
+import { ChatView } from "~/components/views/ChatView";
+import { ZenView } from "~/components/views/ZenView";
+import { DenseView } from "~/components/views/DenseView";
 import { todayStr } from "~/lib/utils";
 
 export default function Page() {
@@ -69,20 +73,11 @@ export default function Page() {
   }
 
   const viewProps = { date: selectedDate, schedule, onShiftDate: shiftDate };
-
-  const comingSoon = (name: string) => (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "calc(100vh - 48px)", marginTop: 48, color: "var(--text-muted)" }}>
-      <div style={{ textAlign: "center" }}>
-        <div style={{ fontSize: "2rem", opacity: 0.3, marginBottom: 8 }}>&#128679;</div>
-        <div style={{ fontSize: "1.1rem", fontWeight: 600 }}>{name} view</div>
-        <div style={{ fontSize: "0.85rem", marginTop: 4 }}>Coming in Plan B</div>
-      </div>
-    </div>
-  );
+  const chatViewProps = { ...viewProps, location: userLocation, onScheduleParsed: handleScheduleParsed };
 
   return (
     <>
-      {/* Global header */}
+      {/* Global header — hidden for Zen (has own bar) and Classic (has sidebar) */}
       {view !== "zen" && (
         <header style={{
           position: "fixed", top: 0, left: 0, right: 0, height: 48,
@@ -103,13 +98,13 @@ export default function Page() {
 
       {/* Active view */}
       {view === "classic" && <ClassicView {...viewProps} />}
-      {view === "timeline" && comingSoon("Timeline Command")}
-      {view === "chat" && comingSoon("Conversational Flow")}
-      {view === "zen" && comingSoon("Zen Focus")}
-      {view === "dense" && comingSoon("Dense Dashboard")}
+      {view === "timeline" && <TimelineView {...viewProps} />}
+      {view === "chat" && <ChatView {...chatViewProps} />}
+      {view === "zen" && <ZenView {...viewProps} />}
+      {view === "dense" && <DenseView {...chatViewProps} />}
 
-      {/* Chat drawer — available in all views except chat (which has its own) */}
-      {view !== "chat" && (
+      {/* Chat drawer — views with their own chat (chat, dense) don't need it */}
+      {view !== "chat" && view !== "dense" && view !== "zen" && (
         <ChatDrawer date={selectedDate} location={userLocation} onScheduleParsed={handleScheduleParsed} />
       )}
     </>
