@@ -97,6 +97,7 @@ export async function POST(req: Request) {
       prayerTimes,
       patternInsights,
       existingSchedule,
+      todayStr: new Date().toISOString().split("T")[0]!,
     });
 
     // Call OpenRouter

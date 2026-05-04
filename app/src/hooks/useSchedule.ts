@@ -14,6 +14,7 @@ export function useSchedule(date: string) {
   const toggleMutation = api.schedule.toggleBlock.useMutation({ onSuccess: () => void refetch() });
   const upsertMutation = api.schedule.upsert.useMutation({ onSuccess: () => void refetch() });
   const metaMutation = api.schedule.updateMeta.useMutation({ onSuccess: () => void refetch() });
+  const updateBlockMutation = api.schedule.updateBlock.useMutation({ onSuccess: () => void refetch() });
 
   const blocks = schedule?.blocks ?? [];
 
@@ -42,6 +43,7 @@ export function useSchedule(date: string) {
     schedule, blocks, refetch,
     ...derived,
     toggleBlock: (id: string) => toggleMutation.mutate({ id }),
+    updateBlock: (id: string, fields: Record<string, string>) => updateBlockMutation.mutate({ id, ...fields }),
     upsertSchedule: upsertMutation.mutateAsync,
     updateMeta: metaMutation.mutate,
   };

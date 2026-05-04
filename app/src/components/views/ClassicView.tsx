@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Sidebar } from "./Sidebar";
 import { NowNextCards } from "~/components/shared/NowNextCards";
 import { StatsRow } from "~/components/shared/StatsRow";
@@ -31,13 +31,19 @@ export function ClassicView({ date, schedule, onShiftDate }: ClassicViewProps) {
         {/* Top bar */}
         <div style={{ borderBottom: "1px solid var(--border)", background: "var(--bg)", padding: "14px 24px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-              <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0 }}>
-                {schedule.schedule?.title || new Date(date + "T12:00:00").toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" })}
-              </h1>
-              {schedule.schedule?.note && (
-                <span style={{ fontSize: 13, color: "var(--text-muted)" }}>{schedule.schedule.note}</span>
-              )}
+            <div style={{ display: "flex", alignItems: "baseline", gap: 12, flex: 1 }}>
+              <EditableText
+                value={schedule.schedule?.title || ""}
+                placeholder={new Date(date + "T12:00:00").toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" })}
+                onSave={(v) => schedule.updateMeta({ date, title: v })}
+                style={{ fontSize: 20, fontWeight: 700 }}
+              />
+              <EditableText
+                value={schedule.schedule?.note || ""}
+                placeholder="What's the mission?"
+                onSave={(v) => schedule.updateMeta({ date, note: v })}
+                style={{ fontSize: 13, color: "var(--text-muted)" }}
+              />
             </div>
             <DateNav dateStr={date} onPrev={() => onShiftDate(-1)} onNext={() => onShiftDate(1)} />
           </div>
@@ -93,7 +99,7 @@ export function ClassicView({ date, schedule, onShiftDate }: ClassicViewProps) {
 
           {/* Active visualization */}
           {vizMode === "list" && (
-            <BlockList blocks={schedule.blocks} date={date} activeId={schedule.active?.id} onToggle={schedule.toggleBlock} />
+            <BlockList blocks={schedule.blocks} date={date} activeId={schedule.active?.id} onToggle={schedule.toggleBlock} onUpdateBlock={schedule.updateBlock} />
           )}
           {vizMode === "clock" && (
             <RadialClock scale={clockScale} blocks={schedule.blocks} date={date} />
@@ -104,6 +110,42 @@ export function ClassicView({ date, schedule, onShiftDate }: ClassicViewProps) {
         </div>
       </div>
     </div>
+  );
+}
+
+/** Double-click to edit text inline */
+function EditableText({ value, placeholder, onSave, style }: { value: string; placeholder: string; onSave: (v: string) => void; style?: React.CSSProperties }) {
+  const [editing, setEditing] = useState(false);
+  const [val, setVal] = useState(value);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  if (editing) {
+    return (
+      <input
+        ref={inputRef}
+        autoFocus
+        value={val}
+        onChange={(e) => setVal(e.target.value)}
+        onBlur={() => { setEditing(false); onSave(val); }}
+        onKeyDown={(e) => { if (e.key === "Enter") { setEditing(false); onSave(val); } if (e.key === "Escape") { setEditing(false); setVal(value); } }}
+        style={{
+          background: "var(--input-bg)", color: "var(--text)",
+          border: "1px solid var(--accent)", borderRadius: 3,
+          padding: "2px 8px", outline: "none", fontFamily: "var(--font-sans)",
+          margin: 0, ...style,
+        }}
+      />
+    );
+  }
+
+  return (
+    <span
+      onDoubleClick={() => { setVal(value); setEditing(true); }}
+      style={{ cursor: "text", ...style, color: value ? undefined : "var(--text-muted)" }}
+      title="Double-click to edit"
+    >
+      {value || placeholder}
+    </span>
   );
 }
 

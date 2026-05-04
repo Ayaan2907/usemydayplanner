@@ -9,9 +9,10 @@ interface BlockListProps {
   date: string;
   activeId: string | undefined;
   onToggle: (id: string) => void;
+  onUpdateBlock?: (id: string, fields: Record<string, string>) => void;
 }
 
-export function BlockList({ blocks, date, activeId, onToggle }: BlockListProps) {
+export function BlockList({ blocks, date, activeId, onToggle, onUpdateBlock }: BlockListProps) {
   const now = new Date();
 
   if (blocks.length === 0) {
@@ -29,7 +30,7 @@ export function BlockList({ blocks, date, activeId, onToggle }: BlockListProps) 
         const isCurrent = b.id === activeId;
         const e = timeToDate(date, b.end);
         const isMissed = !b.completed && !isCurrent && now >= e;
-        return <BlockCard key={b.id} block={b} date={date} isCurrent={isCurrent} isMissed={isMissed} onToggle={() => onToggle(b.id)} />;
+        return <BlockCard key={b.id} block={b} date={date} isCurrent={isCurrent} isMissed={isMissed} onToggle={() => onToggle(b.id)} onUpdate={onUpdateBlock} />;
       })}
     </div>
   );

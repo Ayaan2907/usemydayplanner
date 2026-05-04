@@ -50,15 +50,23 @@ export default function Page() {
   }
 
   const handleScheduleParsed = useCallback(async (parsed: {
-    dayTitle?: string; dayNote?: string;
+    targetDate?: string; dayTitle?: string; dayNote?: string;
     blocks: { blockId: string; start: string; end: string; title: string; note?: string; location: string; priority: string; type: string }[];
   }) => {
+    // Use targetDate from agent if provided, otherwise use selectedDate
+    const saveDate = parsed.targetDate ?? selectedDate;
+
     await schedule.upsertSchedule({
-      date: selectedDate,
+      date: saveDate,
       title: parsed.dayTitle ?? "",
       note: parsed.dayNote ?? "",
       blocks: parsed.blocks.map(b => ({ ...b, note: b.note ?? "" })),
     });
+
+    // Navigate to the target date so user sees the schedule
+    if (saveDate !== selectedDate) {
+      setSelectedDate(saveDate);
+    }
   }, [selectedDate, schedule]);
 
   function requestGeo() {

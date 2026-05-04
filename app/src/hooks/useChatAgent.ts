@@ -10,7 +10,8 @@ import { formatDateShort } from "~/lib/utils";
 
 interface ChatMsg { role: "user" | "agent"; content: string }
 
-interface ParsedSchedule {
+export interface ParsedSchedule {
+  targetDate?: string;
   dayTitle?: string;
   dayNote?: string;
   blocks: { blockId: string; start: string; end: string; title: string; note?: string; location: string; priority: string; type: string }[];
